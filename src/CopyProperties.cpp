@@ -5,6 +5,7 @@
 #include "cp_main.h"
 #include "CopyProperties.h"
 #include ".\copyproperties.h"
+#include "ClipTags.h"
 #include "Md5.h"
 #include "..\Shared\TextConvert.h"
 
@@ -53,6 +54,7 @@ void CCopyProperties::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_HOT_KEY_GLOBAL, m_hotKeyGlobal);
 	DDX_Control(pDX, IDC_HOTKEY_MOVE_TO_GROUP, m_MoveToGrouHotKey);
 	DDX_Check(pDX, IDC_HOT_KEY_GLOBAL_MOVE_TO_GROUP, m_moveToGroupHotKeyGlobal);
+	DDX_Text(pDX, IDC_EDIT_TAGS, m_tags);
 	//}}AFX_DATA_MAP
 }
 
@@ -95,9 +97,14 @@ BOOL CCopyProperties::OnInitDialog()
 				m_clip.LoadFormats(m_lCopyID);
 				LoadDataFromCClip(m_clip);
 			}
+
+			m_tags = ClipTags::TagsOfClip(m_lCopyID);
 		}
 	}
 	CATCH_SQLITE_EXCEPTION
+
+	// a clip that is not saved yet has no id to tag
+	GetDlgItem(IDC_EDIT_TAGS)->EnableWindow(m_lCopyID >= 0);
 
 	UpdateData(FALSE);
 
@@ -122,6 +129,7 @@ BOOL CCopyProperties::OnInitDialog()
 	m_Resize.AddControl(IDCANCEL, DR_MoveTop | DR_MoveLeft);
 	m_Resize.AddControl(IDC_EDIT_QUICK_PASTE, DR_SizeWidth);
 	m_Resize.AddControl(IDC_COMBO1, DR_SizeWidth);
+	m_Resize.AddControl(IDC_EDIT_TAGS, DR_SizeWidth);
 	m_Resize.AddControl(IDC_STATIC_MD5, DR_MoveTop | DR_MoveLeft);
 	m_Resize.AddControl(IDC_EDIT_MD5, DR_MoveTop | DR_MoveLeft);
 	
@@ -343,9 +351,11 @@ void CCopyProperties::OnOK()
 				if(clip.ModifyMainTable())
 				{
 					if(m_bDeletedData)
-					{    
+					{
 						DeleteFormats(m_lCopyID, m_DeletedData);
 					}
+
+					ClipTags::SetTags(m_lCopyID, m_tags);
 				}
 			}
 		}

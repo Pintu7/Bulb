@@ -9,6 +9,7 @@
 #include "CF_UnicodeTextAggregator.h"
 #include "client.h"
 #include "ClipCompare.h"
+#include "ClipTags.h"
 #include "CopyProperties.h"
 #include "CP_Main.h"
 #include "DimWnd.h"
@@ -268,6 +269,9 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_UPDATE_COMMAND_UI(ID_MENU_FILTERON, &CQPasteWnd::OnUpdateMenuFilteron)
 	ON_COMMAND(ID_MENU_GOTOENTRY, &CQPasteWnd::OnMenuGoToEntry)
 	ON_UPDATE_COMMAND_UI(ID_MENU_GOTOENTRY, &CQPasteWnd::OnUpdateMenuGoToEntry)
+	ON_COMMAND(ID_MENU_EDITTAGS, &CQPasteWnd::OnMenuEditTags)
+	ON_UPDATE_COMMAND_UI(ID_MENU_EDITTAGS, &CQPasteWnd::OnUpdateMenuEditTags)
+	ON_COMMAND(ID_MENU_CONVERTGROUPSTOTAGS, &CQPasteWnd::OnMenuConvertGroupsToTags)
 	ON_BN_CLICKED(ON_TOP_WARNING, OnAlwaysOnTopClicked)
 	//ON_WM_CTLCOLOR()
 	ON_COMMAND(ID_SPECIALPASTE_UPPERCASE, &CQPasteWnd::OnSpecialpasteUppercase)
@@ -1537,7 +1541,17 @@ BOOL CQPasteWnd::FillList(CString csSQLSearch)
 
 	CString sqlSearch = "";
 
-	if (csSQLSearch == "")
+	CString fullSearch = csSQLSearch;
+	CString tagFilter = ClipTags::ExtractSearchFilter(csSQLSearch);
+
+	if (csSQLSearch == "" && tagFilter != "")
+	{
+		// only #tags typed: the normal list, narrowed to the tagged clips
+		strFilter = _T("(") + strFilter + _T(") AND ") + tagFilter;
+		m_strSQLSearch = strFilter;
+		m_strSearch = fullSearch;
+	}
+	else if (csSQLSearch == "")
 	{
 		m_strSQLSearch = m_bShowStarredClips ? strFilter : _T("");
 		m_strSearch = "";
@@ -1650,6 +1664,12 @@ BOOL CQPasteWnd::FillList(CString csSQLSearch)
 			strFilter += ")";
 		}
 
+		if (tagFilter != "")
+		{
+			strFilter += " AND ";
+			strFilter += tagFilter;
+		}
+
 		m_strSQLSearch = strFilter;
 		m_strSearch = csSQLSearch;
 	}
@@ -1662,8 +1682,8 @@ BOOL CQPasteWnd::FillList(CString csSQLSearch)
 
 	sql.Format(_T("SELECT %s Main.lID, Main.mText, Main.lParentID, Main.lDontAutoDelete, ")
 		_T("Main.lShortCut, Main.bIsGroup, Main.QuickPasteText, Main.clipOrder, Main.clipGroupOrder, ")
-		_T("Main.stickyClipOrder, Main.stickyClipGroupOrder, Main.lDate, Main.lastPasteDate FROM Main %s ")
-		_T("where %s order by %s"), IsDistinct, dataJoin, strFilter, csSort);
+		_T("Main.stickyClipOrder, Main.stickyClipGroupOrder, Main.lDate, Main.lastPasteDate, %s FROM Main %s ")
+		_T("where %s order by %s"), IsDistinct, ClipTags::ListColumnSql, dataJoin, strFilter, csSort);
 
 
 	{
@@ -3577,6 +3597,12 @@ bool CQPasteWnd::DoAction(CAccel a)
 		OnMenuShowStarredClips();
 		ret = true;
 		break;
+	case ActionEnums::GOTO_ENTRY:
+		ret = DoActionGoToEntry();
+		break;
+	case ActionEnums::EDIT_TAGS:
+		ret = DoActionEditTags();
+		break;
 	}
 
 	return ret;
@@ -4213,7 +4239,7 @@ bool CQPasteWnd::ShowProperties(int id, int row)
 			if (row >= 0 &&
 				row < (int)m_listItems.size())
 			{
-				CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT * FROM Main WHERE lID = %d"), id);
+				CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT *, %s FROM Main WHERE lID = %d"), ClipTags::ListColumnSql, id);
 				if (!q.eof())
 				{
 					FillMainTable(m_listItems[row], q);
@@ -5370,7 +5396,7 @@ bool CQPasteWnd::DoActionSaveCF_HDROP_FileData()
 						if (row >= 0 &&
 							row < (int)m_listItems.size())
 						{
-							CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT * FROM Main WHERE lID = %d"), id);
+							CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT *, %s FROM Main WHERE lID = %d"), ClipTags::ListColumnSql, id);
 							if (!q.eof())
 							{
 								FillMainTable(m_listItems[row], q);
@@ -5735,6 +5761,11 @@ void CQPasteWnd::GetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)
 					if (m_listItems[pItem->iItem].m_dateCopied != m_listItems[pItem->iItem].m_datePasted)
 					{
 						cs += "<pasted>";
+					}
+
+					if (m_listItems[pItem->iItem].m_tags.IsEmpty() == FALSE)
+					{
+						cs += _T("<tags=") + m_listItems[pItem->iItem].m_tags + _T(">");
 					}
 
 					// pipe is the "end of symbols" marker
@@ -6516,6 +6547,7 @@ void CQPasteWnd::FillMainTable(CMainTable& table, CppSQLite3Query& q)
 	table.m_stickyClipGroupOrder = q.getFloatField(_T("stickyClipGroupOrder"));
 	table.m_dateCopied = q.getInt64Field(_T("lDate"));
 	table.m_datePasted = q.getInt64Field(_T("lastPasteDate"));
+	table.m_tags = q.getStringField(_T("tagNames"));
 }
 
 void CQPasteWnd::OnDestroy()
@@ -7045,42 +7077,34 @@ void CQPasteWnd::OnUpdateMenuFilteron(CCmdUI* pCmdUI)
 
 void CQPasteWnd::OnMenuGoToEntry()
 {
+	DoAction(ActionEnums::GOTO_ENTRY);
+}
+
+bool CQPasteWnd::DoActionGoToEntry()
+{
+	CString csSearch;
+	m_search.GetWindowText(csSearch);
+	if (csSearch.IsEmpty() && m_bShowStarredClips == false)
+	{
+		return false;
+	}
+
 	ARRAY IDs;
 	m_lstHeader.GetSelectionItemData(IDs);
 	if (IDs.GetSize() <= 0)
 	{
-		return;
+		return false;
 	}
 
 	long targetID = IDs[0];
 
-	int targetSticky = 0;
-	int targetIsGroup = 0;
-	int targetClipOrder = 0;
-	long targetParent = -1;
-	bool gotKey = false;
-	try
+	// the rank below is computed against History, so always land there
+	m_bShowStarredClips = false;
+	if (theApp.m_GroupID >= 0)
 	{
-		CppSQLite3Query q = theApp.m_db.execQueryEx(
-			_T("SELECT stickyClipOrder, bIsGroup, clipOrder, lParentID FROM Main WHERE lID = %d"),
-			targetID);
-		if (!q.eof())
-		{
-			targetSticky = q.getIntField(_T("stickyClipOrder"));
-			targetIsGroup = q.getIntField(_T("bIsGroup"));
-			targetClipOrder = q.getIntField(_T("clipOrder"));
-			targetParent = q.getIntField(_T("lParentID"));
-			gotKey = true;
-		}
+		theApp.EnterGroupID(-1);
 	}
-	catch (CppSQLite3Exception&)
-	{
-	}
-
-	if (!gotKey)
-	{
-		return;
-	}
+	theApp.m_FocusID = targetID;
 
 	CString filter;
 	if (CGetSetOptions::m_bShowAllClipsInMainList)
@@ -7098,29 +7122,20 @@ void CQPasteWnd::OnMenuGoToEntry()
 	int targetIndex = -1;
 	try
 	{
+		// same ORDER BY as the History list in FillList; ROW_NUMBER keeps the REAL order columns exact
 		CString rankSql;
 		rankSql.Format(
-			_T("SELECT COUNT(*) FROM Main WHERE %s AND (")
-			_T("(stickyClipOrder > %d) OR ")
-			_T("(stickyClipOrder = %d AND bIsGroup < %d) OR ")
-			_T("(stickyClipOrder = %d AND bIsGroup = %d AND clipOrder > %d))"),
+			_T("SELECT rn - 1 FROM (SELECT Main.lID, ROW_NUMBER() OVER ")
+			_T("(ORDER BY Main.stickyClipOrder DESC, Main.bIsGroup ASC, Main.clipOrder DESC) AS rn ")
+			_T("FROM Main WHERE %s) WHERE lID = %d"),
 			(LPCTSTR)filter,
-			targetSticky,
-			targetSticky, targetIsGroup,
-			targetSticky, targetIsGroup, targetClipOrder);
+			targetID);
 
 		targetIndex = theApp.m_db.execScalar(rankSql);
 	}
 	catch (CppSQLite3Exception&)
 	{
 		targetIndex = -1;
-	}
-
-	theApp.m_FocusID = targetID;
-
-	if (theApp.m_GroupID >= 0 && targetParent != theApp.m_GroupID)
-	{
-		theApp.EnterGroupID(-1);
 	}
 
 	m_bHandleSearchTextChange = false;
@@ -7159,23 +7174,166 @@ void CQPasteWnd::OnMenuGoToEntry()
 		MoveControls();
 		SelectFocusID();
 		m_lstHeader.SetFocus();
-		return;
+		return true;
 	}
 
 	MoveControls();
 
-	m_lstHeader.EnsureVisible(targetIndex, FALSE);
 	m_lstHeader.SetListPos(targetIndex);
+
+	// SetListPos leaves the row at the window edge; center it so the clips copied before and after are visible
+	CRect rowRect;
+	if (m_lstHeader.GetItemRect(targetIndex, rowRect, LVIR_BOUNDS))
+	{
+		int rowsAbove = targetIndex - m_lstHeader.GetTopIndex();
+		m_lstHeader.Scroll(CSize(0, (rowsAbove - m_lstHeader.GetCountPerPage() / 2) * rowRect.Height()));
+	}
+
 	m_lstHeader.SetFocus();
 
 	Log(StrF(_T("GoToEntry: scrolled to index %d of %d"), targetIndex, totalRows));
+
+	return true;
 }
 
 void CQPasteWnd::OnUpdateMenuGoToEntry(CCmdUI* pCmdUI)
 {
+	if (!pCmdUI->m_pMenu)
+	{
+		return;
+	}
+
 	CString csSearch;
 	m_search.GetWindowText(csSearch);
-	pCmdUI->Enable(!csSearch.IsEmpty());
+	pCmdUI->Enable(!csSearch.IsEmpty() || m_bShowStarredClips);
+	UpdateMenuShortCut(pCmdUI, ActionEnums::GOTO_ENTRY);
+}
+
+void CQPasteWnd::OnMenuEditTags()
+{
+	DoAction(ActionEnums::EDIT_TAGS);
+}
+
+void CQPasteWnd::OnUpdateMenuEditTags(CCmdUI* pCmdUI)
+{
+	if (!pCmdUI->m_pMenu)
+	{
+		return;
+	}
+
+	pCmdUI->Enable(m_lstHeader.GetSelectedCount() > 0);
+	UpdateMenuShortCut(pCmdUI, ActionEnums::EDIT_TAGS);
+}
+
+bool CQPasteWnd::DoActionEditTags()
+{
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+	ARRAY Indexs;
+	m_lstHeader.GetSelectionIndexes(Indexs);
+	if (IDs.GetSize() <= 0)
+	{
+		return false;
+	}
+
+	// one clip: edit its tags; several: add to the tags each one already has
+	bool singleClip = IDs.GetSize() == 1;
+
+	CGroupName dlg;
+	try
+	{
+		dlg.m_completions = ClipTags::AllNames();
+		if (singleClip)
+		{
+			dlg.m_csName = ClipTags::TagsOfClip(IDs[0]);
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	if (dlg.m_csName.IsEmpty() == FALSE)
+	{
+		dlg.m_csName += _T(" ");
+	}
+
+	dlg.m_title = singleClip ?
+		theApp.m_Language.GetString(_T("EditTags"), _T("Tags (separated by spaces)")) :
+		StrF(_T("%s (%d)"), theApp.m_Language.GetString(_T("AddTags"), _T("Add tags to the selected clips")), (int)IDs.GetSize());
+
+	m_bHideWnd = false;
+	INT_PTR nRet = IDCANCEL;
+	{
+		CDimWnd dimmer(this);
+		nRet = dlg.DoModal();
+	}
+	m_bHideWnd = true;
+
+	if (nRet != IDOK)
+	{
+		m_lstHeader.SetFocus();
+		return true;
+	}
+
+	std::vector<CString> newTags;
+	try
+	{
+		for (int i = 0; i < IDs.GetSize(); i++)
+		{
+			if (singleClip)
+			{
+				ClipTags::SetTags(IDs[i], dlg.m_csName);
+			}
+			else
+			{
+				ClipTags::AddTags(IDs[i], dlg.m_csName);
+			}
+
+			newTags.push_back(ClipTags::TagsOfClip(IDs[i]));
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	{
+		ATL::CCritSecLock csLock(m_CritSection.m_sect);
+		for (int i = 0; i < (int)newTags.size() && i < Indexs.GetSize(); i++)
+		{
+			int row = Indexs[i];
+			if (row >= 0 && row < (int)m_listItems.size() && m_listItems[row].m_lID == IDs[i])
+			{
+				m_listItems[row].m_tags = newTags[i];
+			}
+		}
+	}
+
+	m_lstHeader.RefreshVisibleRows();
+	m_lstHeader.SetFocus();
+
+	return true;
+}
+
+void CQPasteWnd::OnMenuConvertGroupsToTags()
+{
+	m_bHideWnd = false;
+
+	int nRet = MessageBox(theApp.m_Language.GetString(_T("ConvertGroupsToTags"), _T("Tag every clip in a group with the group's name?\r\n\r\nGroups and their clips are not changed.")), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+	if (nRet == IDOK)
+	{
+		int converted = -1;
+		try
+		{
+			CWaitCursor wait;
+			converted = ClipTags::ConvertGroupsToTags();
+		}
+		CATCH_SQLITE_EXCEPTION
+
+		if (converted >= 0)
+		{
+			MessageBox(StrF(_T("%s: %d"), theApp.m_Language.GetString(_T("GroupsConvertedToTags"), _T("Groups converted to tags")), converted), _T("Ditto"), MB_OK | MB_TOPMOST);
+		}
+
+		DoRefreshList();
+	}
+
+	m_bHideWnd = true;
 }
 
 void CQPasteWnd::OnAlwaysOnTopClicked()

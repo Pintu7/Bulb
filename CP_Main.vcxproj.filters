@@ -166,6 +166,9 @@
     <ClCompile Include="src\GroupName.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ClipTags.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\GroupStatic.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -671,6 +674,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GroupName.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ClipTags.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GroupStatic.h">

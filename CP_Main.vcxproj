@@ -591,6 +591,7 @@
     <ClCompile Include="src\GlobalClips.cpp" />
     <ClCompile Include="src\GroupCombo.cpp" />
     <ClCompile Include="src\GroupName.cpp" />
+    <ClCompile Include="src\ClipTags.cpp" />
     <ClCompile Include="src\GroupStatic.cpp" />
     <ClCompile Include="src\GroupTree.cpp" />
     <ClCompile Include="src\HListBox.cpp" />
@@ -856,6 +857,7 @@
     <ClInclude Include="src\GlobalClips.h" />
     <ClInclude Include="src\GroupCombo.h" />
     <ClInclude Include="src\GroupName.h" />
+    <ClInclude Include="src\ClipTags.h" />
     <ClInclude Include="src\GroupStatic.h" />
     <ClInclude Include="src\GroupTree.h" />
     <ClInclude Include="src\HListBox.h" />

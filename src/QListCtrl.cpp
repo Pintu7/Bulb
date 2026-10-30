@@ -588,6 +588,25 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 			}
 		}
 
+		// tags: right-aligned and dimmed, the clip text gets the width that is left
+		int tagsStart = strSymbols.Find(_T("<tags="));
+		if (tagsStart >= 0)
+		{
+			int tagsEnd = strSymbols.Find('>', tagsStart);
+			CString tags = _T("#") + strSymbols.Mid(tagsStart + 6, tagsEnd - tagsStart - 6);
+			tags.Replace(_T(" "), _T("  #"));
+
+			CRect rcTags = rcText;
+			rcTags.right -= m_windowDpi->Scale(4);
+			rcTags.left = max(rcText.left + rcText.Width() / 2, rcTags.right - pDC->GetTextExtent(tags).cx);
+
+			COLORREF oldTagsColor = pDC->SetTextColor(CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
+			pDC->DrawText(tags, rcTags, DT_RIGHT | DT_TOP | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX);
+			pDC->SetTextColor(oldTagsColor);
+
+			rcText.right = rcTags.left - m_windowDpi->Scale(8);
+		}
+
 		if (DrawRtfText(nItem, rcText, pDC) == FALSE)
 		{
 			auto highlightColor = CGetSetOptions::m_Theme.SearchTextHighlight();

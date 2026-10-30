@@ -55,6 +55,7 @@ public:
 	double m_stickyClipGroupOrder;
 	__int64 m_dateCopied;
 	__int64 m_datePasted;
+	CString m_tags;
 
 	static bool SortDesc(const CMainTable& d1, const CMainTable& d2)
 	{
@@ -257,6 +258,8 @@ public:
 	bool DoModifierActiveActionMoveFirst();
 	bool DoModifierActiveActionMoveLast();
 	bool DoActionCancelFilter();
+	bool DoActionGoToEntry();
+	bool DoActionEditTags();
 	bool DoActionHomeList();
 	bool DoActionBackGroup();
 	bool DoActionToggleShowPersistant();
@@ -517,6 +520,9 @@ public:
 	afx_msg void OnUpdateMenuFilteron(CCmdUI *pCmdUI);
 	afx_msg void OnMenuGoToEntry();
 	afx_msg void OnUpdateMenuGoToEntry(CCmdUI *pCmdUI);
+	afx_msg void OnMenuEditTags();
+	afx_msg void OnUpdateMenuEditTags(CCmdUI *pCmdUI);
+	afx_msg void OnMenuConvertGroupsToTags();
 	afx_msg void OnAlwaysOnTopClicked();
 	//afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnSpecialpasteUppercase();

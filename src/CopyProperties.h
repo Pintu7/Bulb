@@ -35,6 +35,7 @@ public:
 	BOOL	m_bNeverAutoDelete;
 	BOOL m_hotKeyGlobal;
 	BOOL m_moveToGroupHotKeyGlobal;
+	CString m_tags;
 	//}}AFX_DATA
 
 

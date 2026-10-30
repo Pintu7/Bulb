@@ -7,6 +7,8 @@
 // GroupName.h : header file
 //
 
+#include <vector>
+
 /////////////////////////////////////////////////////////////////////////////
 // CGroupName dialog
 
@@ -21,6 +23,10 @@ public:
 	enum { IDD = IDD_GROUP_NAME };
 	CString	m_csName;
 	//}}AFX_DATA
+
+	// optional: window title, and words completed inline as the last word is typed (used for tags)
+	CString m_title;
+	std::vector<CString> m_completions;
 
 
 // Overrides
@@ -38,7 +44,11 @@ protected:
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
+	afx_msg void OnNameChange();
 	DECLARE_MESSAGE_MAP()
+
+	int m_lastNameLength = 0;
+	bool m_completing = false;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -440,6 +440,12 @@ CString ActionEnums::EnumDescription(ActionEnumValues value)
 	case SHOW_STARRED_CLIPS:
 		val = "Show Starred Clips";
 		break;
+	case GOTO_ENTRY:
+		val = "Go to Entry";
+		break;
+	case EDIT_TAGS:
+		val = "Edit Tags";
+		break;
 	}
 
 	CString translatedValue = theApp.m_Language.GetQuickPasteKeyboardString(value, val);
@@ -521,6 +527,10 @@ int ActionEnums::GetDefaultShortCutKeyA(ActionEnumValues value, int pos)
 			return VK_F5;
 		case SET_DRAG_FILE_NAME:
 			return VK_F4;
+		case GOTO_ENTRY:
+			return ACCEL_MAKEKEY(VK_RETURN, HOTKEYF_CONTROL);
+		case EDIT_TAGS:
+			return ACCEL_MAKEKEY('T', HOTKEYF_CONTROL);
 		}
 		break;
 	case 1:

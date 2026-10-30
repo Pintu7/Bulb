@@ -10,6 +10,7 @@
 #include "Path.h"
 #include "zlib.h"
 #include "..\Shared\TextConvert.h"
+#include "ClipTags.h"
 using namespace nsPath;
 
 //////////////////////////////////////////////////////////////////////
@@ -482,6 +483,22 @@ BOOL ValidDB(CString csPath, BOOL bUpgrade)
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_ShortCut2 on Main(lShortCut DESC, globalShortCut DESC)"));
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_MoveToGroup on Main(MoveToGroupShortCut DESC, GlobalMoveToGroupShortCut DESC)"));
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_CRC on Main(CRC ASC)"));
+
+		// tags: own try so a failure here can never get the db renamed as bad; back up once before first adding them
+		try
+		{
+			bool hasTags = db.execQuery(_T("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'Tags'")).eof() == false;
+			if (hasTags == false)
+			{
+				CreateBackup(csPath);
+			}
+
+			ClipTags::EnsureSchema(db);
+		}
+		catch (CppSQLite3Exception& e)
+		{
+			Log(StrF(_T("Failed to add tag tables: %s"), e.errorMessage()));
+		}
 	}
 	CATCH_SQLITE_EXCEPTION_AND_RETURN(FALSE)
 
@@ -764,6 +781,8 @@ BOOL CreateDB(CString csFile)
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_ShortCut2 on Main(lShortCut DESC, globalShortCut DESC)"));
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_MoveToGroup on Main(MoveToGroupShortCut DESC, GlobalMoveToGroupShortCut DESC)"));
 		db.execDML(_T("CREATE INDEX IF NOT EXISTS Main_CRC on Main(CRC ASC)"));
+
+		ClipTags::EnsureSchema(db);
 
 		db.close();
 	}
