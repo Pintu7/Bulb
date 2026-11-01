@@ -117,8 +117,20 @@ BOOL COptionFriends::OnInitDialog()
 	return FALSE;
 }
 
-BOOL COptionFriends::OnApply() 
+BOOL COptionFriends::OnApply()
 {
+	UpdateData(); // the password typed in the field, not the one saved before
+
+	CGetSetOptions::SetNetworkPassword(m_csPassword);
+	if (m_bDisableRecieve.GetCheck() == BST_UNCHECKED && CGetSetOptions::IsWeakNetworkPassword())
+	{
+		MessageBox(theApp.m_Language.GetString(_T("ReceiveNeedsPassword"),
+			_T("To receive clips from other computers, first choose your own network password: with the default one, anyone on your network could send you clips.")),
+			_T("Bulb"), MB_OK | MB_ICONWARNING);
+		GetDlgItem(IDC_EDIT_PASSWORD)->SetFocus();
+		return FALSE;
+	}
+
 	CSendClients client;
 	for (int i = 0; i < MAX_SEND_CLIENTS; i++)
 	{
@@ -138,16 +150,12 @@ BOOL COptionFriends::OnApply()
 		CGetSetOptions::SetSendClients(client, i);
 	}
 
-	CGetSetOptions::SetNetworkPassword(m_csPassword);
 	CGetSetOptions::SetLogSendReceiveErrors(m_SendRecieve.GetCheck());
 
 	CGetSetOptions::SetDisableRecieve(m_bDisableRecieve.GetCheck());
 	theApp.StartStopServerThread();
 
-	UpdateData();
-
 	CGetSetOptions::SetListToPutOnClipboard(m_PlaceOnClipboard);
-	CGetSetOptions::SetNetworkPassword(m_csPassword);
 	CGetSetOptions::GetClientSendCount();
 
 	CGetSetOptions::SetExtraNetworkPassword(m_csAdditionalPasswords);

@@ -278,6 +278,8 @@ public:
 	static CStringA	m_csPassword;
 	static void		SetNetworkPassword(CString csPassword);
 	static CStringA	GetNetworkPassword();
+	// empty, or Ditto's well-known default: anyone on the network could send clips with it
+	static bool		IsWeakNetworkPassword();
 
 	static BOOL		m_bDrawRTF;
 	static void		SetDrawRTF(long bDraw);

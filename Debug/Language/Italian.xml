@@ -477,6 +477,7 @@
 		<Item English_Text = "Paste queue finished." ID = "PasteQueueDone">Coda di incolla finita.</Item>
 		<Item English_Text = "Paste queue stopped after 10 minutes without pasting." ID = "PasteQueueExpired">Coda di incolla fermata dopo 10 minuti senza incollare.</Item>
 		<Item English_Text = "The paste queue can&apos;t watch the keyboard, so it can&apos;t start." ID = "PasteQueueCantStart">La coda di incolla non riesce a leggere la tastiera, quindi non può partire.</Item>
+		<Item English_Text = "To receive clips from other computers, first choose your own network password: with the default one, anyone on your network could send you clips." ID = "ReceiveNeedsPassword">Per ricevere clip da altri computer, scegli prima una tua password di rete: con quella predefinita chiunque nella tua rete potrebbe inviarti clip.</Item>
 		<Item English_Text = "Folder for the Bulb database" ID = "DatabaseFolderTitle">Cartella per il database di Bulb</Item>
 		<Item English_Text = "Paste queue: %d clips. Each Ctrl+V pastes the next one." ID = "PasteQueueStarted">Coda di incolla: %d clip. Ogni Ctrl+V incolla la successiva.</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Chiedi il nome</Item>

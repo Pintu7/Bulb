@@ -1623,6 +1623,12 @@ CStringA CGetSetOptions::GetNetworkPassword()
 	return csReturn;
 }
 
+bool CGetSetOptions::IsWeakNetworkPassword()
+{
+	CStringA password = GetNetworkPassword();
+	return password.IsEmpty() || password == "LetMeIn";
+}
+
 void CGetSetOptions::SetDrawRTF(long bDraw)
 {
 	SetProfileLong("DrawRTF", bDraw); 

@@ -567,7 +567,8 @@ void CCP_MainApp::LoadGlobalClips()
 
 void CCP_MainApp::StartStopServerThread()
 {
-	if(CGetSetOptions::GetDisableRecieve() == FALSE && CGetSetOptions::GetAllowFriends())
+	// Bulb never opens its port with the default password: anyone on the network could send clips with it
+	if(CGetSetOptions::GetDisableRecieve() == FALSE && CGetSetOptions::GetAllowFriends() && CGetSetOptions::IsWeakNetworkPassword() == false)
 	{
 		AfxBeginThread(MTServerThread, m_MainhWnd);
 	}
