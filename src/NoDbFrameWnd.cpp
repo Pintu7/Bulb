@@ -40,9 +40,9 @@ int CNoDbFrameWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CPoint cpCenter = rcScreen.CenterPoint();
 	MoveWindow(cpCenter.x, cpCenter.x, 1, 1);
 
-	SetWindowText(_T("Ditto"));
+	SetWindowText(_T("Bulb"));
 
-	m_trayIcon.Create(this, IDR_MENU_NO_DB, _T("Ditto"), CTrayNotifyIcon::LoadIcon(IDI_MAINFRAME_NO_DB), WM_TRAYNOTIFY, 0, 1);
+	m_trayIcon.Create(this, IDR_MENU_NO_DB, _T("Bulb"), CTrayNotifyIcon::LoadIcon(IDI_MAINFRAME_NO_DB), WM_TRAYNOTIFY, 0, 1);
 	m_trayIcon.SetDefaultMenuItem(ID_FIRST_OPTIONS, FALSE);
 	m_trayIcon.MinimiseToTray(this);
 
@@ -108,9 +108,9 @@ void CNoDbFrameWnd::OnTimer(UINT_PTR nIDEvent)
 
 void CNoDbFrameWnd::ShowNoDbMessage()
 {
-	CString msg = theApp.m_Language.GetString(_T("StartupNoDbMsg"), _T("Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: "));
+	CString msg = theApp.m_Language.GetString(_T("StartupNoDbMsg"), _T("Bulb was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: "));
 	msg += StrF(_T(" %s"), CGetSetOptions::GetDBPath());
-	m_trayIcon.SetBalloonDetails(msg, _T("Ditto"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+	m_trayIcon.SetBalloonDetails(msg, _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
 }
 
 void CNoDbFrameWnd::TryOpenDatabase()

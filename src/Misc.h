@@ -129,6 +129,14 @@ CRect MonitorRectFromRect(CRect rect);
 CRect CenterRect(CRect startingRect);
 CRect CenterRectFromRect(CRect startingRect, CRect outerRect);
 
+// Windows 11 rounded window corners; does nothing on Windows 10
+void SetRoundedCorners(HWND hWnd);
+// dark or light native popup menus (Windows 10 1903+), so menus match the theme
+void ApplyMenuTheme(bool dark);
+bool FontInstalled(LPCTSTR faceName);
+// "Segoe UI Variable Text" where installed (Windows 11), else "Segoe UI"
+CString ModernUIFontName();
+
 __int64 GetLastWriteTime(const CString &csFile);
 
 

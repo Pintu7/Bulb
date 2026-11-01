@@ -14,6 +14,11 @@
 #include "Md5.h"
 #include "ChaiScriptOnCopy.h"
 #include "DittoChaiScript.h"
+#include "ImageOcr.h"
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <deque>
 #include "ImageHelper.h"
 
 #include <Mmsystem.h>
@@ -355,6 +360,8 @@ int CClip::LoadFromClipboard(CClipTypes* pClipTypes, bool checkClipboardIgnore, 
 		return FALSE;
 	}
 
+	m_sourceApp = activeApp;
+
 	COleDataObjectEx oleData;
 	CClipTypes* pTypes = pClipTypes;
 
@@ -426,7 +433,7 @@ int CClip::LoadFromClipboard(CClipTypes* pClipTypes, bool checkClipboardIgnore, 
 		}
 	}
 		
-	m_Desc = "[Ditto Error] BAD DESCRIPTION";
+	m_Desc = "[Bulb Error] BAD DESCRIPTION";
 	
 	// Get Description String
 	// NOTE: We make sure that the description always corresponds to the
@@ -597,7 +604,7 @@ int CClip::LoadFromClipboard(CClipTypes* pClipTypes, bool checkClipboardIgnore, 
 				CDittoChaiScript clipData(this, (LPCSTR)CTextConvert::UnicodeToAnsi(activeApp), (LPCSTR)CTextConvert::UnicodeToAnsi(activeAppTitle));
 				if (onCopy.ProcessScript(clipData, (LPCSTR)CTextConvert::UnicodeToAnsi(listItem.m_script)) == false)
 				{
-					Log(StrF(_T("End of process copy name: %s, returned false, not saving this copy to Ditto, last Error: %s"), listItem.m_name, onCopy.m_lastError));
+					Log(StrF(_T("End of process copy name: %s, returned false, not saving this copy to Bulb, last Error: %s"), listItem.m_name, onCopy.m_lastError));
 
 					return -1;
 				}
@@ -764,6 +771,101 @@ bool CClip::SetDescFromType()
 	return m_Desc.GetLength() > 0;
 }
 
+// ---- OCR of new image clips: the words go to Main.ocrText for search, the clip itself is never changed ----
+
+OcrJob OcrJobFromFormats(CClipFormats& formats)
+{
+	// a CF_DIB, or else the "PNG" format some programs put on the clipboard alone
+	OcrJob job;
+	CClipFormat* format = formats.FindFormat(CF_DIB);
+	job.isDib = format != NULL;
+	if (format == NULL)
+	{
+		format = formats.FindFormat(theApp.m_PNG_Format);
+	}
+	if (format != NULL && format->m_hgData != NULL)
+	{
+		SIZE_T size = GlobalSize(format->m_hgData);
+		unsigned char* bytes = (unsigned char*)GlobalLock(format->m_hgData);
+		if (bytes != NULL)
+		{
+			job.image.assign(bytes, bytes + size);
+			GlobalUnlock(format->m_hgData);
+		}
+	}
+	return job;
+}
+
+namespace
+{
+	std::mutex s_ocrLock;
+	std::condition_variable s_ocrWake;
+	std::deque<OcrJob> s_ocrJobs;
+	bool s_ocrWorkerRunning = false;
+
+	// one worker reads the queued images one after another, so a burst of screenshots never starts a thread each;
+	// it ends after half a minute without work and the next job starts a new one. It touches no window and no
+	// shared object, only its own database connection, so it can be cut off safely when Bulb closes.
+	void OcrWorker()
+	{
+		for (;;)
+		{
+			OcrJob job;
+			{
+				std::unique_lock<std::mutex> lock(s_ocrLock);
+				if (s_ocrWake.wait_for(lock, std::chrono::seconds(30), [] { return s_ocrJobs.empty() == false; }) == false)
+				{
+					s_ocrWorkerRunning = false;
+					return;
+				}
+				job = std::move(s_ocrJobs.front());
+				s_ocrJobs.pop_front();
+			}
+
+			std::wstring text = ImageOcr::Recognize(job.image, job.isDib);
+			if (text.empty())
+			{
+				continue;
+			}
+
+			try
+			{
+				// own connection, so a slow read never holds the one that saves new clips
+				CppSQLite3DB db;
+				db.open(job.dbPath);
+				db.setBusyTimeout(5000);
+				CppSQLite3Statement update = db.compileStatement(_T("UPDATE Main SET ocrText = ? WHERE lID = ?"));
+				update.bind(1, text.c_str());
+				update.bind(2, job.clipId);
+				update.execDML();
+			}
+			catch (...)
+			{
+				// the clip stays findable by everything but the words in its picture
+			}
+		}
+	}
+}
+
+void QueueOcr(OcrJob job)
+{
+	std::lock_guard<std::mutex> lock(s_ocrLock);
+	// shortcut: images beyond a backlog of 20 are not read (each holds its full picture in memory); raise it if
+	// bursts of more screenshots must all be searchable
+	if (s_ocrJobs.size() >= 20)
+	{
+		return;
+	}
+	job.dbPath = CurrentDatabasePath();
+	s_ocrJobs.push_back(std::move(job));
+	if (s_ocrWorkerRunning == false)
+	{
+		s_ocrWorkerRunning = true;
+		std::thread(OcrWorker).detach();
+	}
+	s_ocrWake.notify_one();
+}
+
 bool CClip::AddToDB(bool bCheckForDuplicates)
 {
 	bool bResult;
@@ -827,10 +929,25 @@ bool CClip::AddToDB(bool bCheckForDuplicates)
 		removeStickySettingClipId = GetExistingTopStickyClipId(m_parentId);
 	}
 	
+	// read before AddToDataTable, which empties the formats. Only a clip that is just a picture is read: Excel, Word and
+	// OneNote put a picture of the copied text next to the text itself, and that text is better than any OCR of it
+	OcrJob ocr;
+	if (CGetSetOptions::GetProfileLong(_T("OcrImages"), TRUE) &&
+		m_Formats.FindFormat(CF_UNICODETEXT) == NULL && m_Formats.FindFormat(CF_TEXT) == NULL)
+	{
+		ocr = OcrJobFromFormats(m_Formats);
+	}
+
 	bResult = false;
 	if(AddToMainTable())
 	{		
 		bResult = AddToDataTable();
+	}
+
+	if (bResult && ocr.image.empty() == false)
+	{
+		ocr.clipId = m_id;
+		QueueOcr(std::move(ocr));
 	}
 
 	if(bResult)
@@ -956,10 +1073,13 @@ bool CClip::AddToMainTable()
 	{
 		m_Desc.Replace(_T("'"), _T("''"));
 		m_csQuickPaste.Replace(_T("'"), _T("''"));
+		CString sourceApp = m_sourceApp;
+		sourceApp.Replace(_T("'"), _T("''"));
 
+		// the program it was copied from goes in with the clip, so it is saved, or not, together with it
 		CString cs;
-		cs.Format(_T("INSERT into Main (lDate, mText, lShortCut, lDontAutoDelete, CRC, bIsGroup, lParentID, QuickPasteText, clipOrder, clipGroupOrder, globalShortCut, lastPasteDate, stickyClipOrder, stickyClipGroupOrder, MoveToGroupShortCut, GlobalMoveToGroupShortCut) ")
-						_T("values(%lld, '%s', %d, %d, %d, %d, %d, '%s', %f, %f, %d, %lld, %f, %f, %d, %d);"),
+		cs.Format(_T("INSERT into Main (lDate, mText, lShortCut, lDontAutoDelete, CRC, bIsGroup, lParentID, QuickPasteText, clipOrder, clipGroupOrder, globalShortCut, lastPasteDate, stickyClipOrder, stickyClipGroupOrder, MoveToGroupShortCut, GlobalMoveToGroupShortCut, sourceApp) ")
+						_T("values(%lld, '%s', %d, %d, %d, %d, %d, '%s', %f, %f, %d, %lld, %f, %f, %d, %d, NULLIF('%s', ''));"),
 							m_Time.GetTime(),
 							m_Desc,
 							m_shortCut,
@@ -975,7 +1095,8 @@ bool CClip::AddToMainTable()
 							m_stickyClipOrder,
 							m_stickyClipGroupOrder,
 							m_moveToGroupShortCut,
-							m_globalMoveToGroupShortCut);
+							m_globalMoveToGroupShortCut,
+							sourceApp);
 
 		theApp.m_db.execDML(cs);
 
@@ -2047,7 +2168,7 @@ bool CClip::AddFileDataToData(CString &errorMessage)
 		newDesc += filePath;
 		newDesc += _T("\n");
 
-		Log(StrF(_T("Saving file contents to Ditto Database, file: %s, size: %d, md5: %s"), filePath, fileSize, md5String));
+		Log(StrF(_T("Saving file contents to Bulb Database, file: %s, size: %d, md5: %s"), filePath, fileSize, md5String));
 	}
 
 	GlobalUnlock(m_Formats[nCF_HDROPIndex].m_hgData);

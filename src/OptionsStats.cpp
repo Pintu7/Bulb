@@ -5,6 +5,7 @@
 #include "cp_main.h"
 #include "OptionsStats.h"
 #include "ProcessPaste.h"
+#include "FluentDialog.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -116,7 +117,30 @@ BOOL COptionsStats::OnInitDialog()
 	UpdateData(FALSE);
 
 	theApp.m_Language.UpdateOptionStats(this);
-		
+
+	// Windows 11 Settings rows: each figure named on the left, its value on the right
+	using L = FluentDialog::SettingsLayout;
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+	const int value = 110;
+	L()
+		.Section(IDC_STATIC_1)
+		.RowText(Text(_T("CountingSince"), _T("Counting since")), { { IDC_EDIT_ALL_DATE, 200 } })
+		.Row(IDC_STATIC_3, { { IDC_ALL_COPIES, value } })
+		.Row(IDC_STATIC_4, { { IDC_ALL_PASTES, value } })
+		.Section(IDC_STATIC_2)
+		.RowText(Text(_T("CountingSince"), _T("Counting since")), { { IDC_TRIP_DATE, 200 }, { IDC_RESET_COUNTS, 88 } })
+		.Row(IDC_STATIC_5, { { IDC_TRIP_COPIES, value } })
+		.Row(IDC_STATIC_6, { { IDC_TRIP_PASTES, value } })
+		.SectionText(Text(_T("DatabaseSection"), _T("Database")))
+		.Row(IDC_STATIC_7, { { IDC_SAVED_COPIES, value }, { IDC_REMOVE_ALL, 104 } })
+		.Row(IDC_STATIC_8, { { IDC_SAVED_COPY_DATA, value } })
+		.Row(IDC_STATIC_10, { { IDC_DATABASE_SIZE, value } })
+		.Row(IDC_STATIC_9, { { IDC_LAST_STARTED, 240 } })
+		.Section(IDC_STATIC_13)
+		.Row(IDC_STATIC_11, { { IDC_CLIPS_SENT, value } })
+		.Row(IDC_STATIC_12, { { IDC_CLIPS_RECIVED, value } })
+		.AttachTo(m_hWnd);
+
 	return TRUE;
 }
 

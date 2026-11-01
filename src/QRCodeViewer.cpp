@@ -54,7 +54,7 @@ BOOL QRCodeViewer::CreateEx(CWnd *pParentWnd, unsigned char* bitmapData, int ima
 	m_bitmapData = bitmapData;
 	m_imageSize = imageSize;
 	m_descRowHeight = rowHeight;
-	m_descBackground = CreateSolidBrush(RGB(255, 255, 255));
+	m_descBackground = CreateSolidBrush(CGetSetOptions::m_Theme.MainWindowBG());
 	m_logFont = logFont;
 	m_originalFontHeight = logFont.lfHeight;
 
@@ -148,6 +148,17 @@ void QRCodeViewer::OnPaint()
 
 	CRect centerRect = CenterRectFromRect(imageRect, thisRect);
 
+	// a scanner needs the code dark on light with a quiet margin, so it sits on a white rounded tile
+	CRect tile(centerRect);
+	tile.InflateRect(max(CGetSetOptions::GetQRCodeBorderPixels(), m_DittoWindow.m_dpi.Scale(8)), max(CGetSetOptions::GetQRCodeBorderPixels(), m_DittoWindow.m_dpi.Scale(8)));
+	CBrush white(RGB(255, 255, 255));
+	CPen whitePen(PS_SOLID, 1, RGB(255, 255, 255));
+	CBrush* pOldBrush = dc.SelectObject(&white);
+	CPen* pOldPen = dc.SelectObject(&whitePen);
+	dc.RoundRect(tile, CPoint(m_DittoWindow.m_dpi.Scale(12), m_DittoWindow.m_dpi.Scale(12)));
+	dc.SelectObject(pOldPen);
+	dc.SelectObject(pOldBrush);
+
 	m_qrCodeDrawer.Draw(&dc, m_DittoWindow.m_dpi, this, centerRect.left, centerRect.top, false, false, width, height);
 }
 
@@ -202,7 +213,7 @@ BOOL QRCodeViewer::OnEraseBkgnd(CDC* pDC)
 {
 	CRect rect;
 	GetClientRect(&rect);
-	CBrush myBrush(RGB(255, 255, 255));
+	CBrush myBrush(CGetSetOptions::m_Theme.MainWindowBG());
 	CBrush *pOld = pDC->SelectObject(&myBrush);
 	BOOL bRes  = pDC->PatBlt(0, 0, rect.Width(), rect.Height(), PATCOPY);
 	pDC->SelectObject(pOld);
@@ -250,7 +261,8 @@ HBRUSH QRCodeViewer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	HBRUSH hbr = CWnd::OnCtlColor(pDC, pWnd, nCtlColor);
 	if(pWnd->GetDlgCtrlID() == 2)
 	{
-		pDC->SetBkColor(RGB(255,255,255));
+		pDC->SetBkColor(CGetSetOptions::m_Theme.MainWindowBG());
+		pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
 
 		return m_descBackground;
 	}

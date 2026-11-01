@@ -142,7 +142,7 @@
 		<Item English_Text = "Quick Paste Text" ID = "2125"></Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Έναρξη Ditto κατα την εκκίνηση συστήματος</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Έναρξη Bulb κατα την εκκίνηση συστήματος</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Εμφάνιση εικονιδίου στην περιοχή ειδοποιήσεων</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Μέγιστο πλήθος αποθηκευμένων κλιπς</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Οντότητες προς επικόλληση λήγουν σε</Item>
@@ -153,7 +153,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Επιτρέπονται τα πανομοιότυπα κλιπς</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Ανανέωση σειράς των κλιπς κατα την επικόλληση</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Αποθήκευση πολυ-επικολλήσεων</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Απόκρυψη του Ditto με συντόμευση εάν είναι ορατό</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Απόκρυψη του Bulb με συντόμευση εάν είναι ορατό</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Όγκος κειμένου που διατίθεται για περιγραφή</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Στην αντιγραφή, παίξε τον ήχο</Item>
 		<Item English_Text = "Play" ID = "2034">Παίξε</Item>
@@ -165,7 +165,7 @@
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Παράβλεψη κλιπς που δημιουργούνται X msec από την τελευταία αντιγραφή</Item>
 		<Item English_Text = "About Language" ID = "2073">Σχετικά με τη γλώσσα</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Γενικά</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Επιβεβαίωση ότι το Ditto είναι πάντα συνδεμένο με το Πρόχειρο</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Επιβεβαίωση ότι το Bulb είναι πάντα συνδεμένο με το Πρόχειρο</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Διαχωριστής κλιπ πολυ-επικόλλησης ([LF] = line feed)</Item>
 
 		//New item added 3/1/11
@@ -183,7 +183,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130"></Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Ενεργοποίηση Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Ενεργοποίηση Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Ονομασμ. αντιγραφή</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -328,20 +328,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Φίλοι</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Γρήγορη επικόλληση</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Συντομεύσεις</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Σχετικά με το Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Σχετικά με το Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Σφάλμα στο άνοιγμα της βάσης δεδομένων</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Αδύνατη η εκκίνηση της db μηχανής DAO/Jet.\nΕπιλέξτε ΝΑΙ για λήψη του DAO από http://ditto-cp.sourceforge.net/dao_setup.exe\n\nΕπανεκκινήστε το Ditto μετά την εγκατάσταση του DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Αδύνατη η εκκίνηση της db μηχανής DAO/Jet.\nΕπιλέξτε ΝΑΙ για λήψη του DAO από http://ditto-cp.sourceforge.net/dao_setup.exe\n\nΕπανεκκινήστε το Bulb μετά την εγκατάσταση του DAO.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Μη αναγνωρισμένη δομή βάσης δεδομένων</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">το αρχείο θα μετονομαστεί</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">και μια νέα βάση δεδομένων θα δημιουργηθεί</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ενημερώσεις διαθέσιμες για το Ditto.\nΕπισκεφθείτε το ditto-cp.sourceforge.net για λεπτομέρειες\n\nΤρέχουσα έκδοση</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ενημερώσεις διαθέσιμες για το Bulb.\nΕπισκεφθείτε το ditto-cp.sourceforge.net για λεπτομέρειες\n\nΤρέχουσα έκδοση</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Ενημερωμένη έκδοση</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Λήψη ενημερωμένης έκδοσης;</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Δεν υπάρχουν διαθέσιμες ενημερώσεις</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Θα διαγραφούν όλες οι εγγραφές κλιπς!\n\nΣυνέχεια;</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Αποσύνδεση από το Πρόχειρο</Item>			
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Σύνδεση με το Πρόχειρο</Item>			
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Αδύνατη η εκκίνηση της db μηχανής DAO/Jet. Το DAO θα εγκατασταθεί τώρα.\n\nΕπανεκκινήστε το Ditto μετά την εγκατάσταση του DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Αδύνατη η εκκίνηση της db μηχανής DAO/Jet. Το DAO θα εγκατασταθεί τώρα.\n\nΕπανεκκινήστε το Bulb μετά την εγκατάσταση του DAO.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">ΑΝΥΠΑΡΚΤΟΣ ΣΤΟΧΟΣ</Item>		
 		//New strings added in 3.6 6-9-06
 		<Item English_Text = "Prompt when deleting clips" ID = "2039">Ερώτηση για διαγραφή κλιπς</Item>
@@ -363,7 +363,7 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Σφάλμα στην αποθήκευση του κλιπ</Item>
 		<Item English_Text = "New" ID = "New">Νέο</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Αποθήκευση, Κλείσιμο για τοποθέτηση στο Πρόχειρο</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Επεξεργασία Ditto</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Επεξεργασία Bulb</Item>
 		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ονομασμένη Επικόλληση</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Σφάλμα στη φόρτωση δεδομένων</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Σφάλμα στην εύρεση κλιπ με κείμενο</Item>
@@ -371,7 +371,7 @@
 		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ονομασμένη αντιγραφή</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Σφάλμα στην αποθήκευση ονομασμένου κλιπ στη βάση δεδομένων</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Πρόβλημα αποθήκευσης ονομασμένου κλιπ</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Το Ditto δεν έλαβε ένα κλιπ</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Το Bulb δεν έλαβε ένα κλιπ</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Πρόσθετα</Item> 

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|ARM64">
@@ -154,16 +154,16 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" />
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Ditto</TargetName>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Ditto</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Bulb</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Bulb</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
@@ -199,7 +199,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;Shlwapi.lib;$(Configuration)\EncryptDecrypt.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>release\Ditto.exe</OutputFile>
+      <OutputFile>release\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -259,7 +259,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Configuration)64\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>release64\Ditto.exe</OutputFile>
+      <OutputFile>release64\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -317,7 +317,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(Platform)\$(Configuration)\Ditto.exe</OutputFile>
+      <OutputFile>$(Platform)\$(Configuration)\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -373,7 +373,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>debug\Ditto.exe</OutputFile>
+      <OutputFile>debug\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/Ditto.pdb</ProgramDatabaseFile>
@@ -432,7 +432,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)64\\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>debug64\Ditto.exe</OutputFile>
+      <OutputFile>debug64\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug64/Ditto.pdb</ProgramDatabaseFile>
@@ -490,7 +490,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(Platform)\$(Configuration)\Ditto.exe</OutputFile>
+      <OutputFile>$(Platform)\$(Configuration)\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\$(Configuration)/Ditto.pdb</ProgramDatabaseFile>
@@ -592,6 +592,20 @@
     <ClCompile Include="src\GroupCombo.cpp" />
     <ClCompile Include="src\GroupName.cpp" />
     <ClCompile Include="src\ClipTags.cpp" />
+    <ClCompile Include="src\TagBar.cpp" />
+    <ClCompile Include="src\TagManager.cpp" />
+    <ClCompile Include="src\TextTransforms.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\ImageOcr.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="src\FluentDialog.cpp" />
+    <ClCompile Include="src\FluentSettings.cpp" />
+    <ClCompile Include="src\FluentMenu.cpp" />
+    <ClCompile Include="src\FluentNav.cpp" />
+    <ClCompile Include="src\GlyphButton.cpp" />
     <ClCompile Include="src\GroupStatic.cpp" />
     <ClCompile Include="src\GroupTree.cpp" />
     <ClCompile Include="src\HListBox.cpp" />
@@ -858,6 +872,17 @@
     <ClInclude Include="src\GroupCombo.h" />
     <ClInclude Include="src\GroupName.h" />
     <ClInclude Include="src\ClipTags.h" />
+    <ClInclude Include="src\TagBar.h" />
+    <ClInclude Include="src\TagManager.h" />
+    <ClInclude Include="src\ImageOcr.h" />
+    <ClInclude Include="src\TextTransforms.h" />
+    <ClInclude Include="src\BulbFolder.h" />
+    <ClInclude Include="src\PasteQueueKeys.h" />
+    <ClInclude Include="src\FluentDialog.h" />
+    <ClInclude Include="src\FluentDialogInternal.h" />
+    <ClInclude Include="src\FluentMenu.h" />
+    <ClInclude Include="src\FluentNav.h" />
+    <ClInclude Include="src\GlyphButton.h" />
     <ClInclude Include="src\GroupStatic.h" />
     <ClInclude Include="src\GroupTree.h" />
     <ClInclude Include="src\HListBox.h" />

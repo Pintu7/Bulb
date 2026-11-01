@@ -35,6 +35,9 @@
 #include <math.h>
 #include "ColourPicker.h"
 #include "ColourPopup.h"
+#include "..\..\Options.h"
+#include "..\..\FluentDialog.h"
+#include <dwmapi.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -47,6 +50,25 @@ static char THIS_FILE[] = __FILE__;
 #define INVALID_COLOUR    -1
 
 #define MAX_COLOURS      100
+
+// the same surface, hover and line colors as Bulb's Windows 11 menus
+static COLORREF PopupBack() { return FluentDialog::ColorsFor(NULL).menu; }
+static COLORREF PopupHover() { return FluentDialog::ColorsFor(NULL).menuHover; }
+static COLORREF PopupLine() { return FluentDialog::ColorsFor(NULL).line; }
+
+// a soft rounded highlight under the hovered item, an accent outline around the chosen one
+static void PopupItem(CDC* pDC, CRect rect, bool hover, bool chosen)
+{
+    if (!hover && !chosen)
+        return;
+    CBrush fill(hover ? PopupHover() : PopupBack());
+    CPen outline(PS_SOLID, 1, chosen ? CGetSetOptions::m_Theme.SearchTextBoxFocusBorder() : PopupHover());
+    CBrush* pOldBrush = pDC->SelectObject(&fill);
+    CPen* pOldPen = pDC->SelectObject(&outline);
+    pDC->RoundRect(rect, CPoint(6, 6));
+    pDC->SelectObject(pOldPen);
+    pDC->SelectObject(pOldBrush);
+}
 
 
 ColourTableEntry CColourPopup::m_crColours[] = 
@@ -193,6 +215,9 @@ BOOL CColourPopup::Create(CPoint p, COLORREF crColour, CWnd* pParentWnd,
                         p.x, p.y, 100, 100, // size updated soon
                         pParentWnd->GetSafeHwnd(), 0, NULL))
         return FALSE;
+
+    DWORD round = 3; // DWMWCP_ROUNDSMALL, like a Windows 11 flyout
+    DwmSetWindowAttribute(m_hWnd, 33 /*DWMWA_WINDOW_CORNER_PREFERENCE*/, &round, sizeof(round));
 
     // Store the Custom text
     if (szCustomText != NULL) 
@@ -407,6 +432,10 @@ void CColourPopup::OnPaint()
 {
     CPaintDC dc(this); // device context for painting
 
+    CRect client;
+    GetClientRect(client);
+    dc.FillSolidRect(client, PopupBack());
+
     // Draw the Default Area text
     if (m_strDefaultText.GetLength())
         DrawCell(&dc, DEFAULT_BOX_VALUE);
@@ -423,7 +452,8 @@ void CColourPopup::OnPaint()
     // but for some reason isn't
     CRect rect;
     GetClientRect(rect);
-    dc.DrawEdge(rect, EDGE_RAISED, BF_RECT);
+    CBrush frame(PopupLine());
+    dc.FrameRect(rect, &frame);
 }
 
 void CColourPopup::OnMouseMove(UINT nFlags, CPoint point) 
@@ -763,31 +793,21 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
         TextButtonRect.top += 2*m_nMargin;
 
         // Fill background
-        pDC->FillSolidRect(TextButtonRect, ::GetSysColor(COLOR_3DFACE));
+        pDC->FillSolidRect(TextButtonRect, PopupBack());
 
         // Draw horizontal line
         pDC->FillSolidRect(m_CustomTextRect.left+2*m_nMargin, m_CustomTextRect.top,
-                           m_CustomTextRect.Width()-4*m_nMargin, 1, ::GetSysColor(COLOR_3DSHADOW));
-        pDC->FillSolidRect(m_CustomTextRect.left+2*m_nMargin, m_CustomTextRect.top+1,
-                           m_CustomTextRect.Width()-4*m_nMargin, 1, ::GetSysColor(COLOR_3DHILIGHT));
+                           m_CustomTextRect.Width()-4*m_nMargin, 1, PopupLine());
 
         TextButtonRect.DeflateRect(1,1);
 
         // fill background
-        if (m_nChosenColourSel == nIndex && m_nCurrentSel != nIndex)
-            pDC->FillSolidRect(TextButtonRect, ::GetSysColor(COLOR_3DLIGHT));
-        else
-            pDC->FillSolidRect(TextButtonRect, ::GetSysColor(COLOR_3DFACE));
-
-        // Draw button
-        if (m_nCurrentSel == nIndex) 
-            pDC->DrawEdge(TextButtonRect, BDR_RAISEDINNER, BF_RECT);
-        else if (m_nChosenColourSel == nIndex)
-            pDC->DrawEdge(TextButtonRect, BDR_SUNKENOUTER, BF_RECT);
+        PopupItem(pDC, TextButtonRect, m_nCurrentSel == nIndex, m_nChosenColourSel == nIndex);
 
         // Draw custom text
         CFont *pOldFont = (CFont*) pDC->SelectObject(&m_Font);
         pDC->SetBkMode(TRANSPARENT);
+        pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
         pDC->DrawText(m_strCustomText, TextButtonRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
         pDC->SelectObject(pOldFont);
 
@@ -798,36 +818,19 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
     if (m_strDefaultText.GetLength() && nIndex == DEFAULT_BOX_VALUE)
     {
         // Fill background
-        pDC->FillSolidRect(m_DefaultTextRect, ::GetSysColor(COLOR_3DFACE));
+        pDC->FillSolidRect(m_DefaultTextRect, PopupBack());
 
         // The extent of the actual text button
         CRect TextButtonRect = m_DefaultTextRect;
         TextButtonRect.DeflateRect(1,1);
 
         // fill background
-        if (m_nChosenColourSel == nIndex && m_nCurrentSel != nIndex)
-            pDC->FillSolidRect(TextButtonRect, ::GetSysColor(COLOR_3DLIGHT));
-        else
-            pDC->FillSolidRect(TextButtonRect, ::GetSysColor(COLOR_3DFACE));
-
-        // Draw thin line around text
-        CRect LineRect = TextButtonRect;
-        LineRect.DeflateRect(2*m_nMargin,2*m_nMargin);
-        CPen pen(PS_SOLID, 1, ::GetSysColor(COLOR_3DSHADOW));
-        CPen* pOldPen = pDC->SelectObject(&pen);
-        pDC->SelectStockObject(NULL_BRUSH);
-        pDC->Rectangle(LineRect);
-        pDC->SelectObject(pOldPen);
-
-        // Draw button
-        if (m_nCurrentSel == nIndex) 
-            pDC->DrawEdge(TextButtonRect, BDR_RAISEDINNER, BF_RECT);
-        else if (m_nChosenColourSel == nIndex)
-            pDC->DrawEdge(TextButtonRect, BDR_SUNKENOUTER, BF_RECT);
+        PopupItem(pDC, TextButtonRect, m_nCurrentSel == nIndex, m_nChosenColourSel == nIndex);
 
         // Draw custom text
         CFont *pOldFont = (CFont*) pDC->SelectObject(&m_Font);
         pDC->SetBkMode(TRANSPARENT);
+        pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
         pDC->DrawText(m_strDefaultText, TextButtonRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
         pDC->SelectObject(pOldFont);
 
@@ -846,22 +849,14 @@ void CColourPopup::DrawCell(CDC* pDC, int nIndex)
     }
 
     // fill background
-    if (m_nChosenColourSel == nIndex && m_nCurrentSel != nIndex)
-        pDC->FillSolidRect(rect, ::GetSysColor(COLOR_3DHILIGHT));
-    else
-        pDC->FillSolidRect(rect, ::GetSysColor(COLOR_3DFACE));
-
-    // Draw button
-    if (m_nCurrentSel == nIndex) 
-        pDC->DrawEdge(rect, BDR_RAISEDINNER, BF_RECT);
-    else if (m_nChosenColourSel == nIndex)
-        pDC->DrawEdge(rect, BDR_SUNKENOUTER, BF_RECT);
+    pDC->FillSolidRect(rect, PopupBack());
+    PopupItem(pDC, rect, m_nCurrentSel == nIndex, m_nChosenColourSel == nIndex);
 
     CBrush brush(PALETTERGB(GetRValue(GetColour(nIndex)), 
                             GetGValue(GetColour(nIndex)), 
                             GetBValue(GetColour(nIndex)) ));
     CPen   pen;
-    pen.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_3DSHADOW));
+    pen.CreatePen(PS_SOLID, 1, PopupLine());
 
     CBrush* pOldBrush = (CBrush*) pDC->SelectObject(&brush);
     CPen*   pOldPen   = (CPen*)   pDC->SelectObject(&pen);

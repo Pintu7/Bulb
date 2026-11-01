@@ -73,3 +73,8 @@ Debug/portable
 /FocusHighlight
 /focusdll
 /x64
+
+tests/bin/
+DittoSetup/Output/
+.claude-flow/
+.swarm/

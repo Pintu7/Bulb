@@ -880,15 +880,31 @@
 #define ID_MENU_CONVERTGROUPSTOTAGS     33004
 #define IDC_EDIT_TAGS                   2177
 #define IDC_STATIC_TAGS                 2178
+#define IDD_TAG_MANAGER                 394
+#define IDC_TAG_LIST                    2179
+#define IDC_TAG_NEW                     2180
+#define IDC_TAG_RENAME                  2181
+#define IDC_TAG_DELETE                  2182
+#define ID_MENU_MANAGETAGS              33005
+#define ID_PAUSE_RECORDING_5            33006
+#define ID_PAUSE_RECORDING_15           33007
+#define ID_PAUSE_RECORDING_60           33008
+#define ID_SPECIALPASTE_FORMATJSON      33009
+#define ID_SPECIALPASTE_URLDECODE       33010
+#define ID_SPECIALPASTE_BASE64DECODE    33011
+#define ID_MENU_PASTEQUEUE              33012
+#define ID_MENU_COPYIMAGETEXT           33013
+#define IDC_OCR_IMAGES                  2183
+#define IDC_ENCRYPT_DB                  2184
 
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        394
-#define _APS_NEXT_COMMAND_VALUE         33005
-#define _APS_NEXT_CONTROL_VALUE         2179
+#define _APS_NEXT_RESOURCE_VALUE        395
+#define _APS_NEXT_COMMAND_VALUE         33014
+#define _APS_NEXT_CONTROL_VALUE         2185
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

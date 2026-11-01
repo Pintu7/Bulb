@@ -115,13 +115,16 @@ void CModernScrollBar::UpdateScrollBar()
 		scrollSize = m_pDPI->Scale(scrollSize);
 	}
 
-	// The list control is clipped by a region to hide the native scrollbar.
-	// searchRowStart is 33 (the height reserved for search bar and options button).
-	int searchRowStart = 33;
-	if (m_pDPI)
-		searchRowStart = m_pDPI->Scale(33);
-	
-	int visibleBottom = parentClientRect.bottom - searchRowStart;
+	// The list control is clipped by a region to hide the native scrollbars; the bar follows what is visible
+	int visibleBottom = min(listRectInParent.bottom, parentClientRect.bottom);
+	CRgn listRegion;
+	listRegion.CreateRectRgn(0, 0, 0, 0);
+	if (m_pListCtrl->GetWindowRgn(listRegion) != ERROR)
+	{
+		CRect box;
+		listRegion.GetRgnBox(box);
+		visibleBottom = min(visibleBottom, listRectInParent.top + box.bottom);
+	}
 
 	CRect scrollRect;
 	

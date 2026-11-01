@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "TabCtrl.h"
 #include "Misc.h"
+#include "Options.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -42,8 +43,9 @@ CTabCtrlEx::CTabCtrlEx()
 	m_pFntBoldText = NULL;
 	m_bSetFocusToNewlySelectedTab = true;
 
-	m_SelectedColor = (COLORREF)GetSysColor(COLOR_BTNFACE);
-	m_NonSelectedColor = RGB(255, 251, 233);
+	// Windows 11 tabs in Bulb's colors: the strip is the window ground, the active tab a soft pill
+	m_SelectedColor = CGetSetOptions::m_Theme.ListBoxSelectedBG();
+	m_NonSelectedColor = CGetSetOptions::m_Theme.MainWindowBG();
 }
 
 CTabCtrlEx::~CTabCtrlEx()
@@ -136,10 +138,10 @@ int CTabCtrlEx::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Create the brushes, pens
 	m_brSelectedTab.CreateSolidBrush(m_SelectedColor);
 	m_brNonSelectedTab.CreateSolidBrush(m_NonSelectedColor);
-	m_penGray.CreatePen(PS_SOLID, 1, RGB(172, 168, 153));
-	m_penBlack.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+	m_penGray.CreatePen(PS_SOLID, 1, CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
+	m_penBlack.CreatePen(PS_SOLID, 1, CGetSetOptions::m_Theme.ListBoxEvenRowsText());
 
-	m_nTabHeight = m_dpi.Scale(19);
+	m_nTabHeight = m_dpi.Scale(32);
 
 	SetTabHeight(m_nTabHeight);
 
@@ -150,7 +152,7 @@ void CTabCtrlEx::OnDpiChanged(CWnd* pParent, int dpi)
 {
 	m_dpi.Update(dpi);
 
-	m_nTabHeight = m_dpi.Scale(19);
+	m_nTabHeight = m_dpi.Scale(32);
 
 	SetTabHeight(m_nTabHeight);
 
@@ -172,8 +174,8 @@ void CTabCtrlEx::SetTabHeight(int nTabHeight)
 	if (m_pFntText)
 	{
 		// Set the regular font
-		m_pFntText->CreateFont(-(m_nTabHeight*7/10), 0, 0, 0, FW_LIGHT, FALSE, FALSE, 0, DEFAULT_CHARSET,
-			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Arial Unicode MS"));
+		m_pFntText->CreateFont(-(m_nTabHeight*14/32), 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, _T("Segoe UI Variable Text"));
 	}
 
 	// Delete the old font and create a new one
@@ -184,8 +186,8 @@ void CTabCtrlEx::SetTabHeight(int nTabHeight)
 	if (m_pFntBoldText)
 	{
 		// Set the bold font
-		m_pFntBoldText->CreateFont(-(m_nTabHeight*7/10), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
-			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("Arial Unicode MS"));
+		m_pFntBoldText->CreateFont(-(m_nTabHeight*14/32), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
+			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, _T("Segoe UI Variable Text"));
 	}
 }
 
@@ -747,47 +749,37 @@ void CTabCtrlEx::DrawTabEx(int nTab, CDC *pDC, CRect& rcTab)
 		return;
 
 	CRect rcOrig(rcTab);
-	rcTab.OffsetRect(1, 1);
-	CFont *pFont = NULL;
-	if (nTab == GetActiveTab())
-	{
-		pDC->FillSolidRect(rcTab, m_SelectedColor);
-		pFont = m_pFntBoldText;
-	}
-	else
-	{
-		pDC->FillSolidRect(rcTab, m_NonSelectedColor);
-		pFont = m_pFntText;
-	}
+	pDC->FillSolidRect(rcTab, m_NonSelectedColor);
 
-	//Don't draw a line on the item before the selected tab
-	if (nTab != GetActiveTab()-1)
+	bool active = nTab == GetActiveTab();
+	if (active)
 	{
-		int nBottomOffset = 0;
-		int nTopOffset = 0;
-		CPen *pPen = NULL;
-		if (nTab == GetActiveTab())
-		{
-			pPen = &m_penBlack;
-			nTopOffset = -1;
-		}
-		else
-		{
-			pPen = &m_penGray;
-			nBottomOffset = 3;
-			nTopOffset = 2;
-		}
+		// Windows 11: a soft rounded pill with a short accent bar under the title
+		CRect pill(rcTab);
+		pill.DeflateRect(m_dpi.Scale(2), m_dpi.Scale(3));
+		CBrush* pOldBrush = pDC->SelectObject(&m_brSelectedTab);
+		CPen pen(PS_SOLID, 1, m_SelectedColor);
+		CPen* pOldPen = pDC->SelectObject(&pen);
+		pDC->RoundRect(pill, CPoint(m_dpi.Scale(8), m_dpi.Scale(8)));
+		pDC->SelectObject(pOldPen);
+		pDC->SelectObject(pOldBrush);
 
-		CPen *pPrevPen = pDC->SelectObject(pPen);
-		pDC->MoveTo(CPoint(rcTab.right-1, rcTab.bottom-nBottomOffset));
-		pDC->LineTo(CPoint(rcTab.right-1, rcTab.top+nTopOffset));
-		pDC->SelectObject(pPrevPen);
+		int barWidth = m_dpi.Scale(16);
+		CRect bar(pill.CenterPoint().x - barWidth / 2, pill.bottom - m_dpi.Scale(3), pill.CenterPoint().x + barWidth / 2, pill.bottom);
+		CBrush accent(CGetSetOptions::m_Theme.SearchTextBoxFocusBorder());
+		CPen accentPen(PS_SOLID, 1, CGetSetOptions::m_Theme.SearchTextBoxFocusBorder());
+		pOldBrush = pDC->SelectObject(&accent);
+		pOldPen = pDC->SelectObject(&accentPen);
+		pDC->RoundRect(bar, CPoint(m_dpi.Scale(3), m_dpi.Scale(3)));
+		pDC->SelectObject(pOldPen);
+		pDC->SelectObject(pOldBrush);
 	}
 
 	// Draw the text
-	CFont *pPrevFont = pDC->SelectObject(pFont);
+	CFont *pPrevFont = pDC->SelectObject(active ? m_pFntBoldText : m_pFntText);
 	pDC->SetBkMode(TRANSPARENT);
-	pDC->DrawText(m_Tabs[nTab].csTitle, rcOrig, DT_CENTER|DT_VCENTER|DT_END_ELLIPSIS);
+	pDC->SetTextColor(active ? CGetSetOptions::m_Theme.ListBoxEvenRowsText() : CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
+	pDC->DrawText(m_Tabs[nTab].csTitle, rcOrig, DT_CENTER|DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS|DT_NOPREFIX);
 	pDC->SelectObject(pPrevFont);
 }
 
@@ -801,10 +793,6 @@ void CTabCtrlEx::DrawSpinner(CDC *pDC)
 
 	// Set the background color
 	pDC->FillRect(rcSpin, &m_brNonSelectedTab);
-
-	// Draw the line
-	pDC->MoveTo(CPoint(rcSpin.left+1, rcSpin.top));
-	pDC->LineTo(CPoint(rcSpin.left+1, rcSpin.bottom));
 	rcSpin.DeflateRect(SPIN_PAD, 0, 0, 0);
 
 	CRect rcBtn;
@@ -823,11 +811,7 @@ void CTabCtrlEx::DrawButton(CDC *pDC, CRect& rcBtn, ButtonState btnState,
 	int y = rcBtn.top + rcBtn.Height()/2;	
 	long lHeight = rcBtn.Height()/4;
 
-	CPen *pPen = NULL;
-
-	// Change pen if button disabled
-	if (bEnable == false)
-		pPen = &m_penGray;
+	CPen *pPen = bEnable ? &m_penBlack : &m_penGray;
 	
 	CPen *pPrevPen = pDC->SelectObject(pPen);
 
@@ -851,11 +835,7 @@ void CTabCtrlEx::DrawButton(CDC *pDC, CRect& rcBtn, ButtonState btnState,
 	}
 	pDC->SelectObject(pPrevPen);
 
-	// Draw the button frame
-	if (btnState == BtnUp)
-		pDC->Draw3dRect(rcBtn, COLOR_WHITE, COLOR_DARKGRAY);
-	else// if (btnState == BtnDown)
-		pDC->Draw3dRect(rcBtn, COLOR_DARKGRAY, COLOR_WHITE);
+	// flat, like the rest of the window: no 3D frame
 }
 
 void CTabCtrlEx::OnLButtonDown(UINT nFlags, CPoint point) 

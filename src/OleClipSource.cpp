@@ -15,6 +15,8 @@
 #include "DittoChaiScript.h"
 #include "ChaiScriptOnCopy.h"
 #include "Slugify.h"
+#include "TextTransforms.h"
+#include "ClipTags.h"
 #include "ImageFormatAggregator.h"
 #include "BitmapHelper.h"
 #include "Misc.h"
@@ -170,6 +172,15 @@ BOOL COleClipSource::DoImmediateRender()
 		PlainTextFilter(clip);
 	}
 
+	// a clip tagged #template has its {date}, {time}, {datetime} and {clipboard} filled in; only its text is pasted,
+	// so a formatted copy can't paste the unfilled version
+	if (count == 1 && IsTemplate(m_ClipIDs[0]))
+	{
+		PlainTextFilter(clip);
+		KeepOnlyText(clip);
+		ExpandTemplate(clip);
+	}
+
 	if(m_pasteOptions.m_pasteUpperCase ||
 		m_pasteOptions.m_pasteLowerCase)
 	{
@@ -235,6 +246,18 @@ BOOL COleClipSource::DoImmediateRender()
 	{
 		PasteAsImage(clip);
 	}
+	else if (m_pasteOptions.m_pasteFormatJson)
+	{
+		ReplaceText(clip, TextTransforms::FormatJson(TextOf(clip)));
+	}
+	else if (m_pasteOptions.m_pasteUrlDecode)
+	{
+		ReplaceText(clip, TextTransforms::UrlDecode(TextOf(clip)));
+	}
+	else if (m_pasteOptions.m_pasteBase64Decode)
+	{
+		ReplaceText(clip, TextTransforms::Base64Decode(TextOf(clip)));
+	}
 
 	SaveDittoFileDataToFile(clip);
 
@@ -252,7 +275,7 @@ BOOL COleClipSource::DoImmediateRender()
 					CDittoChaiScript clipData(&clip, "", "");
 					if (onPaste.ProcessScript(clipData, (LPCSTR)CTextConvert::UnicodeToAnsi(element.m_script)) == false)
 					{
-						Log(StrF(_T("End of paste script name: %s, returned false, not saving this copy to Ditto, last Error: %s"), element.m_name, onPaste.m_lastError));
+						Log(StrF(_T("End of paste script name: %s, returned false, not saving this copy to Bulb, last Error: %s"), element.m_name, onPaste.m_lastError));
 
 						return FALSE;
 					}
@@ -1132,7 +1155,7 @@ void COleClipSource::SaveDittoFileDataToFile(CClip &clip)
 
 			CString unicodeMd5 = CTextConvert::Utf8ToUnicode(md5String);
 
-			Log(StrF(_T("Saving file contents from Ditto, original file: %s, size: %d, md5: %s"), unicodeFilePath, dataSize, unicodeMd5));
+			Log(StrF(_T("Saving file contents from Bulb, original file: %s, size: %d, md5: %s"), unicodeFilePath, dataSize, unicodeMd5));
 
 			if (md5String != originalMd5)
 			{
@@ -1536,6 +1559,88 @@ HGLOBAL COleClipSource::ConvertToFileDrop()
 	HGLOBAL hData = fileList.CreateCF_HDROPBuffer();
 
 	return hData;
+}
+
+std::wstring COleClipSource::TextOf(CClip& clip)
+{
+	IClipFormat* unicodeTextFormat = clip.m_Formats.FindFormatEx(CF_UNICODETEXT);
+	if (unicodeTextFormat != NULL)
+	{
+		return std::wstring((LPCWSTR)unicodeTextFormat->GetAsCString());
+	}
+	IClipFormat* asciiTextFormat = clip.m_Formats.FindFormatEx(CF_TEXT);
+	return asciiTextFormat != NULL ? std::wstring((LPCWSTR)CString(asciiTextFormat->GetAsCStringA())) : std::wstring();
+}
+
+// both text formats get the new text, so a program that reads either pastes the same thing
+void COleClipSource::ReplaceText(CClip& clip, const std::wstring& text)
+{
+	IClipFormat* unicodeTextFormat = clip.m_Formats.FindFormatEx(CF_UNICODETEXT);
+	if (unicodeTextFormat != NULL)
+	{
+		unicodeTextFormat->Free();
+		unicodeTextFormat->Data(NewGlobalP((void*)text.c_str(), (text.size() + 1) * sizeof(wchar_t)));
+	}
+
+	IClipFormat* asciiTextFormat = clip.m_Formats.FindFormatEx(CF_TEXT);
+	if (asciiTextFormat != NULL)
+	{
+		CStringA ansi(text.c_str());
+		asciiTextFormat->Free();
+		asciiTextFormat->Data(NewGlobalP((void*)(LPCSTR)ansi, ansi.GetLength() + 1));
+	}
+}
+
+// only the two text formats stay, so no formatted copy (RTF, HTML) can paste something else than the text
+void COleClipSource::KeepOnlyText(CClip& clip)
+{
+	for (INT_PTR i = clip.m_Formats.GetCount() - 1; i >= 0; i--)
+	{
+		UINT type = clip.m_Formats[i].m_cfType;
+		if (type != CF_UNICODETEXT && type != CF_TEXT)
+		{
+			clip.m_Formats.RemoveAt(i);
+		}
+	}
+}
+
+bool COleClipSource::IsTemplate(int clipId)
+{
+	try
+	{
+		CString tags = _T(" ") + ClipTags::TagsOfClip(clipId) + _T(" ");
+		return tags.Find(_T(" template ")) >= 0;
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	return false;
+}
+
+void COleClipSource::ExpandTemplate(CClip& clip)
+{
+	SYSTEMTIME now;
+	GetLocalTime(&now);
+	WCHAR date[64] = {}, time[64] = {};
+	GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &now, NULL, date, 64, NULL);
+	GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, TIME_NOSECONDS, &now, NULL, time, 64);
+
+	// what is on the clipboard right now, before this paste replaces it
+	std::wstring clipboard;
+	if (OpenClipboard(NULL))
+	{
+		HANDLE data = GetClipboardData(CF_UNICODETEXT);
+		LPCWSTR text = data != NULL ? (LPCWSTR)GlobalLock(data) : NULL;
+		if (text != NULL)
+		{
+			clipboard = text;
+			GlobalUnlock(data);
+		}
+		CloseClipboard();
+	}
+
+	std::map<std::wstring, std::wstring> values = {
+		{ L"date", date }, { L"time", time }, { L"datetime", std::wstring(date) + L" " + time }, { L"clipboard", clipboard } };
+	ReplaceText(clip, TextTransforms::ExpandTemplate(TextOf(clip), values));
 }
 
 void COleClipSource::Slugify(CClip &clip)

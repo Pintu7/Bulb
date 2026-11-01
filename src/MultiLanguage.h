@@ -65,6 +65,8 @@ public:
 	CString GetQuickPasteKeyboardString(int id, CString csDefault);
 
 	CString GetString(CString csID, CString csDefault);
+	// the English name of a translated submenu ("Incolla speciale" -> "Special Paste"); the text itself when not translated
+	CString EnglishMenuText(const CString& text);
 
 	CString GetAuthor()	{ return m_csAuthor;		}
 	long	GetVersion(){ return m_lFileVersion;	}

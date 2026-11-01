@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ClipIds.h"
 #include "SpecialPasteOptions.h"
 
@@ -58,6 +60,11 @@ protected:
 	CStringA ConvertDrivesASCII(const CStringA& input);
 	CStringW ConvertDrivesWide(const CStringW& input);
 	void Slugify(CClip &clip);
+	std::wstring TextOf(CClip& clip);
+	void ReplaceText(CClip& clip, const std::wstring& text);
+	void KeepOnlyText(CClip& clip);
+	bool IsTemplate(int clipId);
+	void ExpandTemplate(CClip& clip);
 	void InvertCase(CClip &clip);
 	void CamelCase(CClip& clip);
 	void AsciiOnly(CClip& clip);

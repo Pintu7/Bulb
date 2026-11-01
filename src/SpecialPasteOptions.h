@@ -33,6 +33,9 @@ public:
 	bool m_pasteAsciiOnly;
 	bool m_pasteGuid;
 	bool m_pasteAsImage;
+	bool m_pasteFormatJson = false;
+	bool m_pasteUrlDecode = false;
+	bool m_pasteBase64Decode = false;
 
 	bool LimitFormatsToText() 
 	{ 
@@ -51,7 +54,10 @@ public:
 			m_pasteSlugify || 
 			m_invertCase ||
 			m_pasteCamelCase ||
-			m_pasteAsciiOnly;
+			m_pasteAsciiOnly ||
+			m_pasteFormatJson ||
+			m_pasteUrlDecode ||
+			m_pasteBase64Decode;
 	}
 
 	bool IncludeRTFForTextOnly()

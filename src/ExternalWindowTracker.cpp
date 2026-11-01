@@ -89,7 +89,7 @@ bool ExternalWindowTracker::TrackActiveWnd(bool force)
 	{
 		if(m_dittoHasFocus == false)
 		{
-			Log(StrF(_T("Ditto has focus - Active: %s (%d), Focus: %s (%d), FromHook %d"), WndName(m_activeWnd), m_activeWnd, WndName(m_focusWnd), m_focusWnd, fromHook));
+			Log(StrF(_T("Bulb has focus - Active: %s (%d), Focus: %s (%d), FromHook %d"), WndName(m_activeWnd), m_activeWnd, WndName(m_focusWnd), m_focusWnd, fromHook));
 		}
 
 		m_dittoHasFocus = true;

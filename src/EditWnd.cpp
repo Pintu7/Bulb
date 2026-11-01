@@ -7,6 +7,7 @@
 #include ".\editwnd.h"
 #include "SaveAnimation.h"
 #include "ProcessPaste.h"
+#include "FluentDialog.h"
 
 IMPLEMENT_DYNAMIC(CEditWnd, CWnd)
 CEditWnd::CEditWnd()
@@ -112,6 +113,9 @@ void CEditWnd::LoadToolbarDPI()
 	{
 		m_toolBarControl.LoadToolBar(IDR_EDIT_WND);
 	}
+
+	// Windows 11 sized icon buttons; FluentDialog draws them with Segoe Fluent glyphs
+	m_toolBarControl.GetToolBarCtrl().SetButtonSize(CSize(m_dpi.Scale(36), m_dpi.Scale(32)));
 }
 
 void CEditWnd::OnDpiChanged(CWnd* pParent, int dpi)
@@ -152,8 +156,8 @@ void CEditWnd::OnSize(UINT nType, int cx, int cy)
 
 void CEditWnd::MoveControls()
 {
-	int toolbarHeight = m_dpi.Scale(23);
-	int descriptionHeight = m_dpi.Scale(20);
+	int toolbarHeight = m_dpi.Scale(36);
+	int descriptionHeight = m_dpi.Scale(28);
 
 	CRect rc;
 	GetClientRect(rc);
@@ -163,7 +167,7 @@ void CEditWnd::MoveControls()
 
 	m_tabControl.MoveWindow(0, toolbarHeight, rc.Width(), rc.Height() - toolbarHeight - descriptionHeight);
 
-	m_updateDescriptionButton.MoveWindow(2, rc.Height()- descriptionHeight, rc.Width()-m_dpi.Scale(2), descriptionHeight);
+	m_updateDescriptionButton.MoveWindow(m_dpi.Scale(10), rc.Height()- descriptionHeight, rc.Width()-m_dpi.Scale(12), descriptionHeight);
 }
 
 void CEditWnd::OnSaveAll() 
@@ -226,7 +230,7 @@ bool CEditWnd::DoSaveItem(int index)
 		{
 			CString cs;
 			cs.Format(_T("%s '%s'"), theApp.m_Language.GetString("ErrorSaving", "Error saving clip"), m_tabControl.GetTabTitle(index));
-			MessageBox(cs, _T("Ditto"), MB_OK);
+			MessageBox(cs, _T("Bulb"), MB_OK);
 		}
 	}
 
@@ -285,6 +289,8 @@ bool CEditWnd::AddItem(int id)
 
 		m_edits.push_back(pEdit);
 		bRet = true;
+
+		FluentDialog::Apply(m_hWnd); // the new tab brings its own toolbar and fields
 	}
 
 	return bRet;

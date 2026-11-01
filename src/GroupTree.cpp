@@ -5,6 +5,7 @@
 #include "cp_main.h"
 #include "GroupTree.h"
 #include "ActionEnums.h"
+#include "FluentMenu.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -370,7 +371,7 @@ void CGroupTree::OnRclickQuickPaste(NMHDR *pNMHDR, LRESULT *pResult)
 
 		theApp.m_Language.UpdateGroupsRightClickMenu(cmSubMenu);
 		
-		cmSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pp.x, pp.y, this, NULL);
+		FluentMenu::Track(cmSubMenu->m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pp.x, pp.y, m_hWnd);
 	}
 
 	*pResult = 0;

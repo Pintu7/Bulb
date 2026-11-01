@@ -1,4 +1,4 @@
-﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 #include "stdafx.h"
@@ -10,6 +10,11 @@
 #include "client.h"
 #include "ClipCompare.h"
 #include "ClipTags.h"
+#include "TagManager.h"
+
+// command ids of the clip menu's Tags submenu
+#define TagMenuStartId 6001
+#define MaxTagMenuItems 400
 #include "CopyProperties.h"
 #include "CP_Main.h"
 #include "DimWnd.h"
@@ -29,6 +34,10 @@
 #include <signal.h>
 #include "CreateQRCodeImage.h"
 #include "QRCodeViewer.h"
+#include "ImageOcr.h"
+#include "FluentMenu.h"
+#include <thread>
+#include <memory>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,7 +45,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif 
 
-#define QPASTE_TITLE			"Ditto"
+#define QPASTE_TITLE			"Bulb"
 
 #define ID_LIST_HEADER			0x201
 #define ID_EDIT_SEARCH			0x202
@@ -49,6 +58,14 @@ static char THIS_FILE[] = __FILE__;
 #define ON_TOP_WARNING 0x209
 #define ID_SYSTEM_BUTTON		0x210
 #define ID_NO_SEARCH_RESULTS	0x211
+#define ID_TAG_BAR				0x212
+#define ID_FULL_VIEW_BUTTON		0x213
+
+// Segoe Fluent Icons / MDL2 glyphs for the Compact/Full button
+#define GLYPH_OPEN_PANE			0xE8A0
+#define GLYPH_CLOSE_PANE		0xE89F
+#define GLYPH_MORE				0xE712
+#define GLYPH_SEARCH			0xE721
 
 
 #define QPASTE_WIDTH			200
@@ -60,6 +77,7 @@ static char THIS_FILE[] = __FILE__;
 #define TIMER_ERROR_MSG			4
 #define TIMER_DRAG_HIDE_WINDOW	6
 #define TIMER_DO_ACTION	7
+#define TIMER_FULL_VIEW_PANEL	8
 
 #define THREAD_DO_QUERY				0
 #define THREAD_EXIT_THREAD			1
@@ -99,6 +117,18 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_WM_ERASEBKGND()
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_MOVE()
+	ON_BN_CLICKED(ID_FULL_VIEW_BUTTON, OnFullViewButton)
+	ON_EN_SETFOCUS(ID_EDIT_SEARCH, OnSearchFocusChange)
+	ON_EN_KILLFOCUS(ID_EDIT_SEARCH, OnSearchFocusChange)
+	ON_BN_CLICKED(ID_TAG_BAR, OnTagChipClicked)
+	ON_CONTROL(TAGBAR_RIGHT_CLICK, ID_TAG_BAR, OnTagChipRightClicked)
+	ON_COMMAND(ID_MENU_MANAGETAGS, OnMenuManageTags)
+	ON_COMMAND_RANGE(ID_PAUSE_RECORDING_5, ID_PAUSE_RECORDING_60, OnPauseRecording)
+	ON_COMMAND_RANGE(ID_SPECIALPASTE_FORMATJSON, ID_SPECIALPASTE_BASE64DECODE, OnSpecialPasteTransform)
+	ON_COMMAND(ID_MENU_PASTEQUEUE, OnMenuPasteQueue)
+	ON_COMMAND(ID_MENU_COPYIMAGETEXT, OnMenuCopyImageText)
+	ON_COMMAND_RANGE(TagMenuStartId, TagMenuStartId + MaxTagMenuItems - 1, OnTagMenuToggle)
 	ON_WM_SETFOCUS()
 	ON_WM_KILLFOCUS()
 	ON_WM_ACTIVATE()
@@ -211,6 +241,8 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_COMMAND(ID_SYSTEM_BUTTON, OnSystemButton)
 	ON_MESSAGE(CB_UPDOWN, OnUpDown)
 	ON_MESSAGE(NM_INACTIVE_TOOLTIPWND, OnToolTipWndInactive)
+	ON_MESSAGE(NM_DOCKED_PANEL_CLOSED, OnDockedPanelClosed)
+	ON_MESSAGE(NM_OCR_TEXT_READY, OnOcrTextReady)
 	ON_MESSAGE(NM_SET_LIST_COUNT, OnSetListCount)
 	ON_MESSAGE(NM_REFRESH_ROW, OnRefeshRow)
 	ON_MESSAGE(NM_ITEM_DELETED, OnItemDeleted)
@@ -467,7 +499,8 @@ int CQPasteWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_ShowGroupsFolderBottom.Create(NULL, WS_CHILD | BS_OWNERDRAW | WS_TABSTOP, CRect(0, 0, 0, 0), this, ID_SHOW_GROUPS_BOTTOM);
 	//m_ShowGroupsFolderBottom.LoadBitmaps(IDB_CLOSED_FOLDER, IDB_CLOSED_FOLDER_PRESSED, IDB_CLOSED_FOLDER_FOCUSED);
 	m_ShowGroupsFolderBottom.LoadStdImageDPI(m_DittoWindow.m_dpi.GetDPI(), open_folder_24, open_folder_30, open_folder_36, open_folder_42, open_folder_48, _T("PNG"), open_folder_54, open_folder_60, open_folder_66, open_folder_72, open_folder_78, open_folder_84);
-	m_ShowGroupsFolderBottom.ShowWindow(SW_SHOW);
+	// the fork replaces groups with tags in the main view; groups stay reachable from the menu and their shortcut
+	m_ShowGroupsFolderBottom.ShowWindow(SW_HIDE);
 	m_ShowGroupsFolderBottom.SetToolTipText(theApp.m_Language.GetString(_T("GroupsTooltip"), _T("Groups")));
 	m_ShowGroupsFolderBottom.ModifyStyle(WS_TABSTOP, 0);
 
@@ -476,10 +509,16 @@ int CQPasteWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_BackButton.ModifyStyle(WS_TABSTOP, 0);
 	m_BackButton.ShowWindow(SW_SHOW);
 
-	m_systemMenu.Create(NULL, WS_CHILD | BS_OWNERDRAW | WS_TABSTOP, CRect(0, 0, 0, 0), this, ID_SYSTEM_BUTTON);
-	m_systemMenu.LoadStdImageDPI(m_DittoWindow.m_dpi.GetDPI(), system_menu_2_24, system_menu_2_30, system_menu_2_36, system_menu_2_42, system_menu_2_48, _T("PNG"), system_menu_54, system_menu_60, system_menu_66, system_menu_72, system_menu_78, system_menu_84);
-	m_systemMenu.ModifyStyle(WS_TABSTOP, 0);
-	m_systemMenu.ShowWindow(SW_SHOW);
+	m_systemMenu.Create(theApp.m_Language.GetString(_T("Menu"), _T("Menu")), this, ID_SYSTEM_BUTTON, &m_DittoWindow.m_dpi);
+	m_systemMenu.SetGlyph(GLYPH_MORE);
+
+	m_tagBar.Create(this, ID_TAG_BAR, &m_DittoWindow.m_dpi);
+
+	m_fullView = false; // Bulb always opens compact; full view lasts only while browsing clips
+	m_fullViewButton.Create(theApp.m_Language.GetString(_T("ToggleFullView"), _T("Compact / Full view")), this, ID_FULL_VIEW_BUTTON, &m_DittoWindow.m_dpi);
+	m_fullViewButton.SetGlyph(m_fullView ? GLYPH_CLOSE_PANE : GLYPH_OPEN_PANE);
+
+	SetRoundedCorners(m_hWnd);
 
 	m_stGroup.Create(_T(""), WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this, ID_GROUP_TEXT);
 
@@ -489,7 +528,7 @@ int CQPasteWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_ShowGroupsFolderBottom.SetWindowPos(&m_search, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 
 	//LVS_EX_FLATSB
-	m_lstHeader.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
+	m_lstHeader.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER);
 
 	// Create the columns
 	if (m_lstHeader.InsertColumn(0, _T(""), LVCFMT_LEFT, 2500, 0) != 0)
@@ -666,6 +705,553 @@ void CQPasteWnd::OnSize(UINT nType, int cx, int cy)
 	m_popupMsg.Hide();
 
 	MoveControls();
+
+	if (m_fullView && IsWindowVisible())
+	{
+		m_lstHeader.SetDescriptionDockRect(FullViewPanelRect());
+	}
+}
+
+void CQPasteWnd::OnMove(int x, int y)
+{
+	CWndEx::OnMove(x, y);
+
+	if (m_fullView && IsWindowVisible())
+	{
+		m_lstHeader.SetDescriptionDockRect(FullViewPanelRect());
+	}
+}
+
+CRect CQPasteWnd::FullViewPanelRect()
+{
+	CRect window;
+	GetWindowRect(window);
+
+	// shortcut: fixed width, make it resizable if a wider or narrower preview is wanted
+	int width = m_DittoWindow.m_dpi.Scale(420);
+	CRect panel(window.right, window.top, window.right + width, window.bottom);
+
+	// no room on the right of this screen: open on the left
+	if (panel.right > MonitorRectFromRect(window).right)
+	{
+		panel.OffsetRect(-(width + window.Width()), 0);
+	}
+
+	return panel;
+}
+
+void CQPasteWnd::UpdateFullViewPanel()
+{
+	if (m_fullView && IsWindowVisible() && IsIconic() == FALSE)
+	{
+		m_lstHeader.SetDescriptionDockRect(FullViewPanelRect());
+		m_lstHeader.ShowFullDescription(false, false);
+	}
+	else
+	{
+		m_lstHeader.SetDescriptionDockRect(CRect());
+	}
+}
+
+void CQPasteWnd::OnFullViewButton()
+{
+	DoAction(ActionEnums::TOGGLE_FULL_VIEW);
+	m_lstHeader.SetFocus();
+}
+
+void CQPasteWnd::LeaveFullView()
+{
+	if (m_fullView == false)
+	{
+		return;
+	}
+
+	m_fullView = false;
+	m_fullViewButton.SetGlyph(GLYPH_OPEN_PANE);
+	m_lstHeader.SetDescriptionDockRect(CRect());
+	m_lstHeader.HidePopup(false);
+}
+
+bool CQPasteWnd::DoActionToggleFullView()
+{
+	m_fullView = !m_fullView;
+	m_fullViewButton.SetGlyph(m_fullView ? GLYPH_CLOSE_PANE : GLYPH_OPEN_PANE);
+
+	UpdateFullViewPanel();
+
+	return true;
+}
+
+void CQPasteWnd::RefreshTagBar()
+{
+	std::vector<CString> tags;
+	try
+	{
+		tags = ClipTags::NamesByUse();
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	bool hadTags = m_tagBar.HasTags();
+	m_tagBar.SetTags(tags);
+
+	if (hadTags != m_tagBar.HasTags())
+	{
+		MoveControls();
+	}
+}
+
+void CQPasteWnd::OnTagChipClicked()
+{
+	CString tag = m_tagBar.ClickedTag();
+	CString search;
+	m_search.GetWindowText(search);
+
+	// toggle the #tag word, keeping whatever else is typed in the search
+	CString newSearch;
+	bool removed = false;
+	int pos = 0;
+	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
+	{
+		if (word.CompareNoCase(_T("#") + tag) == 0)
+		{
+			removed = true;
+			continue;
+		}
+
+		newSearch += word + _T(" ");
+	}
+
+	if (removed == false)
+	{
+		newSearch += _T("#") + tag + _T(" ");
+	}
+
+	ApplySearch(newSearch);
+}
+
+void CQPasteWnd::ApplySearch(const CString& search)
+{
+	m_bHandleSearchTextChange = false;
+	m_search.SetWindowText(search);
+	m_search.SetSel(-1);
+	m_bHandleSearchTextChange = true;
+
+	FillList(search);
+}
+
+void CQPasteWnd::OnTagChipRightClicked()
+{
+	CString tag = m_tagBar.ClickedTag();
+
+	CMenu menu;
+	menu.CreatePopupMenu();
+	const UINT RENAME = 1, REMOVE = 2, MANAGE = 3;
+	menu.AppendMenu(MF_STRING, RENAME, theApp.m_Language.GetString(_T("RenameTag"), _T("Rename tag...")));
+	menu.AppendMenu(MF_STRING, REMOVE, theApp.m_Language.GetString(_T("DeleteTag"), _T("Delete tag")));
+	menu.AppendMenu(MF_SEPARATOR);
+	menu.AppendMenu(MF_STRING, MANAGE, theApp.m_Language.GetString(_T("ManageTags"), _T("Manage tags...")));
+
+	CPoint point;
+	GetCursorPos(&point);
+	UINT command = FluentMenu::Track(menu.m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RETURNCMD | TPM_NONOTIFY, point.x, point.y, m_hWnd);
+	if (command == 0)
+	{
+		return;
+	}
+
+	if (command == MANAGE)
+	{
+		OnMenuManageTags();
+		return;
+	}
+
+	CString newName;
+	m_bHideWnd = false;
+	if (command == RENAME)
+	{
+		CGroupName dlg;
+		dlg.m_csName = tag;
+		dlg.m_title = StrF(_T("%s #%s"), theApp.m_Language.GetString(_T("RenameTagTitle"), _T("Rename")), (LPCTSTR)tag);
+		INT_PTR result = IDCANCEL;
+		{
+			CDimWnd dimmer(this);
+			result = dlg.DoModal();
+		}
+
+		bool renamed = false;
+		if (result == IDOK)
+		{
+			try
+			{
+				renamed = ClipTags::RenameTag(tag, dlg.m_csName);
+				std::vector<CString> names = ClipTags::Parse(dlg.m_csName);
+				newName = names.size() == 1 ? names[0] : _T("");
+			}
+			CATCH_SQLITE_EXCEPTION
+
+			if (renamed == false)
+			{
+				MessageBox(theApp.m_Language.GetString(_T("TagNameOneWord"), _T("A tag name is a single word.")), _T("Bulb"), MB_OK | MB_TOPMOST);
+			}
+		}
+
+		if (renamed == false)
+		{
+			m_bHideWnd = true;
+			return;
+		}
+	}
+	else
+	{
+		CString question = StrF(theApp.m_Language.GetString(_T("DeleteTagConfirm"), _T("Delete the tag #%s?\r\n\r\nIt is removed from every clip; the clips are kept.")), (LPCTSTR)tag);
+		if (MessageBox(question, _T("Bulb"), MB_OKCANCEL | MB_TOPMOST) != IDOK)
+		{
+			m_bHideWnd = true;
+			return;
+		}
+
+		try
+		{
+			ClipTags::DeleteTag(tag);
+		}
+		CATCH_SQLITE_EXCEPTION
+	}
+	m_bHideWnd = true;
+
+	// the search may hold the old #tag: rename it there, or drop it when the tag is gone
+	CString search;
+	m_search.GetWindowText(search);
+	CString newSearch;
+	int pos = 0;
+	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
+	{
+		if (word.CompareNoCase(_T("#") + tag) == 0)
+		{
+			if (newName.IsEmpty() == FALSE)
+			{
+				newSearch += _T("#") + newName + _T(" ");
+			}
+			continue;
+		}
+
+		newSearch += word + _T(" ");
+	}
+
+	RefreshTagBar();
+	ApplySearch(newSearch);
+	m_lstHeader.SetFocus();
+}
+
+static bool FindMenuCommand(CMenu* menu, UINT id, CMenu*& owner, int& pos)
+{
+	for (int i = 0; i < menu->GetMenuItemCount(); i++)
+	{
+		if (menu->GetMenuItemID(i) == id)
+		{
+			owner = menu;
+			pos = i;
+			return true;
+		}
+
+		CMenu* sub = menu->GetSubMenu(i);
+		if (sub != NULL && FindMenuCommand(sub, id, owner, pos))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void CQPasteWnd::AddTagsSubmenu(CMenu* menu)
+{
+	CMenu* owner = NULL;
+	int pos = -1;
+	if (FindMenuCommand(menu, ID_MENU_EDITTAGS, owner, pos) == false)
+	{
+		return;
+	}
+
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+
+	// a tag is checked when every selected clip has it
+	m_tagMenuNames.clear();
+	std::vector<CString> clipTags;
+	try
+	{
+		m_tagMenuNames = ClipTags::AllNames();
+		for (int i = 0; i < IDs.GetSize(); i++)
+		{
+			clipTags.push_back(_T(" ") + ClipTags::TagsOfClip(IDs[i]) + _T(" "));
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	if ((int)m_tagMenuNames.size() > MaxTagMenuItems)
+	{
+		m_tagMenuNames.resize(MaxTagMenuItems); // shortcut: very long tag lists are cut, Manage Tags / Ctrl+T still reach every tag
+	}
+
+	CMenu tagMenu;
+	tagMenu.CreatePopupMenu();
+	for (int i = 0; i < (int)m_tagMenuNames.size(); i++)
+	{
+		bool all = clipTags.empty() == false;
+		for (const CString& tags : clipTags)
+		{
+			all = all && tags.Find(_T(" ") + m_tagMenuNames[i] + _T(" ")) >= 0;
+		}
+
+		tagMenu.AppendMenu(MF_STRING | (all ? MF_CHECKED : MF_UNCHECKED) | (IDs.GetSize() > 0 ? MF_ENABLED : MF_GRAYED), TagMenuStartId + i, _T("#") + m_tagMenuNames[i]);
+	}
+
+	if (m_tagMenuNames.empty() == false)
+	{
+		tagMenu.AppendMenu(MF_SEPARATOR);
+	}
+	tagMenu.AppendMenu(MF_STRING, ID_MENU_MANAGETAGS, theApp.m_Language.GetString(_T("ManageTags"), _T("Manage tags...")));
+
+	owner->InsertMenu(pos, MF_BYPOSITION | MF_POPUP, (UINT_PTR)tagMenu.GetSafeHmenu(), theApp.m_Language.GetString(_T("TagsSubmenu"), _T("Tags")));
+	tagMenu.Detach(); // the clip menu owns it now
+}
+
+void CQPasteWnd::OnTagMenuToggle(UINT id)
+{
+	int index = id - TagMenuStartId;
+	if (index < 0 || index >= (int)m_tagMenuNames.size())
+	{
+		return;
+	}
+	CString name = m_tagMenuNames[index];
+
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+
+	try
+	{
+		bool all = IDs.GetSize() > 0;
+		for (int i = 0; i < IDs.GetSize(); i++)
+		{
+			all = all && (_T(" ") + ClipTags::TagsOfClip(IDs[i]) + _T(" ")).Find(_T(" ") + name + _T(" ")) >= 0;
+		}
+
+		// checked (every clip has it) removes it, otherwise it is added to the clips that miss it
+		for (int i = 0; i < IDs.GetSize(); i++)
+		{
+			if (all)
+			{
+				ClipTags::RemoveTag(IDs[i], name);
+			}
+			else
+			{
+				ClipTags::AddTags(IDs[i], name);
+			}
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	RefreshSelectedRowTags();
+	RefreshTagBar();
+}
+
+void CQPasteWnd::RefreshSelectedRowTags()
+{
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+	ARRAY Indexs;
+	m_lstHeader.GetSelectionIndexes(Indexs);
+
+	std::vector<CString> tags;
+	try
+	{
+		for (int i = 0; i < IDs.GetSize(); i++)
+		{
+			tags.push_back(ClipTags::TagsOfClip(IDs[i]));
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	{
+		ATL::CCritSecLock csLock(m_CritSection.m_sect);
+		for (int i = 0; i < (int)tags.size() && i < Indexs.GetSize(); i++)
+		{
+			int row = Indexs[i];
+			if (row >= 0 && row < (int)m_listItems.size() && m_listItems[row].m_lID == IDs[i])
+			{
+				m_listItems[row].m_tags = tags[i];
+			}
+		}
+	}
+
+	m_lstHeader.RefreshVisibleRows();
+}
+
+void CQPasteWnd::OnMenuPasteQueue()
+{
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+	if (IDs.GetSize() == 0)
+	{
+		return;
+	}
+
+	// the order they were copied in, oldest first, which is how a form is usually filled
+	CString idList;
+	for (int i = 0; i < IDs.GetSize(); i++)
+	{
+		idList += (i == 0 ? _T("") : _T(",")) + StrF(_T("%d"), IDs[i]);
+	}
+
+	std::vector<int> ordered;
+	try
+	{
+		CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT lID FROM Main WHERE lID IN (%s) ORDER BY clipOrder ASC"), (LPCTSTR)idList);
+		for (; q.eof() == false; q.nextRow())
+		{
+			ordered.push_back(q.getIntField(0));
+		}
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	HideQPasteWindow(true);
+	theApp.m_activeWnd.ActivateTarget();
+	theApp.m_pMainFrame->StartPasteQueue(ordered);
+}
+
+// reads the text in the selected image now (works for images copied before OCR was on too) and copies only that text
+void CQPasteWnd::OnMenuCopyImageText()
+{
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+	if (IDs.GetSize() == 0)
+	{
+		return;
+	}
+
+	OcrJob job;
+	CClip clip;
+	if (clip.LoadFormats(IDs[0]))
+	{
+		job = OcrJobFromFormats(clip.m_Formats);
+	}
+
+	if (job.image.empty())
+	{
+		ShowCopyImageTextMessage(theApp.m_Language.GetString(_T("CopyImageTextNoImage"), _T("This clip is not an image.")));
+		return;
+	}
+
+	// read on a worker (its own MTA thread; the UI thread is STA and must not wait): the result comes back as
+	// NM_OCR_TEXT_READY, so Bulb stays responsive while a large picture is read
+	HWND window = m_hWnd;
+	std::thread([window, job = std::move(job)]()
+	{
+		std::wstring* text = new std::wstring(ImageOcr::Recognize(job.image, job.isDib));
+		if (::PostMessage(window, NM_OCR_TEXT_READY, 0, (LPARAM)text) == FALSE)
+		{
+			delete text;
+		}
+	}).detach();
+}
+
+void CQPasteWnd::ShowCopyImageTextMessage(const CString& message)
+{
+	m_bHideWnd = false;
+	MessageBox(message, _T("Bulb"), MB_OK | MB_ICONINFORMATION);
+	m_bHideWnd = true;
+}
+
+LRESULT CQPasteWnd::OnOcrTextReady(WPARAM wParam, LPARAM lParam)
+{
+	std::unique_ptr<std::wstring> owned((std::wstring*)lParam);
+	const std::wstring& text = *owned;
+	if (text.empty())
+	{
+		ShowCopyImageTextMessage(theApp.m_Language.GetString(_T("CopyImageTextNone"), _T("No text found in this image.")));
+		return 0;
+	}
+
+	if (OpenClipboard())
+	{
+		EmptyClipboard();
+		SIZE_T bytes = (text.size() + 1) * sizeof(wchar_t);
+		HGLOBAL global = GlobalAlloc(GMEM_MOVEABLE, bytes);
+		if (global != NULL)
+		{
+			memcpy(GlobalLock(global), text.c_str(), bytes);
+			GlobalUnlock(global);
+			if (SetClipboardData(CF_UNICODETEXT, global) == NULL)
+			{
+				GlobalFree(global);
+			}
+		}
+		CloseClipboard();
+	}
+
+	LeaveFullView();
+	return 0;
+}
+
+void CQPasteWnd::OnSpecialPasteTransform(UINT id)
+{
+	CSpecialPasteOptions pasteOptions;
+	pasteOptions.m_pasteFormatJson = id == ID_SPECIALPASTE_FORMATJSON;
+	pasteOptions.m_pasteUrlDecode = id == ID_SPECIALPASTE_URLDECODE;
+	pasteOptions.m_pasteBase64Decode = id == ID_SPECIALPASTE_BASE64DECODE;
+	OpenSelection(pasteOptions);
+}
+
+void CQPasteWnd::OnPauseRecording(UINT id)
+{
+	theApp.m_pMainFrame->SendMessage(WM_COMMAND, id, 0);
+}
+
+void CQPasteWnd::OnMenuManageTags()
+{
+	m_bHideWnd = false;
+	{
+		CDimWnd dimmer(this);
+		CTagManager dlg(this);
+		dlg.DoModal();
+	}
+	m_bHideWnd = true;
+
+	AfterTagsChanged();
+	m_lstHeader.SetFocus();
+}
+
+void CQPasteWnd::AfterTagsChanged()
+{
+	std::vector<CString> names;
+	try
+	{
+		names = ClipTags::AllNames();
+	}
+	CATCH_SQLITE_EXCEPTION
+
+	// #words match by prefix, so keep a word while some tag still starts with it
+	CString search;
+	m_search.GetWindowText(search);
+	CString newSearch;
+	int pos = 0;
+	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
+	{
+		std::vector<CString> tag = (word.GetLength() > 1 && word[0] == '#') ? ClipTags::Parse(word) : std::vector<CString>();
+		bool stillMatches = tag.empty();
+		for (const CString& name : names)
+		{
+			stillMatches = stillMatches || name.Left(tag[0].GetLength()) == tag[0];
+		}
+
+		if (stillMatches)
+		{
+			newSearch += word + _T(" ");
+		}
+	}
+
+	RefreshTagBar();
+	ApplySearch(newSearch);
 }
 
 void CQPasteWnd::MoveControls()
@@ -674,19 +1260,47 @@ void CQPasteWnd::MoveControls()
 	GetClientRect(crRect);
 	int cx = crRect.Width();
 	int cy = crRect.Height();
+	CDPI& dpi = m_DittoWindow.m_dpi;
 
-	//Hide the two pixels of space at the top, not sure where this is coming from
-	int topOfListBox = 0;
+	// top bar: rounded search box, then the view and menu buttons
+	int pad = dpi.Scale(10);
+	int searchHeight = dpi.Scale(36);
+	int button = dpi.Scale(32);
+	int editHeight = dpi.Scale(25);
+
+	CRect oldSurface = m_searchSurface;
+	m_searchSurface.SetRect(pad, pad, max(pad + dpi.Scale(80), cx - pad - button * 2 - dpi.Scale(4)), pad + searchHeight);
+	if (oldSurface != m_searchSurface)
+	{
+		InvalidateRect(oldSurface);
+		InvalidateRect(m_searchSurface);
+	}
+
+	m_search.MoveWindow(m_searchSurface.left + dpi.Scale(34), m_searchSurface.top + (searchHeight - editHeight) / 2, m_searchSurface.Width() - dpi.Scale(42), editHeight);
+
+	int buttonTop = m_searchSurface.top + (searchHeight - button) / 2;
+	m_fullViewButton.MoveWindow(m_searchSurface.right + dpi.Scale(4), buttonTop, button, button);
+	m_systemMenu.MoveWindow(m_searchSurface.right + dpi.Scale(4) + button, buttonTop, button, button);
+
+	int y = m_searchSurface.bottom + dpi.Scale(8);
+
+	int tagRowHeight = m_tagBar.HasTags() ? dpi.Scale(24) : 0;
+	m_tagBar.ShowWindow(tagRowHeight > 0 ? SW_SHOW : SW_HIDE);
+	if (tagRowHeight > 0)
+	{
+		m_tagBar.MoveWindow(pad, y, cx - pad * 2, tagRowHeight);
+		y += tagRowHeight + dpi.Scale(8);
+	}
 
 	if (theApp.m_GroupID > 0 && m_bShowStarredClips == false)
 	{
 		m_stGroup.ShowWindow(SW_SHOW);
 		m_BackButton.ShowWindow(SW_SHOW);
 
-		m_BackButton.MoveWindow(m_DittoWindow.m_dpi.Scale(2), m_DittoWindow.m_dpi.Scale(2), m_DittoWindow.m_dpi.Scale(16), m_DittoWindow.m_dpi.Scale(16));
-		m_stGroup.MoveWindow(m_DittoWindow.m_dpi.Scale(24), m_DittoWindow.m_dpi.Scale(2), cx - m_DittoWindow.m_dpi.Scale(20), m_DittoWindow.m_dpi.Scale(16));
+		m_BackButton.MoveWindow(pad, y, dpi.Scale(16), dpi.Scale(16));
+		m_stGroup.MoveWindow(pad + dpi.Scale(22), y, cx - pad * 2 - dpi.Scale(22), dpi.Scale(18));
 
-		topOfListBox = m_DittoWindow.m_dpi.Scale(20);
+		y += dpi.Scale(24);
 	}
 	else
 	{
@@ -694,15 +1308,8 @@ void CQPasteWnd::MoveControls()
 		m_stGroup.ShowWindow(SW_HIDE);
 	}
 
-	int searchRowStart = 33;
-
-	/*if(CGetSetOptions::m_bShowPersistent)
-	{
-		searchRowStart = 41;
-	}*/
-
-	int nWidth = cx;
-	int listBoxBottomOffset = m_DittoWindow.m_dpi.Scale(searchRowStart);
+	int topOfListBox = y;
+	int listHeight = max(0, cy - topOfListBox - dpi.Scale(6));
 
 	int extraSize = 0;
 
@@ -712,13 +1319,10 @@ void CQPasteWnd::MoveControls()
 
 	if (hideNativeScrollbar)
 	{
-		extraSize = m_DittoWindow.m_dpi.Scale(::GetSystemMetrics(SM_CXVSCROLL));
+		extraSize = dpi.Scale(::GetSystemMetrics(SM_CXVSCROLL));
 
 		CRgn rgnRect;
-		CRect r;
-		m_lstHeader.GetWindowRect(&r);
-
-		rgnRect.CreateRectRgn(0, 0, cx, (cy - listBoxBottomOffset - topOfListBox) );
+		rgnRect.CreateRectRgn(0, 0, cx, listHeight);
 
 		m_lstHeader.SetWindowRgn(rgnRect, TRUE);
 	}
@@ -736,33 +1340,29 @@ void CQPasteWnd::MoveControls()
 		m_modernScrollBar.ShowWindow(SW_HIDE);
 		m_modernScrollBarHorz.ShowWindow(SW_HIDE);
 
-		auto border = m_DittoWindow.m_dpi.Scale(10);
-		m_noSearchResultsStatic.MoveWindow(border, topOfListBox + border, cx - border, cy - listBoxBottomOffset - topOfListBox + 1 - border);
+		m_noSearchResultsStatic.MoveWindow(pad + dpi.Scale(4), topOfListBox + pad, cx - pad * 2, listHeight - pad);
 	}
 	else
 	{
 		m_lstHeader.ShowWindow(SW_SHOW);
 		m_noSearchResultsStatic.ShowWindow(SW_HIDE);
 
-		m_lstHeader.MoveWindow(0, topOfListBox, cx + extraSize, cy - listBoxBottomOffset - topOfListBox + extraSize + 1);
+		m_lstHeader.MoveWindow(0, topOfListBox, cx + extraSize, listHeight + extraSize);
+		m_lstHeader.SetColumnWidth(0, cx);
 		
 		// Update modern scrollbar position and visibility (only if enabled)
 		if (CGetSetOptions::m_useModernScrollBar)
 		{
+			m_modernScrollBar.UpdateScrollBar();
 			if (CGetSetOptions::m_showScrollBar)
 			{
-				m_modernScrollBar.UpdateScrollBar();
 				m_modernScrollBar.Show(false);
-				m_modernScrollBarHorz.UpdateScrollBar();
-				m_modernScrollBarHorz.Show(false);
 			}
 			else
 			{
-				m_modernScrollBar.UpdateScrollBar();
 				m_modernScrollBar.Hide(false);
-				m_modernScrollBarHorz.UpdateScrollBar();
-				m_modernScrollBarHorz.Hide(false);
 			}
+			m_modernScrollBarHorz.Hide(false);
 		}
 		else
 		{
@@ -770,22 +1370,13 @@ void CQPasteWnd::MoveControls()
 			m_modernScrollBarHorz.Hide(false);
 		}
 	}
-	m_search.MoveWindow(m_DittoWindow.m_dpi.Scale(34), cy - m_DittoWindow.m_dpi.Scale(searchRowStart - 5), cx - m_DittoWindow.m_dpi.Scale(70), m_DittoWindow.m_dpi.Scale(25));
 
-	m_systemMenu.MoveWindow(cx - m_DittoWindow.m_dpi.Scale(30), cy - m_DittoWindow.m_dpi.Scale(28), m_DittoWindow.m_dpi.Scale(24), m_DittoWindow.m_dpi.Scale(24));
+	m_alwaysOnToWarningStatic.ShowWindow(SW_HIDE);
+}
 
-	m_ShowGroupsFolderBottom.MoveWindow(m_DittoWindow.m_dpi.Scale(4), cy - m_DittoWindow.m_dpi.Scale(28), m_DittoWindow.m_dpi.Scale(24), m_DittoWindow.m_dpi.Scale(24));
-
-	/*if (CGetSetOptions::m_bShowPersistent &&
-		CGetSetOptions::m_bShowAlwaysOnTopWarning)
-	{
-		m_alwaysOnToWarningStatic.ShowWindow(SW_SHOW);
-		m_alwaysOnToWarningStatic.MoveWindow(m_DittoWindow.m_dpi.Scale(2), cy - m_DittoWindow.m_dpi.Scale(18), cx - m_DittoWindow.m_dpi.Scale(4), m_DittoWindow.m_dpi.Scale(17));
-	}
-	else*/
-	{
-		m_alwaysOnToWarningStatic.ShowWindow(SW_HIDE);
-	}
+void CQPasteWnd::OnSearchFocusChange()
+{
+	InvalidateRect(m_searchSurface);
 }
 
 void CQPasteWnd::OnSetFocus(CWnd* pOldWnd)
@@ -816,6 +1407,7 @@ void CQPasteWnd::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 	if (nState == WA_INACTIVE)
 	{
+		LeaveFullView();
 		SaveWindowSize();
 
 		m_bModifersMoveActive = false;
@@ -869,6 +1461,8 @@ void CQPasteWnd::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 BOOL CQPasteWnd::HideQPasteWindow(bool releaseFocus, BOOL clearSearchData)
 {
+	LeaveFullView();
+
 	if (clearSearchData = -1)
 	{
 		if ((CGetSetOptions::m_maintainSearchView || CGetSetOptions::m_refreshViewAfterPasting == false) &&
@@ -908,6 +1502,7 @@ BOOL CQPasteWnd::HideQPasteWindow(bool releaseFocus, BOOL clearSearchData)
 
 	KillTimer(TIMER_FILL_CACHE);
 
+	m_lstHeader.SetDescriptionDockRect(CRect());
 	m_lstHeader.HidePopup(true);
 
 	m_popupMsg.Hide();
@@ -1007,6 +1602,8 @@ BOOL CQPasteWnd::ShowQPasteWindow(BOOL bFillList)
 	m_lstHeader.SetShowTextForFirstTenHotKeys(CGetSetOptions::GetShowTextForFirstTenHotKeys());
 	m_lstHeader.SetShowIfClipWasPasted(CGetSetOptions::GetShowIfClipWasPasted());
 
+	RefreshTagBar();
+
 	if (bFillList)
 	{
 		FillList();
@@ -1024,6 +1621,12 @@ BOOL CQPasteWnd::ShowQPasteWindow(BOOL bFillList)
 	}
 
 	//SetKeyModiferState(true);
+
+	// the caller shows the window after this returns; dock the preview once it is on screen
+	if (m_fullView)
+	{
+		SetTimer(TIMER_FULL_VIEW_PANEL, 100, NULL);
+	}
 
 	Log(StrF(_T("END - ShowQPasteWindow - Fill List: %d, array count: %d"), bFillList, m_listItems.size()));
 
@@ -1160,6 +1763,7 @@ BOOL CQPasteWnd::OpenIndex(int item, bool plainTextOnly)
 BOOL CQPasteWnd::NewGroup(bool bGroupSelection, int parentId)
 {
 	CGroupName Name;
+	Name.m_title = theApp.m_Language.GetString(_T("NewGroupTitle"), _T("New group"));
 	CString csName("");
 
 	if (CGetSetOptions::m_bPrompForNewGroupName)
@@ -1543,6 +2147,7 @@ BOOL CQPasteWnd::FillList(CString csSQLSearch)
 
 	CString fullSearch = csSQLSearch;
 	CString tagFilter = ClipTags::ExtractSearchFilter(csSQLSearch);
+	m_tagBar.SetActiveTags(ClipTags::TagsInSearch(fullSearch));
 
 	if (csSQLSearch == "" && tagFilter != "")
 	{
@@ -1649,6 +2254,37 @@ BOOL CQPasteWnd::FillList(CString csSQLSearch)
 			strFilter += fullTextSql;
 		}
 
+		// the program the clip was copied from, so "chrome" also finds what was copied in Chrome; ".exe" is cut so "ex" doesn't match every clip
+		CFormatSQL appFormat;
+		appFormat.SetVariable(_T("IFNULL(REPLACE(LOWER(Main.sourceApp), '.exe', ''), '')"));
+		appFormat.Parse(csSQLSearch);
+		CString appSql = appFormat.GetSQLString();
+
+		// the words read in a picture (OCR) find it too
+		CFormatSQL ocrFormat;
+		ocrFormat.SetVariable(_T("IFNULL(Main.ocrText, '')"));
+		ocrFormat.Parse(csSQLSearch);
+		CString ocrSql = ocrFormat.GetSQLString();
+		if (ocrSql != _T(""))
+		{
+			appSql = appSql.IsEmpty() ? ocrSql : appSql + _T(" OR ") + ocrSql;
+		}
+
+		if (appSql != _T(""))
+		{
+			if (strFilter != _T("("))
+			{
+				strFilter += _T(" OR ");
+			}
+
+			strFilter += appSql;
+
+			if (dataJoin != _T(""))
+			{
+				IsDistinct = _T("DISTINCT"); // the Data join gives one row per format
+			}
+		}
+
 		strFilter += _T(")");
 
 		if (strParentFilter.IsEmpty() == FALSE)
@@ -1737,7 +2373,11 @@ void CQPasteWnd::ShowRightClickMenu()
 			pp.y = rc.bottom;
 		}
 
-		theApp.m_Addins.AddPrePasteAddinsToMenu(cmSubMenu);
+		int morePos = -1;
+		CMenu* moreMenu = CMultiLanguage::GetMenuPos(cmSubMenu, CString(_T("More")), morePos, TRUE);
+		theApp.m_Addins.AddPrePasteAddinsToMenu(moreMenu != NULL ? moreMenu : cmSubMenu);
+
+		AddTagsSubmenu(cmSubMenu);
 
 		SetFriendChecks(cmSubMenu);
 
@@ -1758,7 +2398,16 @@ void CQPasteWnd::ShowRightClickMenu()
 			cmSubMenu->CheckMenuItem(ID_MENU_SHOWSTARREDCLIPS, MF_CHECKED);
 		}
 
-		cmSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pp.x, pp.y, this, NULL);
+		UINT command = FluentMenu::Track(cmSubMenu->m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD, pp.x, pp.y, m_hWnd);
+		if (command != 0)
+		{
+			// any action on a clip ends the full view, except opening the preview itself
+			if (command != ID_MENU_VIEWFULLDESCRIPTION)
+			{
+				LeaveFullView();
+			}
+			SendMessage(WM_COMMAND, command, 0);
+		}
 	}
 }
 
@@ -2231,7 +2880,7 @@ void CQPasteWnd::UpdateFont()
 	m_lstHeader.SetLogFont(lf);
 
 	m_SearchFont.DeleteObject();
-	m_SearchFont.CreateFont(-m_DittoWindow.m_dpi.Scale(15), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, _T("Segoe UI"));
+	m_SearchFont.CreateFont(-m_DittoWindow.m_dpi.Scale(15), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, ModernUIFontName());
 	m_search.SetFont(&m_SearchFont);
 	m_search.SetPromptFont(m_SearchFont);
 
@@ -2244,6 +2893,10 @@ void CQPasteWnd::UpdateFont()
 	m_stGroup.SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
 
 	m_noSearchResultsStatic.SetBkColor(CGetSetOptions::m_Theme.MainWindowBG());
+
+	// with double buffering the list paints its own background, white unless told otherwise
+	m_lstHeader.SetBkColor(CGetSetOptions::m_Theme.MainWindowBG());
+	ApplyMenuTheme(GetRValue(CGetSetOptions::m_Theme.MainWindowBG()) < 128);
 	m_noSearchResultsStatic.SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
 	m_noSearchResultsStatic.SetFont(&m_SearchFont);
 
@@ -2666,7 +3319,7 @@ void CQPasteWnd::OnMenuExport()
 	ofn.hwndOwner = m_hWnd;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = _T("Exported Ditto Clips (.dto)\0*.dto\0\0");
+	ofn.lpstrFilter = _T("Exported Bulb Clips (.dto)\0*.dto\0\0");
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
@@ -2842,7 +3495,7 @@ BOOL CQPasteWnd::SendToFriendbyPos(int nPos, CString override_IP_Host)
 
 			if (SendToFriend(Info) == FALSE)
 			{
-				MessageBox(StrF(_T("Error Sending data to %s\n\n%s"), Info.m_csIP, Info.m_csErrorText), _T("Ditto"), MB_OK | MB_TOPMOST);
+				MessageBox(StrF(_T("Error Sending data to %s\n\n%s"), Info.m_csIP, Info.m_csErrorText), _T("Bulb"), MB_OK | MB_TOPMOST);
 			}
 			else
 			{
@@ -2870,7 +3523,7 @@ void CQPasteWnd::DeleteSelectedRows()
 		bool bStartValue = m_bHideWnd;
 		m_bHideWnd = false;
 
-		int nRet = MessageBox(theApp.m_Language.GetString("Delete_Clip", "Delete Selected Clips?"), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+		int nRet = MessageBox(theApp.m_Language.GetString("Delete_Clip", "Delete Selected Clips?"), _T("Bulb"), MB_OKCANCEL | MB_TOPMOST);
 
 		m_bHideWnd = bStartValue;
 
@@ -3065,6 +3718,20 @@ void CQPasteWnd::SetKeyModiferState(bool bActive)
 
 BOOL CQPasteWnd::PreTranslateMessage(MSG* pMsg)
 {
+	// full view stays open while moving between clips (the list and its scroll bars) and closes on anything else
+	// done in this window: the search box, the tags, the buttons, the caption
+	if (m_fullView && (pMsg->message == WM_LBUTTONDOWN || pMsg->message == WM_RBUTTONDOWN || pMsg->message == WM_NCLBUTTONDOWN) &&
+		(pMsg->hwnd == m_hWnd || ::IsChild(m_hWnd, pMsg->hwnd)))
+	{
+		HWND target = pMsg->hwnd;
+		bool browsing = target == m_lstHeader.m_hWnd || ::IsChild(m_lstHeader.m_hWnd, target) ||
+			target == m_modernScrollBar.m_hWnd || target == m_modernScrollBarHorz.m_hWnd;
+		if (browsing == false && target != m_fullViewButton.m_hWnd)
+		{
+			LeaveFullView();
+		}
+	}
+
 	switch (pMsg->message)
 	{
 	case WM_MBUTTONUP:
@@ -3562,6 +4229,7 @@ bool CQPasteWnd::DoAction(CAccel a)
 		break;
 	case ActionEnums::COPY_SELECTION:
 		ret = DoCopySelection();
+		LeaveFullView();
 		break;
 	case ActionEnums::REFRESH_LIST:
 		ret = DoRefreshList();
@@ -3603,6 +4271,9 @@ bool CQPasteWnd::DoAction(CAccel a)
 	case ActionEnums::EDIT_TAGS:
 		ret = DoActionEditTags();
 		break;
+	case ActionEnums::TOGGLE_FULL_VIEW:
+		ret = DoActionToggleFullView();
+		break;
 	}
 
 	return ret;
@@ -3613,6 +4284,7 @@ bool CQPasteWnd::DoSetDragFileName()
 	m_bHideWnd = false;
 
 	CGroupName Name;
+	Name.m_title = theApp.m_Language.GetString(_T("DragFileNameTitle"), _T("File name for dragged clips"));
 
 	CDimWnd dimmer(this);
 
@@ -3695,7 +4367,8 @@ bool CQPasteWnd::DoActionApplyLastSearch()
 
 bool CQPasteWnd::DoActionToggleDescriptionWordWrap()
 {
-	if (m_lstHeader.IsToolTipWindowVisible() == FALSE)
+	// in Full view the preview is always up, so the key must reach the search box instead
+	if (m_lstHeader.IsToolTipWindowVisible() == FALSE || m_fullView)
 		return false;
 
 	bool ret = m_lstHeader.ToggleToolTipWordWrap();
@@ -3726,7 +4399,7 @@ bool CQPasteWnd::DoActionShowDescription()
 			m_lstHeader.DoToolTipSearch();
 			ret = true;
 		}
-		else
+		else if (m_fullView == false)
 		{
 			m_lstHeader.HideToolTip();
 			ret = true;
@@ -3741,7 +4414,7 @@ bool CQPasteWnd::DoActionNextDescription()
 	if (m_lstHeader.IsToolTipWindowVisible() == FALSE)
 		return false;
 
-	if (CGetSetOptions::m_bAllwaysShowDescription)
+	if (CGetSetOptions::m_bAllwaysShowDescription || m_fullView)
 		return false;
 
 	m_actions.m_handleRepeatKeys = true;
@@ -3788,7 +4461,7 @@ bool CQPasteWnd::DoActionPrevDescription()
 	if (m_lstHeader.IsToolTipWindowVisible() == FALSE)
 		return false;
 
-	if (CGetSetOptions::m_bAllwaysShowDescription)
+	if (CGetSetOptions::m_bAllwaysShowDescription || m_fullView)
 		return false;
 
 	m_actions.m_handleRepeatKeys = true;
@@ -4443,7 +5116,7 @@ bool CQPasteWnd::DoExportToTextFile()
 	ofn.hwndOwner = m_hWnd;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = _T("Exported Ditto Clips (.txt)\0*.txt\0\0");
+	ofn.lpstrFilter = _T("Exported Bulb Clips (.txt)\0*.txt\0\0");
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
@@ -5698,6 +6371,32 @@ void CQPasteWnd::OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	CWndEx::OnSysKeyDown(nChar, nRepCnt, nFlags);
 }
 
+// "14:52" for a clip copied today, "28 ott" before that, in the user's locale
+static CString ShortCopyTime(__int64 unixTime)
+{
+	if (unixTime <= 0)
+	{
+		return _T("");
+	}
+
+	SYSTEMTIME copied;
+	CTime(unixTime).GetAsSystemTime(copied);
+	SYSTEMTIME now;
+	GetLocalTime(&now);
+
+	WCHAR buffer[64] = { 0 };
+	if (copied.wYear == now.wYear && copied.wMonth == now.wMonth && copied.wDay == now.wDay)
+	{
+		GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, TIME_NOSECONDS, &copied, NULL, buffer, 64);
+	}
+	else
+	{
+		GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &copied, copied.wYear == now.wYear ? L"d MMM" : L"d MMM yy", buffer, 64, NULL);
+	}
+
+	return buffer;
+}
+
 void CQPasteWnd::GetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
@@ -5767,6 +6466,22 @@ void CQPasteWnd::GetDispInfo(NMHDR* pNMHDR, LRESULT* pResult)
 					{
 						cs += _T("<tags=") + m_listItems[pItem->iItem].m_tags + _T(">");
 					}
+
+					if (m_listItems[pItem->iItem].m_noText)
+					{
+						cs += _T("<notext>");
+					}
+
+					// "chrome.exe" -> "chrome · 14:52"
+					CString source = m_listItems[pItem->iItem].m_sourceApp;
+					if (source.Right(4).CompareNoCase(_T(".exe")) == 0)
+					{
+						source = source.Left(source.GetLength() - 4);
+					}
+					source.Remove('>');
+					source.Remove('|');
+					CString time = ShortCopyTime(m_listItems[pItem->iItem].m_dateCopied);
+					cs += _T("<time=") + (source.IsEmpty() ? time : source + _T(" \x00B7 ") + time) + _T(">");
 
 					// pipe is the "end of symbols" marker
 					cs += "|" + CMainTableFunctions::GetDisplayText(CGetSetOptions::m_nLinesPerRow, m_listItems[pItem->iItem].m_Desc);
@@ -5948,6 +6663,53 @@ CString CQPasteWnd::GetDisplayText(int dontAutoDelete, int shortCut, bool isGrou
 	return cs;
 }
 
+// the hover preview: at most two lines of the clip ("Image" for a picture), then when it was copied
+CString CQPasteWnd::HoverPreview(int clipId, int row)
+{
+	CString preview;
+	CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT mText, lDate FROM Main WHERE lID = %d"), clipId);
+	if (q.eof())
+	{
+		return preview;
+	}
+
+	bool picture = false;
+	if (row >= 0 && row < (int)m_listItems.size() && m_listItems[row].m_noText)
+	{
+		CppSQLite3Query image = theApp.m_db.execQueryEx(_T("SELECT COUNT(*) FROM Data WHERE lParentID = %d AND strClipBoardFormat IN ('CF_DIB', 'PNG')"), clipId);
+		picture = image.eof() == false && image.getIntField(0) > 0;
+	}
+
+	if (picture)
+	{
+		preview = theApp.m_Language.GetString(_T("ImageClip"), _T("Image"));
+	}
+	else
+	{
+		CString text = q.getStringField(_T("mText"));
+		int lines = 0;
+		int pos = 0;
+		for (CString line = text.Tokenize(_T("\r\n"), pos); pos >= 0 && lines < 2; line = text.Tokenize(_T("\r\n"), pos))
+		{
+			line.Trim();
+			if (line.IsEmpty())
+			{
+				continue;
+			}
+			if (line.GetLength() > 60)
+			{
+				line = line.Left(59) + _T("\x2026");
+			}
+			preview += (lines > 0 ? _T("\r\n") : _T("")) + line;
+			lines++;
+		}
+	}
+
+	COleDateTime copied((time_t)q.getInt64Field(_T("lDate")));
+	preview += _T("\r\n") + theApp.m_Language.GetString(_T("CopiedOn"), _T("Copied")) + _T(" ") + copied.Format();
+	return preview;
+}
+
 void CQPasteWnd::OnGetToolTipText(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	CQListToolTipText* pInfo = (CQListToolTipText*)pNMHDR;
@@ -5975,6 +6737,13 @@ void CQPasteWnd::OnGetToolTipText(NMHDR* pNMHDR, LRESULT* pResult)
 		CString clipData = _T("");
 
 		int id = m_lstHeader.GetItemData(pInfo->lItem);
+		if (pInfo->hover)
+		{
+			cs = HoverPreview(id, pInfo->lItem);
+			lstrcpyn(pInfo->pszText, cs, pInfo->cchTextMax);
+			return;
+		}
+
 		CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT lID, mText, lDate, lShortCut, clipOrder, clipGroupOrder, stickyClipOrder, stickyClipGroupOrder, lDontAutoDelete, QuickPasteText, lastPasteDate, globalShortCut, lParentID FROM Main WHERE lID = %d"), id);
 		if (q.eof() == false)
 		{
@@ -6318,6 +7087,12 @@ LRESULT CQPasteWnd::OnUpDown(WPARAM wParam, LPARAM lParam)
 	return TRUE;
 }
 
+LRESULT CQPasteWnd::OnDockedPanelClosed(WPARAM wParam, LPARAM lParam)
+{
+	LeaveFullView();
+	return TRUE;
+}
+
 LRESULT CQPasteWnd::OnToolTipWndInactive(WPARAM wParam, LPARAM lParam)
 {
 	if (!CGetSetOptions::m_bShowPersistent)
@@ -6334,6 +7109,7 @@ LRESULT CQPasteWnd::OnToolTipWndInactive(WPARAM wParam, LPARAM lParam)
 		CWnd* p = GetFocus();
 		if (p == NULL)
 		{
+			LeaveFullView();
 			m_lstHeader.HidePopup(true);
 		}
 	}
@@ -6472,6 +7248,11 @@ LRESULT CQPasteWnd::OnSetListCount(WPARAM wParam, LPARAM lParam)
 
 	MoveControls();
 
+	if (m_fullView)
+	{
+		UpdateFullViewPanel();
+	}
+
 	return TRUE;
 }
 
@@ -6548,6 +7329,8 @@ void CQPasteWnd::FillMainTable(CMainTable& table, CppSQLite3Query& q)
 	table.m_dateCopied = q.getInt64Field(_T("lDate"));
 	table.m_datePasted = q.getInt64Field(_T("lastPasteDate"));
 	table.m_tags = q.getStringField(_T("tagNames"));
+	table.m_sourceApp = q.getStringField(_T("sourceApp"));
+	table.m_noText = q.getIntField(_T("noText")) > 0;
 }
 
 void CQPasteWnd::OnDestroy()
@@ -6625,6 +7408,11 @@ void CQPasteWnd::OnTimer(UINT_PTR nIDEvent)
 			DoAction(m_timerAction);
 		}
 		m_timerAction = CAccel();
+	}
+	else if (nIDEvent == TIMER_FULL_VIEW_PANEL)
+	{
+		KillTimer(TIMER_FULL_VIEW_PANEL);
+		UpdateFullViewPanel();
 	}
 
 	CWndEx::OnTimer(nIDEvent);
@@ -6766,6 +7554,40 @@ BOOL CQPasteWnd::OnEraseBkgnd(CDC* pDC)
 	CBrush* pOld = pDC->SelectObject(&myBrush);
 	BOOL bRes = pDC->PatBlt(0, 0, rect.Width(), rect.Height(), PATCOPY);
 	pDC->SelectObject(pOld);    // restore old brush
+
+	if (m_searchSurface.IsRectEmpty() == FALSE)
+	{
+		CDPI& dpi = m_DittoWindow.m_dpi;
+		bool focused = ::GetFocus() == m_search.GetSafeHwnd();
+
+		// rounded search box; when focused an accent line runs along its bottom, like Windows 11 text boxes
+		COLORREF surface = CGetSetOptions::m_Theme.SearchTextBoxFocusBG();
+		CBrush surfaceBrush(surface);
+		CPen surfacePen(PS_SOLID, 1, surface);
+		CBrush* oldBrush = pDC->SelectObject(&surfaceBrush);
+		CPen* oldPen = pDC->SelectObject(&surfacePen);
+		pDC->RoundRect(m_searchSurface, CPoint(dpi.Scale(8), dpi.Scale(8)));
+		pDC->SelectObject(oldPen);
+		pDC->SelectObject(oldBrush);
+
+		if (focused)
+		{
+			CRect line(m_searchSurface.left + dpi.Scale(4), m_searchSurface.bottom - dpi.Scale(2), m_searchSurface.right - dpi.Scale(4), m_searchSurface.bottom);
+			pDC->FillSolidRect(line, CGetSetOptions::m_Theme.SearchTextBoxFocusBorder());
+		}
+
+		static CString iconFont = FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets");
+		CFont glyphFont;
+		glyphFont.CreateFont(-dpi.Scale(14), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, iconFont);
+		CFont* oldFont = pDC->SelectObject(&glyphFont);
+		pDC->SetBkMode(TRANSPARENT);
+		pDC->SetTextColor(CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
+		CRect glyphRect(m_searchSurface.left, m_searchSurface.top, m_searchSurface.left + dpi.Scale(34), m_searchSurface.bottom);
+		WCHAR glyph[2] = { GLYPH_SEARCH, 0 };
+		pDC->DrawText(glyph, 1, glyphRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
+		pDC->SelectObject(oldFont);
+	}
+
 	return bRes;                       // CDialog::OnEraseBkgnd(pDC);
 
 	//return TRUE;
@@ -6854,7 +7676,7 @@ LRESULT CQPasteWnd::OnDeleteId(WPARAM wParam, LPARAM lParam)
 		bool bStartValue = m_bHideWnd;
 		m_bHideWnd = false;
 
-		int nRet = MessageBox(theApp.m_Language.GetString("Delete_Clip_Groups", "Delete Group?"), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+		int nRet = MessageBox(theApp.m_Language.GetString("Delete_Clip_Groups", "Delete Group?"), _T("Bulb"), MB_OKCANCEL | MB_TOPMOST);
 
 		m_bHideWnd = bStartValue;
 
@@ -7306,6 +8128,7 @@ bool CQPasteWnd::DoActionEditTags()
 
 	m_lstHeader.RefreshVisibleRows();
 	m_lstHeader.SetFocus();
+	RefreshTagBar();
 
 	return true;
 }
@@ -7314,7 +8137,7 @@ void CQPasteWnd::OnMenuConvertGroupsToTags()
 {
 	m_bHideWnd = false;
 
-	int nRet = MessageBox(theApp.m_Language.GetString(_T("ConvertGroupsToTags"), _T("Tag every clip in a group with the group's name?\r\n\r\nGroups and their clips are not changed.")), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+	int nRet = MessageBox(theApp.m_Language.GetString(_T("ConvertGroupsToTags"), _T("Tag every clip in a group with the group's name?\r\n\r\nGroups and their clips are not changed.")), _T("Bulb"), MB_OKCANCEL | MB_TOPMOST);
 	if (nRet == IDOK)
 	{
 		int converted = -1;
@@ -7327,9 +8150,10 @@ void CQPasteWnd::OnMenuConvertGroupsToTags()
 
 		if (converted >= 0)
 		{
-			MessageBox(StrF(_T("%s: %d"), theApp.m_Language.GetString(_T("GroupsConvertedToTags"), _T("Groups converted to tags")), converted), _T("Ditto"), MB_OK | MB_TOPMOST);
+			MessageBox(StrF(_T("%s: %d"), theApp.m_Language.GetString(_T("GroupsConvertedToTags"), _T("Groups converted to tags")), converted), _T("Bulb"), MB_OK | MB_TOPMOST);
 		}
 
+		RefreshTagBar();
 		DoRefreshList();
 	}
 
@@ -7436,7 +8260,10 @@ void CQPasteWnd::OnSystemButton()
 
 		SetMenuChecks(cmSubMenu);
 
-		cmSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, pp.x, pp.y, this, NULL);
+		// opens under the ... button, right edges aligned
+		CRect button;
+		m_systemMenu.GetWindowRect(button);
+		FluentMenu::Track(cmSubMenu->m_hMenu, TPM_RIGHTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, button.right, button.bottom + m_DittoWindow.m_dpi.Scale(4), m_hWnd);
 	}
 }
 
@@ -7741,8 +8568,6 @@ LRESULT CQPasteWnd::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 
 	log(StrF(_T("CQPasteWnd::OnDpiChanged dpi: %d width: %d, height: %d"), dpi, r.Width(), r.Height()));
 
-	m_systemMenu.Reset();
-	m_systemMenu.LoadStdImageDPI(m_DittoWindow.m_dpi.GetDPI(), system_menu_2_24, system_menu_2_30, system_menu_2_36, system_menu_2_42, system_menu_2_48, _T("PNG"), system_menu_54, system_menu_60, system_menu_66, system_menu_72, system_menu_78, system_menu_84);
 
 	m_BackButton.Reset();
 	m_BackButton.LoadStdImageDPI(m_DittoWindow.m_dpi.GetDPI(), return_16, return_20, return_24, return_28, return_32, _T("PNG"));
@@ -8421,7 +9246,7 @@ bool CQPasteWnd::DoDeleteAllNonUsedClips()
 	bool bStartValue = m_bHideWnd;
 	m_bHideWnd = false;
 
-	int nRet = MessageBox(theApp.m_Language.GetString("Delete_All_Non_Used_Clips", "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key or marked as sticky.\r\n\r\nThis cannot be undone."), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+	int nRet = MessageBox(theApp.m_Language.GetString("Delete_All_Non_Used_Clips", "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key, marked as sticky or tagged.\r\n\r\nThis cannot be undone."), _T("Bulb"), MB_OKCANCEL | MB_TOPMOST);
 
 	m_bHideWnd = bStartValue;
 	if (nRet != IDOK)

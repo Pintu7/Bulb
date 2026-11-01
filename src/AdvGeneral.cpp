@@ -173,7 +173,7 @@ BOOL CAdvGeneral::OnInitDialog()
 	HICON b = (HICON)LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDR_MAINFRAME), IMAGE_ICON, 64, 64, LR_SHARED);
 	SetIcon(b, TRUE);
 
-	CMFCPropertyGridProperty * pGroupTest = new CMFCPropertyGridProperty( _T( "Ditto" ) );
+	CMFCPropertyGridProperty * pGroupTest = new CMFCPropertyGridProperty( _T( "Bulb" ) );
 	m_propertyGrid.AddProperty(pGroupTest);
 
 	m_Resize.SetParent(m_hWnd);
@@ -228,7 +228,7 @@ BOOL CAdvGeneral::OnInitDialog()
 
 	AddTrueFalse(pGroupTest, _T("Display icon in system tray"), CGetSetOptions::GetShowIconInSysTray(), SETTING_SHOW_TASKBAR_ICON);
 
-	AddTrueFalse(pGroupTest, _T("Do not hide Ditto window on deactivate"), CGetSetOptions::GetDoNotHideOnDeactivate(), SETTING_DO_NOT_HIDE_ON_DEACTIVATE);
+	AddTrueFalse(pGroupTest, _T("Do not hide Bulb window on deactivate"), CGetSetOptions::GetDoNotHideOnDeactivate(), SETTING_DO_NOT_HIDE_ON_DEACTIVATE);
 
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Double shortcut keystroke timeout)"), (long)CGetSetOptions::GetDoubleKeyStrokeTimeout(), _T(""), SETTING_DOUBLE_KEYSTROKE_TIMEOUT));
 
@@ -238,7 +238,7 @@ BOOL CAdvGeneral::OnInitDialog()
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Editor default font size"), (long)CGetSetOptions::GetEditorDefaultFontSize(), _T(""), SETTING_EDITOR_FONT_SIZE));
 	AddTrueFalse(pGroupTest, _T("Enforce clipboard ignore formats"), CGetSetOptions::GetEnforceClipboardIgnoreFormats(), SETTING_ENFORCE_CLIPBOARD_IGNORE_FORMATS);
 	AddTrueFalse(pGroupTest, _T("Elevated privileges to paste into elevated apps"), CGetSetOptions::GetPasteAsAdmin(), SETTING_PASTE_AS_ADMIN);
-	AddTrueFalse(pGroupTest, _T("Ensure Ditto is always connected to the clipboard"), CGetSetOptions::GetEnsureConnectToClipboard(), SETTING_ENSURE_CONNECTED);
+	AddTrueFalse(pGroupTest, _T("Ensure Bulb is always connected to the clipboard"), CGetSetOptions::GetEnsureConnectToClipboard(), SETTING_ENSURE_CONNECTED);
 	AddTrueFalse(pGroupTest, _T("Ensure entire window is visible"), CGetSetOptions::GetEnsureEntireWindowCanBeSeen(), SETTING_ENSURE_WINDOW_IS_VISIBLE);
 
 	AddTrueFalse(pGroupTest, _T("Fast thumbnails (True = fast / low quality (default). False = slow / high quality)"), CGetSetOptions::GetFastThumbnailMode(), SETTING_FAST_THUMBNAIL_MODE);
@@ -248,7 +248,7 @@ BOOL CAdvGeneral::OnInitDialog()
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("First ten hot keys start index"), (long)CGetSetOptions::GetFirstTenHotKeysStart(), _T(""), SETTING_FIRST_TEN_HOTKEYS_START));
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("First ten hot keys font size"), (long)CGetSetOptions::GetFirstTenHotKeysFontSize(), _T(""), SETTING_FIRST_TEN_HOTKEYS_FONT_SIZE));
 
-	AddTrueFalse(pGroupTest, _T("Hide Ditto on hot key if Ditto is visible"), CGetSetOptions::GetHideDittoOnHotKeyIfAlreadyShown(), SETTING_HIDE_ON_HOTKEY_IF_VISIBLE);
+	AddTrueFalse(pGroupTest, _T("Hide Bulb on hot key if Bulb is visible"), CGetSetOptions::GetHideDittoOnHotKeyIfAlreadyShown(), SETTING_HIDE_ON_HOTKEY_IF_VISIBLE);
 
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Ignore copies faster than (ms) (default: 500)"), (long)CGetSetOptions::GetSaveClipDelay(), _T(""), SETTING_IGNORE_FALSE_COPIES_DELAY));
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Ignore CF_DIB when a clip is detected as text content"), CGetSetOptions::GetIgnoreAnnoyingCFDIB(), _T("Case insensitive. Recommended option is \"excel.exe; onenote.exe; powerpnt.exe\" "), SETTING_IGNORE_ANNOYING_CF_DIB));
@@ -308,7 +308,7 @@ BOOL CAdvGeneral::OnInitDialog()
 	AddTrueFalse(pGroupTest, _T("Show clips that are in groups in main list"), CGetSetOptions::GetShowAllClipsInMainList(), SETTING_SHOW_GROUP_CLIPS_IN_LIST);
 	AddTrueFalse(pGroupTest, _T("Show leading whitespace"), CGetSetOptions::GetDescShowLeadingWhiteSpace(), SETTING_SHOW_LEADING_WHITESPACE);
 	AddTrueFalse(pGroupTest, _T("Show in taskbar"), CGetSetOptions::GetShowInTaskBar(), SETTTING_SHOW_IN_TASKBAR);
-	AddTrueFalse(pGroupTest, _T("Hide taskbar icon when Ditto window closes"), CGetSetOptions::GetHideTaskbarIconOnClose(), SETTING_HIDE_TASKBAR_ICON_ON_CLOSE);
+	AddTrueFalse(pGroupTest, _T("Hide taskbar icon when Bulb window closes"), CGetSetOptions::GetHideTaskbarIconOnClose(), SETTING_HIDE_TASKBAR_ICON_ON_CLOSE);
 	AddTrueFalse(pGroupTest, _T("Show indicator a clip has been pasted"), CGetSetOptions::GetShowIfClipWasPasted(), SETTING_SHOW_CLIP_PASTED);
 
 	AddTrueFalse(pGroupTest, _T("Show message that we received a manual sent clip"), CGetSetOptions::GetShowMsgWhenReceivingManualSentClip(), SETTING_SHOW_MSG_WHEN_RECEIVING_MANUAL_SENT_CLIP);	
@@ -343,7 +343,7 @@ BOOL CAdvGeneral::OnInitDialog()
 	m_propertyGrid.AddProperty(regexFilterGroup);
 
 	CString processFilterDesc = _T("Process making the copy first must match this before the Regex will be applied (empty or * for all processes) (separate multiples by ;)");
-	CString regexFilterDesc = _T("If copied text matches this regular expression then the clip will not be saved to Ditto");
+	CString regexFilterDesc = _T("If copied text matches this regular expression then the clip will not be saved to Bulb");
 
 	regexFilterGroup->AddSubItem(new CMFCPropertyGridProperty(_T("1 Regex"), CGetSetOptions::GetRegexFilter(0), regexFilterDesc, SETTING_REGEX_FILTERING_1));
 	regexFilterGroup->AddSubItem(new CMFCPropertyGridProperty(_T("1 Process Name"), CGetSetOptions::GetRegexFilterByProcessName(0), processFilterDesc, SETTING_REGEX_FILTERING_BY_PROCESS_NAME_1));
@@ -1023,7 +1023,7 @@ void CAdvGeneral::OnSize(UINT nType, int cx, int cy)
 void CAdvGeneral::OnBnClickedBtCompactAndRepair()
 {
 	auto msg = theApp.m_Language.GetString("CompactRepairWarning", "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?");
-	int ret = MessageBox(msg, _T("Ditto"), MB_OKCANCEL);
+	int ret = MessageBox(msg, _T("Bulb"), MB_OKCANCEL);
 
 	if (ret == IDOK)
 	{

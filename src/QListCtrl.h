@@ -45,6 +45,8 @@
 #define NM_FOCUS_ON_SEARCH			WM_USER+0x129
 #define NM_COPY_CLIP				WM_USER+0x130
 #define NM_UPDATE_SCROLLBAR			WM_USER+0x131
+#define NM_DOCKED_PANEL_CLOSED		WM_USER+0x132 // the full view's side panel was hidden by itself
+#define NM_OCR_TEXT_READY			WM_USER+0x133 // "Copy Text from Image" finished; lParam: new std::wstring the receiver deletes
 
 
 
@@ -65,8 +67,9 @@ class CQListToolTipText
 public:
 	NMHDR hdr;
 	long lItem;
-	LPTSTR pszText; 
-	int cchTextMax; 
+	LPTSTR pszText;
+	int cchTextMax;
+	bool hover; // the short hover preview (two lines and when it was copied) instead of the full description
 };
 
 
@@ -122,7 +125,7 @@ public:
 	DWORD GetItemData(int nItem);
 	CClipFormatQListCtrl* GetItem_CF_DIB_ClipFormat(int nItem);
 	CClipFormatQListCtrl* GetItem_CF_RTF_ClipFormat(int nItem);
-	void GetToolTipText(int nItem, CString &csText);
+	void GetToolTipText(int nItem, CString &csText, bool hover = false);
 
 	void SetShowTextForFirstTenHotKeys(BOOL bVal)	{ m_bShowTextForFirstTenHotKeys = bVal;	}
 	void SetShowIfClipWasPasted(BOOL val) { m_showIfClipWasPasted = val; }
@@ -134,6 +137,8 @@ public:
 	BOOL SetItemCountEx(int iCount, DWORD dwFlags = 0);
 
 	void HidePopup(bool checkShowPersistant);
+	// Full view: keep the description window at this screen rect; an empty rect undocks and hides it
+	void SetDescriptionDockRect(CRect rect);
 	void ToggleToolTipShowPersistant();
 	bool ToggleToolTipWordWrap();
 	void SetTooltipActions(CAccels *pToolTipActions) { m_pToolTipActions = pToolTipActions; }
@@ -178,6 +183,7 @@ protected:
 	WCHAR *m_pwchTip;
 	TCHAR *m_pchTip;
 	HFONT m_SmallFont;
+	CFont m_metaFont; // copy time and tag pills
 	CAccels	m_Accels;
 	CMapIDtoCF m_RTFData;
 	CToolTipEx *m_pToolTip;
@@ -198,6 +204,7 @@ protected:
 	CString m_searchText;
 	BOOL m_showIfClipWasPasted;
 	CAccels *m_pToolTipActions;
+	CRect m_descriptionDockRect;
 	CRichEditCtrlEx m_rtfFormater;
 	CDPI *m_windowDpi;
 

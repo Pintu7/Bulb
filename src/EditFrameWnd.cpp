@@ -5,8 +5,7 @@
 #include "CP_Main.h"
 #include "EditFrameWnd.h"
 #include ".\editframewnd.h"
-
-#define TIMER_BUTTON_UP 1
+#include "FluentDialog.h"
 
 // CEditFrameWnd
 
@@ -33,18 +32,10 @@ BEGIN_MESSAGE_MAP(CEditFrameWnd, CFrameWnd)
 	ON_COMMAND(ID_BUTTON_SAVE_CLOSE_CLIPBOARD, OnDummy)
 	ON_WM_SETFOCUS()
 	ON_WM_CLOSE()
-	ON_WM_NCCALCSIZE()
-	ON_WM_NCPAINT()
-	ON_WM_NCHITTEST()
-	ON_WM_NCLBUTTONDOWN()
-	ON_WM_NCLBUTTONUP()
-	ON_WM_NCMOUSEMOVE()
-	ON_WM_NCLBUTTONDBLCLK()
-	ON_WM_WINDOWPOSCHANGING()
-	ON_WM_TIMER()
 	ON_MESSAGE(WM_DPICHANGED, OnDpiChanged)
 	ON_WM_MOVING()
 	ON_WM_ENTERSIZEMOVE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -55,23 +46,17 @@ int CEditFrameWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	ModifyStyle(WS_CAPTION|WS_BORDER|WS_OVERLAPPED|0x0000C000|WS_THICKFRAME|WS_DLGFRAME|WS_SYSMENU|WS_MINIMIZEBOX|WS_MAXIMIZEBOX, 0, SWP_DRAWFRAME); 
-	ModifyStyleEx(WS_EX_CLIENTEDGE, 0, 0);
-		
-	CString csTitle = theApp.m_Language.GetString("Ditto_Edit", "Ditto Edit");
+	// the standard Windows 11 title bar (rounded corners, snap layouts), colored by FluentDialog::Apply
+	ModifyStyleEx(WS_EX_CLIENTEDGE, 0, SWP_FRAMECHANGED);
+
+	CString csTitle = theApp.m_Language.GetString("Ditto_Edit", "Bulb Edit");
 	m_EditWnd.Create(NULL, csTitle, WS_CHILD, CRect(0, 0, 0, 0), this, 100, NULL);
 	m_EditWnd.ShowWindow(SW_SHOW);
 
-	MoveControls();   
+	MoveControls();
 
-	m_DittoWindow.DoCreate(this);
-	m_DittoWindow.m_bDrawChevron = false;
-	m_DittoWindow.SetCaptionColors(g_Opt.m_Theme.CaptionLeft(), g_Opt.m_Theme.CaptionRight(), g_Opt.m_Theme.Border());
-	m_DittoWindow.SetCaptionOn(this, CAPTION_TOP, true, g_Opt.m_Theme.GetCaptionSize(), g_Opt.m_Theme.GetCaptionFontSize());
-
-	m_crIcon.SetRect(-2, -15, 15, 0);
-
-	SetWindowText(_T("Ditto Editor"));
+	SetWindowText(_T("Bulb Editor"));
+	FluentDialog::Apply(m_hWnd);
 
 	return 0;
 }
@@ -111,13 +96,13 @@ bool CEditFrameWnd::EditIds(CClipIDs &Ids)
 
 BOOL CEditFrameWnd::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if(cs.hMenu!=NULL)  
+	if(cs.hMenu!=NULL)
 	{
 		::DestroyMenu(cs.hMenu);      // delete menu if loaded
 		cs.hMenu = NULL;              // no menu for this window
 	}
 
-	WNDCLASS wc;	
+	WNDCLASS wc;
 	wc.style = CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = AfxWndProc;
 	wc.cbClsExtra = 0;
@@ -125,17 +110,27 @@ BOOL CEditFrameWnd::PreCreateWindow(CREATESTRUCT& cs)
 	wc.hInstance = AfxGetInstanceHandle();
 	wc.hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.hbrBackground = NULL; // the edit window covers the client area
 	wc.lpszMenuName =  NULL;
-	wc.lpszClassName = _T("Ditto Edit Wnd");
+	wc.lpszClassName = _T("Bulb Edit Wnd");
 
 	// Create the QPaste window class
 	if (!AfxRegisterClass(&wc))
 		return FALSE;
 
 	cs.lpszClass = wc.lpszClassName;
+	cs.style &= ~FWS_ADDTOTITLE;
 
 	return CFrameWnd::PreCreateWindow(cs);
+}
+
+// the class has no brush; while the edit window is being created or resized the frame shows the theme's ground, not white
+BOOL CEditFrameWnd::OnEraseBkgnd(CDC* pDC)
+{
+	CRect r;
+	GetClientRect(r);
+	pDC->FillSolidRect(r, CGetSetOptions::m_Theme.MainWindowBG());
+	return TRUE;
 }
 
 void CEditFrameWnd::OnDummy()
@@ -159,107 +154,14 @@ void CEditFrameWnd::OnClose()
 	CFrameWnd::OnClose();
 }
 
-void CEditFrameWnd::OnNcCalcSize(BOOL bCalcValidRects, NCCALCSIZE_PARAMS FAR* lpncsp) 
-{
-	CWnd::OnNcCalcSize(bCalcValidRects, lpncsp);
-
-	m_DittoWindow.DoNcCalcSize(bCalcValidRects, lpncsp);
-}
-
-void CEditFrameWnd::OnNcPaint()
-{
-	m_DittoWindow.DoNcPaint(this);	
-}
-
-HITTEST_RET CEditFrameWnd::OnNcHitTest(CPoint point) 
-{
-	UINT Ret = m_DittoWindow.DoNcHitTest(this, point);
-	if(Ret == -1)
-		return CWnd::OnNcHitTest(point);
-
-	return Ret;
-}
-void CEditFrameWnd::OnNcLButtonDown(UINT nHitTest, CPoint point)
-{
-	int buttonPressed = m_DittoWindow.DoNcLButtonDown(this, nHitTest, point);
-
-	if (buttonPressed != 0)
-	{
-		SetTimer(TIMER_BUTTON_UP, 100, NULL);
-	}
-
-	CFrameWnd::OnNcLButtonDown(nHitTest, point);
-}
-
-void CEditFrameWnd::OnNcLButtonUp(UINT nHitTest, CPoint point)
-{
-	if(m_DittoWindow.DoNcLButtonUp(this, nHitTest, point) > 0)
-		return;
-
-	KillTimer(TIMER_BUTTON_UP);
-
-	CFrameWnd::OnNcLButtonUp(nHitTest, point);
-}
-
-void CEditFrameWnd::OnNcMouseMove(UINT nHitTest, CPoint point)
-{
-	m_DittoWindow.DoNcMouseMove(this, nHitTest, point);
-
-	CFrameWnd::OnNcMouseMove(nHitTest, point);
-}
-
-BOOL CEditFrameWnd::PreTranslateMessage(MSG* pMsg)
-{
-	m_DittoWindow.DoPreTranslateMessage(pMsg);
-
-	return CFrameWnd::PreTranslateMessage(pMsg);
-}
-
 bool CEditFrameWnd::CloseAll()
 {
 	return m_EditWnd.CloseEdits(true);
-}
-void CEditFrameWnd::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
-{
-	CPoint pt(point);
-	ScreenToClient(&pt);
-	if(m_crIcon.PtInRect(pt))
-	{
-		CloseAll();
-		OnClose();
-		return;
-	}
-
-	CFrameWnd::OnNcLButtonDblClk(nHitTest, point);
-}
-
-void CEditFrameWnd::OnWindowPosChanging(WINDOWPOS* lpwndpos)
-{
-	CFrameWnd::OnWindowPosChanging(lpwndpos);
-}
-
-void CEditFrameWnd::OnTimer(UINT_PTR nIDEvent)
-{
-	switch (nIDEvent)
-	{
-		case TIMER_BUTTON_UP:
-		{
-			if ((GetKeyState(VK_LBUTTON) & 0x100) == 0)
-			{
-				m_DittoWindow.DoNcLButtonUp(this, 0, CPoint(0, 0));
-				KillTimer(TIMER_BUTTON_UP);
-			}
-			break;
-		}
-	}
-
-	CWnd::OnTimer(nIDEvent);
 }
 
 LRESULT CEditFrameWnd::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 {
 	int dpi = HIWORD(wParam);
-	m_DittoWindow.OnDpiChanged(this, dpi);
 	m_EditWnd.OnDpiChanged(this, dpi);
 
 	RECT* const prcNewWindow = (RECT*)lParam;

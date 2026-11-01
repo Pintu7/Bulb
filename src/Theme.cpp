@@ -20,55 +20,101 @@ CTheme::~CTheme(void)
 }
 
 
+// Fluent light (Windows 11 look): one flat ground, no row stripes, rounded selection drawn by the list
 void CTheme::LoadDefaults()
 {
-	m_CaptionLeft = RGB(255, 255, 255);
-	m_CaptionRight = RGB(204, 204, 204);
+	COLORREF ground = RGB(243, 243, 243);
+	COLORREF ink = RGB(26, 26, 26);
+	COLORREF dim = RGB(110, 110, 110);
+	COLORREF accent = RGB(0, 95, 184);
 
-	m_Border = RGB(204, 204, 204);
-	m_BorderTopMost = RGB(204, 204, 204);
-	m_BorderNotConnected = RGB(204, 204, 204);
+	m_CaptionLeft = ground;
+	m_CaptionRight = ground;
+	m_CaptionLeftTopMost = ground;
+	m_CaptionRightTopMost = ground;
+	m_CaptionLeftNotConnected = ground;
+	m_CaptionRightNotConnected = RGB(255, 214, 102);
+	m_CaptionTextColor = dim;
 
-	m_CaptionLeftTopMost = RGB(255, 255, 255);
-	m_CaptionRightTopMost = RGB(204, 204, 204);
-	
-	m_CaptionLeftNotConnected = RGB(255, 255, 255);
-	m_CaptionRightNotConnected = RGB(255, 255, 0);
+	m_Border = RGB(214, 214, 214);
+	m_BorderTopMost = RGB(214, 214, 214);
+	m_BorderNotConnected = RGB(214, 214, 214);
 
-	m_CaptionTextColor = RGB(191, 191, 191);
-	m_ListBoxOddRowsBG = RGB(255, 255, 255);
-	m_ListBoxEvenRowsBG = RGB(243, 243, 243);
-	m_ListBoxOddRowsText = RGB(0, 0, 0);
-	m_ListBoxEvenRowsText = RGB(0, 0, 0);
-	m_ListBoxSelectedBG = RGB(204, 204, 204);
-	m_ListBoxSelectedNoFocusBG = RGB(204, 204, 204);
-	m_ListBoxSelectedText = RGB(0, 0, 0);
-	m_ListBoxSelectedNoFocusText = RGB(0, 0, 0);
-	m_clipPastedColor = RGB(0, 255, 0);
-	m_listSmallQuickPasteIndexColor = RGB(180, 180, 180);
-	m_mainWindowBG = RGB(240, 240, 240);
+	m_ListBoxOddRowsBG = ground;
+	m_ListBoxEvenRowsBG = ground;
+	m_ListBoxOddRowsText = ink;
+	m_ListBoxEvenRowsText = ink;
+	m_ListBoxSelectedBG = RGB(225, 225, 225);
+	m_ListBoxSelectedNoFocusBG = RGB(232, 232, 232);
+	m_ListBoxSelectedText = ink;
+	m_ListBoxSelectedNoFocusText = ink;
+	m_clipPastedColor = accent;
+	m_listSmallQuickPasteIndexColor = dim;
+	m_mainWindowBG = ground;
 	m_searchTextBoxFocusBG = RGB(255, 255, 255);
-	m_searchTextBoxFocusText = RGB(0, 0, 0);
-	m_searchTextBoxFocusBorder = RGB(255, 255, 255);
-	m_searchTextHighlight = RGB(255, 0, 0);
+	m_searchTextBoxFocusText = ink;
+	m_searchTextBoxFocusBorder = accent;
+	m_searchTextHighlight = accent;
 
-	m_groupTreeBG = RGB(240, 240, 240);
-	m_groupTreeText = RGB(127, 127, 127);
+	m_groupTreeBG = ground;
+	m_groupTreeText = dim;
 
-	m_descriptionWindowBG = RGB(240, 240, 240);// GetSysColor(COLOR_INFOBK);//RGB(240, 240, 240);//
-	/*int r = GetRValue(m_descriptionWindowBG);
-	int g = GetGValue(m_descriptionWindowBG);
-	int b = GetBValue(m_descriptionWindowBG);*/
+	m_descriptionWindowBG = RGB(249, 249, 249);
+	m_descriptionWindowText = ink;
 
-	m_descriptionWindowText = RGB(0, 0, 0);
-
-	// Modern scrollbar defaults - rounded look
-	m_scrollBarThumb = RGB(180, 180, 180);
-	m_scrollBarThumbHover = RGB(140, 140, 140);
-	m_scrollBarTrack = RGB(240, 240, 240);
+	m_scrollBarThumb = RGB(160, 160, 160);
+	m_scrollBarThumbHover = RGB(120, 120, 120);
+	m_scrollBarTrack = ground;
 
 	m_captionSize = 25;
-	m_captionFontSize = 19;
+	m_captionFontSize = 16;
+}
+
+// Fluent dark, used when no theme is chosen and Windows apps are in dark mode
+void CTheme::LoadFluentDark()
+{
+	COLORREF ground = RGB(32, 32, 32);
+	COLORREF ink = RGB(255, 255, 255);
+	COLORREF dim = RGB(157, 157, 157);
+	COLORREF accent = RGB(76, 194, 255);
+
+	m_CaptionLeft = ground;
+	m_CaptionRight = ground;
+	m_CaptionLeftTopMost = ground;
+	m_CaptionRightTopMost = ground;
+	m_CaptionLeftNotConnected = ground;
+	m_CaptionRightNotConnected = RGB(120, 96, 20);
+	m_CaptionTextColor = dim;
+
+	m_Border = RGB(58, 58, 58);
+	m_BorderTopMost = RGB(58, 58, 58);
+	m_BorderNotConnected = RGB(58, 58, 58);
+
+	m_ListBoxOddRowsBG = ground;
+	m_ListBoxEvenRowsBG = ground;
+	m_ListBoxOddRowsText = ink;
+	m_ListBoxEvenRowsText = ink;
+	m_ListBoxSelectedBG = RGB(58, 58, 58);
+	m_ListBoxSelectedNoFocusBG = RGB(45, 45, 45);
+	m_ListBoxSelectedText = ink;
+	m_ListBoxSelectedNoFocusText = ink;
+	m_clipPastedColor = accent;
+	m_listSmallQuickPasteIndexColor = dim;
+	m_mainWindowBG = ground;
+	m_searchTextBoxFocusBG = RGB(43, 43, 43);
+	m_searchTextBoxFocusText = ink;
+	m_searchTextBoxFocusBorder = accent;
+	m_searchTextHighlight = accent;
+
+	m_groupTreeBG = ground;
+	m_groupTreeText = dim;
+
+	m_descriptionWindowBG = RGB(43, 43, 43);
+	m_descriptionWindowText = ink;
+
+	m_scrollBarThumb = RGB(110, 110, 110);
+	m_scrollBarThumbHover = RGB(150, 150, 150);
+	m_scrollBarTrack = ground;
 }
 
 bool CTheme::Load(CString csTheme, bool bHeaderOnly, bool bCheckLastWriteTime)
@@ -77,20 +123,20 @@ bool CTheme::Load(CString csTheme, bool bHeaderOnly, bool bCheckLastWriteTime)
 	if (csTheme.IsEmpty())
 	{
 		followWindows10Theme = true;
-
-		if (DarkAppWindows10Setting())
-		{
-			csTheme = _T("DarkerDitto");
-			Log(_T("Loading theme based on windows setting of dark mode for apps"));			
-		}
 	}
 
-	if (csTheme.IsEmpty() || csTheme == _T("Ditto") || csTheme == _T("(Default)") || csTheme == _T("(Ditto)"))
+	if (csTheme.IsEmpty() || csTheme == _T("Bulb") || csTheme == _T("(Default)") || csTheme == _T("(Bulb)"))
 	{
 		LoadDefaults();
 
 		if (followWindows10Theme)
 		{
+			if (DarkAppWindows10Setting())
+			{
+				LoadFluentDark();
+				Log(_T("Loading fluent dark theme based on windows setting of dark mode for apps"));
+			}
+
 			LoadWindowsAccentColor();
 		}
 
@@ -210,6 +256,12 @@ void CTheme::LoadWindowsAccentColor()
 		auto b = GetBValue(accent);
 
 		m_clipPastedColor = RGB(b, g, r);
+
+		// on a dark ground the raw accent is too deep to read, Windows uses a lighter shade of it
+		if (GetRValue(m_mainWindowBG) < 128)
+		{
+			m_clipPastedColor = RGB(b + (255 - b) * 45 / 100, g + (255 - g) * 45 / 100, r + (255 - r) * 45 / 100);
+		}
 		m_searchTextBoxFocusBorder = m_clipPastedColor;
 		m_searchTextHighlight = m_clipPastedColor;
 

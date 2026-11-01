@@ -65,7 +65,7 @@
 		<Item English_Text = "Remove Hot Key" ID = "32822">Fjern hotkey</Item>
 		<Item English_Text = "Options..." ID = "32805">Indstillinger...</Item>
 		<Item English_Text = "Help" ID = "32842">Hjælp</Item>
-		<Item English_Text = "Disconnect from Clipboard" ID = "32775">Deaktivér Ditto</Item>
+		<Item English_Text = "Disconnect from Clipboard" ID = "32775">Deaktivér Bulb</Item>
 		<Item English_Text = "Exit Program" ID = "32806">Afslut programmet</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -141,7 +141,7 @@
 		<Item English_Text = "Quick Paste Text" ID = "2125"></Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Start Ditto ved systemstart</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Start Bulb ved systemstart</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Vis ikon på proceslinien</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Maks antal gemte klip</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Klip fjernes efter</Item>
@@ -152,7 +152,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Tillad duplikater</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Opdatér klippets dato efter indsættelse</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Gem multi-klip</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Skjul Ditto med hotkey hvis Ditto er synlig</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Skjul Bulb med hotkey hvis Bulb er synlig</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Tekstmængde som gemmes til beskrivelse</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Afspil lyd under kopiering</Item>
 		<Item English_Text = "Play" ID = "2034">Spil</Item>
@@ -163,7 +163,7 @@
 		<Item English_Text = "Language" ID = "2069">Sprog</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ignorér klip som kommer x millisekunder (1000 ms = 1 sek) efter senaste klip</Item>
 		<Item English_Text = "About Language" ID = "2073">Om sprog</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ditto er altid tilknyttet klippebordet</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Bulb er altid tilknyttet klippebordet</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Generelt</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090"></Item>
 		
@@ -182,7 +182,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130"></Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Aktivér Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Aktivér Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Indsæt ren tekst</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -323,18 +323,18 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Tastaturgenveje</Item>
 		<Item English_Text = "About" ID = "AboutTitle">Om</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Fejl ved åbning af databasen</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Kan ikke starte DAO/Jet-databasen. \nVælg JA for at hente DAO fra http://ditto-cp.sourceforge.net/dao_setup.exe\n\nGenstart Ditto efter installation af DAO</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Kan ikke starte DAO/Jet-databasen. \nVælg JA for at hente DAO fra http://ditto-cp.sourceforge.net/dao_setup.exe\n\nGenstart Bulb efter installation af DAO</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Database-format ikke genkendt</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">Filen vil blive omdøbt</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">og en ny database vil blive oprettet</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Der er en opdatering til Ditto. \nGå til: ditto-cp.sourceforge.net for detaljer\n\nInstalleret version</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Der er en opdatering til Bulb. \nGå til: ditto-cp.sourceforge.net for detaljer\n\nInstalleret version</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Opdaterings-version</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Download opdateret version?</Item>		
 		<Item English_Text = "No updates available" ID = "No_Updates">Der findes ingen opdatering</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Dette vil fjerne alle klip!\n\nFortsæt?</Item>
-		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Deaktivér Ditto</Item>
-		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Aktivér Ditto</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Install">DAO/Jet-databasen kan ikke startes. DAO vil nu blive installeret.\n\nGenstart Ditto efter installation af DAO</Item>
+		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Deaktivér Bulb</Item>
+		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Aktivér Bulb</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Install">DAO/Jet-databasen kan ikke startes. DAO vil nu blive installeret.\n\nGenstart Bulb efter installation af DAO</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">INTET MÅL</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -357,15 +357,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Fejl når klip gemmes</Item>
 		<Item English_Text = "New" ID = "New">Nyt</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Gem, luk og læg på Klippebordet</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Rediger Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - indsættelse med navn</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Rediger Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - indsættelse med navn</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Fejl ved indlæsning af data</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Fejl - klip kan ikke findes under hurtigindsættelse</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Undtagelse når klippet skal findes</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - klip med navn</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - klip med navn</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Fejl når klip med navn skal gemmes i databasen</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Undtagelse når klip med navn gemmes</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto modtog ikke et klip</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb modtog ikke et klip</Item> 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins"></Item> 
 		

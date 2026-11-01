@@ -12,6 +12,7 @@
 #include "../resource.h"
 #include "CopyProperties.h"
 #include "DimWnd.h"
+#include "FluentMenu.h"
 
 // CDeleteClipData dialog
 
@@ -1078,7 +1079,7 @@ void CDeleteClipData::OnContextMenu(CWnd* pWnd, CPoint point)
 
 	if (pContextMenu != nullptr)
 	{
-		int nID = pContextMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD, point.x, point.y, this);
+		int nID = FluentMenu::Track(pContextMenu->m_hMenu, TPM_LEFTALIGN | TPM_RIGHTBUTTON | TPM_RETURNCMD, point.x, point.y, m_hWnd);
 
 		switch (nID)
 		{
@@ -1164,7 +1165,7 @@ void CDeleteClipData::SaveClipDataItemToFile(CDeleteData item)
 	ofn.hwndOwner = m_hWnd;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
-	CString x = _T("Exported Ditto Clips (.txt)\0*.txt\0\0");
+	CString x = _T("Exported Bulb Clips (.txt)\0*.txt\0\0");
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = nullptr;
@@ -1216,7 +1217,7 @@ void CDeleteClipData::OnCancel()
 void CDeleteClipData::OnBnClickedBtCompactAndRepair()
 {
 	auto msg = theApp.m_Language.GetString("CompactRepairWarning", "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?");
-	int ret = MessageBox(msg, _T("Ditto"), MB_OKCANCEL);
+	int ret = MessageBox(msg, _T("Bulb"), MB_OKCANCEL);
 
 	if (ret == IDOK)
 	{

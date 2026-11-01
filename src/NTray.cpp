@@ -219,6 +219,7 @@ to maintain a single distribution point for the source code.
 
 #include "stdafx.h"
 #include "NTray.h"
+#include "FluentMenu.h"
 #ifndef _INC_SHELLAPI
 #pragma message("To avoid this message, please put ShellApi.h in your pre compiled header (normally stdafx.h)")
 #include <ShellApi.h>
@@ -1145,7 +1146,7 @@ LRESULT CTrayNotifyIcon::OnTrayNotification(WPARAM wParam, LPARAM lParam)
       GetCursorPos(&ptCursor);
       ::SetForegroundWindow(m_NotifyIconData.hWnd);  
     #ifdef _AFX
-      ::TrackPopupMenu(pSubMenu->m_hMenu, TPM_LEFTBUTTON, ptCursor.x, ptCursor.y, 0, m_NotifyIconData.hWnd, NULL);
+      FluentMenu::Track(pSubMenu->m_hMenu, TPM_LEFTBUTTON, ptCursor.x, ptCursor.y, m_NotifyIconData.hWnd);
     #else
       ::TrackPopupMenu(subMenu, TPM_LEFTBUTTON, ptCursor.x, ptCursor.y, 0, m_NotifyIconData.hWnd, NULL);
     #endif //#ifdef _AFX

@@ -177,7 +177,7 @@
 
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Стартиране на Ditto със системата</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Стартиране на Bulb със системата</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Икона в системната лента</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Максимален брой на пазените елементи</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Елементите губят давност след</Item>
@@ -515,7 +515,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Премахване на елементи</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Всеки елемент в Ditto е съставен от няколко компонента, всички елементи в Ditto са в този списък.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Всеки елемент в Bulb е съставен от няколко компонента, всички елементи в Bulb са в този списък.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Настройки на търсене</Item>
 		<Item English_Text = "Title" ID = "1042">Заглавие</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Използване на период</Item>

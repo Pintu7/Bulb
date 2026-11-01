@@ -76,6 +76,7 @@ void GlobalClips::LoadItems()
 		lvi.iItem = row;
 
 		strItem = pHotKey->m_Name;
+		strItem.Replace(_T("Ditto"), _T("Bulb")); // internal names keep Ditto's for the saved settings
 
 		if(pHotKey->m_clipId > 0)
 		{

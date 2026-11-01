@@ -198,7 +198,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Yinelenen Girdilere İzin Ver</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Yapıştırırken Klip Sırasını Güncelle</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Çoklu Yapıştır</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Ditto Görünürken Kısayol Tuşuyla Gizle</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Bulb Görünürken Kısayol Tuşuyla Gizle</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Açıklamaya Yazı Miktarını Kaydet</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Kopyalarken Ses Çıkar</Item>
 		<Item English_Text = "Play" ID = "2034">Oynat</Item>
@@ -209,7 +209,7 @@
 		<Item English_Text = "Language" ID = "2069">Dil</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Son Kopyalamadan X Milisaniye Sonraki Kopyalamayı Dikkate Alma (1000 ms = 1 saniye)</Item>
 		<Item English_Text = "About Language" ID = "2073">Dil Hakkında</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ditto'nun Her Zaman Panoya Bağlanmasını Sağla</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Bulb'nun Her Zaman Panoya Bağlanmasını Sağla</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Genel</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Çoklu yapıştırma klip ayırıcısı ([LF] = satır sonu)</Item>
 		
@@ -237,7 +237,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130">Özel Pano Türü</Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Ditto'yu Etkinleştir</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Bulb'yu Etkinleştir</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Adlandırılmış Kopyala</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -271,15 +271,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Yapıştırınca klipleri listenin en üstüne taşı</Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Ditto'yu Etkinleştir</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Ditto'yu Etkinleştir</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Bulb'yu Etkinleştir</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Bulb'yu Etkinleştir</Item>
 		
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Geçerli Panoyu Kaydet</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Son on kopya için Ditto arayüzünde o anda seçili grubu kullan</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Son on kopya için Bulb arayüzünde o anda seçili grubu kullan</Item>
 	
 		<Item English_Text = "Copy And Save Current Clipboard" ID = "2068">Geçerli Panoyu Kopyala ve Kaydet</Item>
 	</Ditto_Options_Shortcuts>
@@ -392,20 +392,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Arkadaşlar</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Hızlı Yapıştır</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Klavye Kısayolları</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Ditto Hakkında</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Bulb Hakkında</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Veritabanı Açılırken Hata Oluştu</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet Motoru Başlatılamıyor.\nDAO'yu http://ditto-cp.sourceforge.net/dao_setup.exe adresinden indirmek için Evet'i seçin\n\nDAO yüklemesinden sonra Ditto'yu yeniden başlatın.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet Motoru Başlatılamıyor.\nDAO'yu http://ditto-cp.sourceforge.net/dao_setup.exe adresinden indirmek için Evet'i seçin\n\nDAO yüklemesinden sonra Bulb'yu yeniden başlatın.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Tanınmayan Veritabanı Formatı</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">dosya yeniden adlandırılacak</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">ve yeni bir veritabanı oluşturulacak</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ditto için yeni sürüm mevcut.\nAyrıntılar için ditto-cp.sourceforge.net adresini ziyaret edin\n\nÇalışan Sürüm</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Bulb için yeni sürüm mevcut.\nAyrıntılar için ditto-cp.sourceforge.net adresini ziyaret edin\n\nÇalışan Sürüm</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Sürümü Güncelle</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Güncellenmiş sürümü indir?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Güncelleme Bulunmuyor</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Kopyalanan bütün öğeler silinecek!\n\nDevam?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Pano Bağlantısını Kes</Item>			
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Panoya Bağlan</Item>			
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet Motoru Başlatılamıyor. DAO şimdi yüklenecek.\n\nDAO yüklemesinden sonra Ditto'yu yeniden başlatın.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet Motoru Başlatılamıyor. DAO şimdi yüklenecek.\n\nDAO yüklemesinden sonra Bulb'yu yeniden başlatın.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">HEDEF YOK</Item>	
 		
 		//New strings added in 3.6 6-9-06
@@ -428,15 +428,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Klip Kaydedilirken Hata Oluştu</Item>
 		<Item English_Text = "New" ID = "New">Yeni</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Kaydet, Kapat ve Panoya Yerleştir</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto ile Düzenle</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Adlandırılmış Yapıştır</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb ile Düzenle</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Adlandırılmış Yapıştır</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Veri Yüklenirken Hata Oluştu</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Hızlı Yapıştırılan Metin Aranırken Hata Oluştu</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Klip Aranırken Özel Durum Oluştu</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Adlandırılmış Kopyala</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Adlandırılmış Kopyala</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Adlandırılmış Kopya Veritabanına Kaydedilirken Hata Oluştu</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Adlandırılmış Kopya Kaydedilirken Özel Durum Oluştu</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto Kopyayı Alamadı</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb Kopyayı Alamadı</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Eklentiler</Item> 
@@ -462,14 +462,14 @@
 	
 		<Item English_Text = "[Always on top]" ID = "top_window">[Her zaman üstte]</Item>
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Bağlantı Kesildi]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto simge durumunda çalışıyor, kısayol tuşlarıyla veya görev tepsisi simgesine tıklayarak açılabilir</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb simge durumunda çalışıyor, kısayol tuşlarıyla veya görev tepsisi simgesine tıklayarak açılabilir</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Şunun için sonuç yok:</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Uyarı: bu işlem oldukça uzun sürebilir ve geçerli veritabanı boyutunuzun iki katına kadar disk alanı gerektirebilir, devam edilsin mi?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Ad Sor</Item>
 		<Item English_Text = "(Follow windows light/dark themes)" ID = "FollowWindowsTheme">(Windows açık/koyu temalarını izle)</Item>
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Veritabanı yedekleniyor</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Veritabanı geri yükleniyor</Item>
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto veritabanını açamadı, açılana kadar bekleniyor. Gerekirse Seçenekler'den yolu güncelleyin. Yol: </Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb veritabanını açamadı, açılana kadar bekleniyor. Gerekirse Seçenekler'den yolu güncelleyin. Yol: </Item>
 		<Item English_Text = "At Caret" ID = "AtCaret">Metin İmlecinde</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">Fare İmlecinde</Item>
 		<Item English_Text = "At Previous Position" ID = "AtPreviousPosition">Önceki Konumda</Item>
@@ -554,7 +554,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Klip Verisini Sil</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ditto'daki her klip birden çok pano öğesinden oluşur, Ditto'daki tüm pano öğeleri aşağıda listelenir.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Bulb'daki her klip birden çok pano öğesinden oluşur, Bulb'daki tüm pano öğeleri aşağıda listelenir.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Arama Seçenekleri</Item>
 		<Item English_Text = "Title" ID = "1042">Başlık</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Oluşturma Tarih Aralığı</Item>
@@ -687,7 +687,7 @@
 		<Item English_Text = "Delete Clip Data" ID = "84">Klip Verisini Sil</Item>
 		<Item English_Text = "Replace Top Sticky Clip" ID = "85">Üstteki Yapışkan Klibi Değiştir</Item>
 		<Item English_Text = "Prompt send to friend" ID = "86">Arkadaşa göndermeyi sor</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Kopyalanan dosya (cf_hdrop) içeriğini Ditto'ya kaydet</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Kopyalanan dosya (cf_hdrop) içeriğini Bulb'ya kaydet</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">Pano bağlantısını aç/kapat</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Seçimi Yukarı Taşı</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Seçimi Aşağı Taşı</Item>

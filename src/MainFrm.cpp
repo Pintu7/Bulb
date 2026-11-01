@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "MainFrm.h"
+#include "ClipTags.h"
 #include "afxole.h"
 #include "Misc.h"
 #include "CopyProperties.h"
@@ -17,6 +18,7 @@
 #include "OptionsSheet.h"
 #include "DeleteClipData.h"
 #include "DatabaseUtilities.h"
+#include "PasteQueueKeys.h"
 
 #ifdef _DEBUG
     #define new DEBUG_NEW
@@ -38,6 +40,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_FIRST_SHOWQUICKPASTE, OnFirstShowquickpaste)
 	ON_COMMAND(ID_FIRST_TOGGLECONNECTCV, OnFirstToggleConnectCV)
+	ON_COMMAND_RANGE(ID_PAUSE_RECORDING_5, ID_PAUSE_RECORDING_60, OnPauseRecording)
+	ON_MESSAGE(WM_PASTE_QUEUE_NEXT, OnPasteQueueNext)
 	ON_UPDATE_COMMAND_UI(ID_FIRST_TOGGLECONNECTCV, OnUpdateFirstToggleConnectCV)
 	ON_COMMAND(ID_FIRST_HELP, OnFirstHelp)
 	//}}AFX_MSG_MAP
@@ -141,9 +145,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetTimer(READ_RANDOM_DB_FILE, CGetSetOptions::ReadRandomFileInterval() * 1000, 0);
 
-    SetWindowText(_T("Ditto"));
+    SetWindowText(_T("Bulb"));
 	
-	m_trayIcon.Create(this, IDR_MENU, _T("Ditto"), CTrayNotifyIcon::LoadIcon(IDR_MAINFRAME), WM_TRAYNOTIFY, 0, 1);
+	m_trayIcon.Create(this, IDR_MENU, _T("Bulb"), CTrayNotifyIcon::LoadIcon(IDR_MAINFRAME), WM_TRAYNOTIFY, 0, 1);
 	m_trayIcon.SetDefaultMenuItem(ID_FIRST_SHOWQUICKPASTE, FALSE);	    
 
 	//removed to keep Ditto from taking focus on start
@@ -151,8 +155,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (CGetSetOptions::GetShowStartupMessage())
 	{
-		CString msg = theApp.m_Language.GetString(_T("StartupMsg"), _T("Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon"));
-		m_trayIcon.SetBalloonDetails(msg, _T("Ditto"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+		CString msg = theApp.m_Language.GetString(_T("StartupMsg"), _T("Bulb is running minimized, Bulb can be opened by hot keys or by clicking the task tray icon"));
+		m_trayIcon.SetBalloonDetails(msg, _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
 	}
 
 	theApp.m_Language.UpdateTrayIconRightClickMenu(&m_trayIcon.GetMenu());
@@ -233,7 +237,7 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT &cs)
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wc.lpszMenuName = NULL;
-    wc.lpszClassName = _T("Ditto");
+    wc.lpszClassName = _T("Bulb");
 
     // Create the QPaste window class
     if(!AfxRegisterClass(&wc))
@@ -282,7 +286,7 @@ LRESULT CMainFrame::OnHotKey(WPARAM wParam, LPARAM lParam)
         //If they still have the shift/ctrl keys down
         if(m_keyStateModifiers != 0 && m_quickPaste.IsWindowVisibleEx())
         {
-            Log(_T("On Show Ditto HotKey, key state modifiers are still down, moving selection"));
+            Log(_T("On Show Bulb HotKey, key state modifiers are still down, moving selection"));
 
             if(m_bMovedSelectionMoveKeyState == false)
             {
@@ -294,12 +298,12 @@ LRESULT CMainFrame::OnHotKey(WPARAM wParam, LPARAM lParam)
         }
         else if(CGetSetOptions::m_HideDittoOnHotKeyIfAlreadyShown && m_quickPaste.IsWindowTopLevel() && CGetSetOptions::GetShowPersistent() == FALSE)
         {
-            Log(_T("On Show Ditto HotKey, window is already visible, hiding window"));
+            Log(_T("On Show Bulb HotKey, window is already visible, hiding window"));
             m_quickPaste.HideQPasteWnd();
         }
         else
         {
-            Log(_T("On Show Ditto HotKey, showing window"));
+            Log(_T("On Show Bulb HotKey, showing window"));
 
 			StartKeyModifierTimer();
 
@@ -510,7 +514,7 @@ void CMainFrame::ShowQPasteWithActiveWindowCheck()
 				//this will revert back to the old group on hide of ditto
 				theApp.EnterGroupID(groupId, TRUE, TRUE);
 
-				Log(StrF(_T("Opening Ditto to Group based on found group name, name: %s, GroupId: %d"), exeName, groupId));
+				Log(StrF(_T("Opening Bulb to Group based on found group name, name: %s, GroupId: %d"), exeName, groupId));
 			}
 			else
 			{
@@ -742,10 +746,21 @@ void CMainFrame::OnTimer(UINT_PTR nIDEvent)
             }
 			break;
 
+		case PASTE_QUEUE_EXPIRE_TIMER:
+			StopPasteQueue(theApp.m_Language.GetString(_T("PasteQueueExpired"), _T("Paste queue stopped after 10 minutes without pasting.")));
+			break;
+
         case REMOVE_OLD_ENTRIES_TIMER:
 			{
                 m_thread.FireDeleteEntries();
             }
+			break;
+
+		case RESUME_RECORDING_TIMER:
+			{
+				KillTimer(RESUME_RECORDING_TIMER);
+				theApp.SetConnectCV(true);
+			}
 			break;
 
 		case REMOVE_OLD_TEMP_FILES:
@@ -906,6 +921,162 @@ void CMainFrame::OnFirstShowquickpaste()
 void CMainFrame::OnFirstToggleConnectCV()
 {
     theApp.ToggleConnectCV();
+}
+
+// The paste queue watches the keyboard itself, on its own thread, only while a queue is active. It tells the user's
+// own keys from the ones Bulb sends (those are "injected"), so it never catches its own paste, and it knows Ctrl is
+// still held after a paste even though the paste released Ctrl for the target app: hold Ctrl and tap V, V, V.
+namespace
+{
+	HWND s_queueOwner = NULL;
+	HANDLE s_queueThread = NULL;
+	DWORD s_queueThreadId = 0;
+	PasteQueueKeys s_keys;
+
+	LRESULT CALLBACK QueueKeyProc(int code, WPARAM wParam, LPARAM lParam)
+	{
+		const KBDLLHOOKSTRUCT* key = (const KBDLLHOOKSTRUCT*)lParam;
+		if (code == HC_ACTION)
+		{
+			bool down = wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN;
+			bool others = key->vkCode == 'V' &&
+				((GetAsyncKeyState(VK_SHIFT) | GetAsyncKeyState(VK_MENU) | GetAsyncKeyState(VK_LWIN) | GetAsyncKeyState(VK_RWIN)) & 0x8000) != 0;
+			PasteQueueKeys::Result result = s_keys.OnKey(key->vkCode, down, (key->flags & LLKHF_INJECTED) != 0, others);
+			if (result == PasteQueueKeys::PasteNext)
+			{
+				PostMessage(s_queueOwner, WM_PASTE_QUEUE_NEXT, 0, 0);
+			}
+			if (result != PasteQueueKeys::Pass)
+			{
+				return 1;
+			}
+		}
+		return CallNextHookEx(NULL, code, wParam, lParam);
+	}
+
+	struct QueueStart
+	{
+		HANDLE ready;
+		bool hooked;
+	};
+
+	DWORD WINAPI QueueKeyThread(LPVOID param)
+	{
+		QueueStart* start = (QueueStart*)param;
+		HHOOK hook = SetWindowsHookEx(WH_KEYBOARD_LL, QueueKeyProc, GetModuleHandle(NULL), 0);
+		MSG msg;
+		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE); // the thread's queue exists before Stop can post WM_QUIT to it
+		start->hooked = hook != NULL;
+		SetEvent(start->ready); // start lives on the caller's stack: not used after this
+		if (hook == NULL)
+		{
+			return 0;
+		}
+		while (GetMessage(&msg, NULL, 0, 0) > 0)
+		{
+		}
+		UnhookWindowsHookEx(hook);
+		return 0;
+	}
+
+	bool StartQueueKeys(HWND owner)
+	{
+		s_queueOwner = owner;
+		s_keys.leftCtrl = (GetAsyncKeyState(VK_LCONTROL) & 0x8000) != 0;
+		s_keys.rightCtrl = (GetAsyncKeyState(VK_RCONTROL) & 0x8000) != 0;
+		s_keys.vDown = (GetAsyncKeyState('V') & 0x8000) != 0;
+
+		QueueStart start = { CreateEvent(NULL, TRUE, FALSE, NULL), false };
+		s_queueThread = CreateThread(NULL, 0, QueueKeyThread, &start, 0, &s_queueThreadId);
+		if (s_queueThread != NULL)
+		{
+			WaitForSingleObject(start.ready, INFINITE);
+		}
+		CloseHandle(start.ready);
+		return s_queueThread != NULL && start.hooked;
+	}
+
+	void StopQueueKeys()
+	{
+		if (s_queueThread == NULL)
+		{
+			return;
+		}
+		PostThreadMessage(s_queueThreadId, WM_QUIT, 0, 0);
+		WaitForSingleObject(s_queueThread, 2000);
+		CloseHandle(s_queueThread);
+		s_queueThread = NULL;
+		s_queueThreadId = 0;
+	}
+}
+
+void CMainFrame::StartPasteQueue(const std::vector<int>& clipIds)
+{
+	StopPasteQueue(_T(""));
+	if (clipIds.empty())
+	{
+		return;
+	}
+
+	if (StartQueueKeys(m_hWnd) == false)
+	{
+		StopQueueKeys();
+		ShowErrorMessage(_T("Bulb"), theApp.m_Language.GetString(_T("PasteQueueCantStart"), _T("The paste queue can't watch the keyboard, so it can't start.")));
+		return;
+	}
+
+	m_pasteQueue.assign(clipIds.begin(), clipIds.end());
+	SetTimer(PASTE_QUEUE_EXPIRE_TIMER, ONE_MINUTE * 10, NULL);
+
+	CString message = StrF(theApp.m_Language.GetString(_T("PasteQueueStarted"), _T("Paste queue: %d clips. Each Ctrl+V pastes the next one.")), (int)clipIds.size());
+	m_trayIcon.SetBalloonDetails(message, _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+}
+
+void CMainFrame::StopPasteQueue(const CString& message)
+{
+	StopQueueKeys();
+	KillTimer(PASTE_QUEUE_EXPIRE_TIMER);
+
+	bool wasActive = m_pasteQueue.empty() == false;
+	m_pasteQueue.clear();
+
+	if (wasActive && message.IsEmpty() == FALSE)
+	{
+		m_trayIcon.SetBalloonDetails(message, _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+	}
+}
+
+LRESULT CMainFrame::OnPasteQueueNext(WPARAM wParam, LPARAM lParam)
+{
+	PasteNextFromQueue();
+	return 0;
+}
+
+void CMainFrame::PasteNextFromQueue()
+{
+	if (m_pasteQueue.empty())
+	{
+		StopPasteQueue(_T(""));
+		return;
+	}
+
+	int clipId = m_pasteQueue.front();
+	m_pasteQueue.pop_front();
+
+	PasteOrShowGroup(clipId, TRUE, FALSE, TRUE, false);
+
+	if (m_pasteQueue.empty())
+	{
+		StopPasteQueue(theApp.m_Language.GetString(_T("PasteQueueDone"), _T("Paste queue finished.")));
+		return;
+	}
+
+	SetTimer(PASTE_QUEUE_EXPIRE_TIMER, ONE_MINUTE * 10, NULL);
+}
+void CMainFrame::OnPauseRecording(UINT id)
+{
+	int minutes = id == ID_PAUSE_RECORDING_5 ? 5 : (id == ID_PAUSE_RECORDING_15 ? 15 : 60);
+	theApp.PauseRecording(minutes);
 }
 
 void CMainFrame::OnUpdateFirstToggleConnectCV(CCmdUI *pCmdUI)
@@ -1102,7 +1273,7 @@ LRESULT CMainFrame::OnErrorOnSendRecieve(WPARAM wParam, LPARAM lParam)
 {
     CString csNewText = (TCHAR*)wParam;
 
-    ShowErrorMessage(_T("Ditto - Send/Receive Error"), csNewText);
+    ShowErrorMessage(_T("Bulb - Send/Receive Error"), csNewText);
 
     return TRUE;
 }
@@ -1111,7 +1282,7 @@ LRESULT CMainFrame::OnErrorMsg(WPARAM wParam, LPARAM lParam)
 {
 	CString csNewText = (TCHAR*)wParam;
 
-	ShowErrorMessage(_T("Ditto"), csNewText);
+	ShowErrorMessage(_T("Bulb"), csNewText);
 
 	return TRUE;
 }
@@ -1459,7 +1630,7 @@ LRESULT CMainFrame::OnShowMsgWindow(WPARAM wParam, LPARAM lParam)
 	CString *pMsg = (CString*)wParam;
 	int clipId = (int)lParam;
 
-	m_trayIcon.SetBalloonDetails(pMsg->GetBuffer(), _T("Ditto"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+	m_trayIcon.SetBalloonDetails(pMsg->GetBuffer(), _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
 
 	delete pMsg;
 	return TRUE;
@@ -1563,7 +1734,7 @@ LRESULT CMainFrame::OnRestoreDb(WPARAM wParam, LPARAM lParam)
 
 void CMainFrame::OnFirstDeleteallnonusedclips()
 {
-	int nRet = MessageBox(theApp.m_Language.GetString("Delete_All_Non_Used_Clips", "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key or marked as sticky.\r\n\r\nThis cannot be undone."), _T("Ditto"), MB_OKCANCEL | MB_TOPMOST);
+	int nRet = MessageBox(theApp.m_Language.GetString("Delete_All_Non_Used_Clips", "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key, marked as sticky or tagged.\r\n\r\nThis cannot be undone."), _T("Bulb"), MB_OKCANCEL | MB_TOPMOST);
 	if (nRet != IDOK)
 	{
 		return;
@@ -1599,7 +1770,7 @@ void CMainFrame::OnSetFocus(CWnd* pOldWnd)
 {
 	CFrameWnd::OnSetFocus(pOldWnd);
 
-	//int nRet = MessageBox(_T("focused"), _T("Ditto"), MB_YESNO | MB_TOPMOST);
+	//int nRet = MessageBox(_T("focused"), _T("Bulb"), MB_YESNO | MB_TOPMOST);
 
 	// TODO: Add your message handler code here
 }

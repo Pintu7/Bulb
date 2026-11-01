@@ -117,4 +117,5 @@ protected:
 	CString m_lastTheme;
 
 	void LoadDefaults();
+	void LoadFluentDark();
 };

@@ -208,7 +208,7 @@
 		<Item English_Text = "Paste Clip in active window after selection" ID = "1041">Ausgewählten Clip nach Auswahl im aktiven Fenster einfügen</Item>
 		<Item English_Text = "Maximum Clip Size (in Bytes)" ID = "2046">Maximale Clip-Größe (in Bytes)</Item>
 		<Item English_Text = "(Leave blank for no limit)" ID = "2047">(Leer  =  kein Maximum)</Item>
-		<Item English_Text = "Set Database Path" ID = "1034">Pfad zur Ditto-Datenbank wählen</Item>
+		<Item English_Text = "Set Database Path" ID = "1034">Pfad zur Bulb-Datenbank wählen</Item>
 		<Item English_Text = "Language" ID = "2069">Sprache</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms  =  1 sec)" ID = "2072">Kopien ignorieren, die X Millisekunden nach der letzten Kopie auftreten (1000 ms  =  1 Sekunde).</Item>
 		<Item English_Text = "About Language" ID = "2073">Über Sprache</Item>
@@ -249,7 +249,7 @@
 
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Ditto aktivieren</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Bulb aktivieren</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Text Only Paste" ID = "2049">Nur Text einfügen</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -285,8 +285,8 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Clips beim Einfügen am Anfang der Liste einfügen</Item>
 
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Ditto aktivieren</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Ditto aktivieren</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Bulb aktivieren</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Bulb aktivieren</Item>
 
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
@@ -366,20 +366,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Netzwerk</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Clip-Liste</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Tastenkürzel</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Über Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Über Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Fehler beim Öffnen der Datenbank</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Initialisierung der DAO/Jet Datenbank fehlgeschlagen\nKlicke Ja zum Herunterladen von DAO von http://ditto-cp.sourceforge.net/dao_setup.exe\n\nNach der Installation von DAO Ditto neustarten.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Initialisierung der DAO/Jet Datenbank fehlgeschlagen\nKlicke Ja zum Herunterladen von DAO von http://ditto-cp.sourceforge.net/dao_setup.exe\n\nNach der Installation von DAO Bulb neustarten.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Unbekanntes Datenbankformat</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">die Datei wird umbenannt</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">und eine neue Datenbank wird erstellt</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Neue Version von Ditto verfügbar\nDetails unter ditto-cp.sourceforge.net\n\nAktuell installierte Version</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Neue Version von Bulb verfügbar\nDetails unter ditto-cp.sourceforge.net\n\nAktuell installierte Version</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Neue Version</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Neue Version herunterladen?</Item>
 		<Item English_Text = "No updates available" ID = "No_Updates">Keine neuere Version verfügbar</Item>
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Sollen wirklich alle Einträge gelöscht werden?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Verbindung zur Zwischenablage trennen</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Mit Zwischenablage verbinden</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet db Engine konnte nicht initialisiert werden. DAO wird installiert\n\nBitte starten sie Ditto nach Installation von DAO neu." ID  =  " Error_Init_Dao_Intall"</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet db Engine konnte nicht initialisiert werden. DAO wird installiert\n\nBitte starten sie Bulb nach Installation von DAO neu." ID  =  " Error_Init_Dao_Intall"</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">Ziel nicht gefunden</Item>
 
 		//New strings added in 3.6 6-9-06
@@ -402,8 +402,8 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Fehler beim Speichern des Clips</Item>
 		<Item English_Text = "New" ID = "New">Neu</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Eintrag speichern, schließen und in Zwischenablage ablegen</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto Editor</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - genanntes Einfügen</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb Editor</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - genanntes Einfügen</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Fehler beim Laden der Daten</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Fehler beim finden des Eintrags mit dem Text von</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Fehler beim finden des Clips</Item>
@@ -444,7 +444,7 @@
 		<Item English_Text = "Backing up database" ID = "Backing up database">Sichere Datenbank</Item>
 		<Item English_Text = "Restoring database" ID = "Restoring database">Stelle Datenbank wieder her</Item>
 
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto konnte die Datenbank nicht öffnen. Aktualisieren Sie den Pfad in den Einstellungen, falls dies erforderlich ist:</Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb konnte die Datenbank nicht öffnen. Aktualisieren Sie den Pfad in den Einstellungen, falls dies erforderlich ist:</Item>
 
 		<Item English_Text = "At Caret" ID = "AtCaret">Beim Cursor</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">Beim Mauszeiger</Item>
@@ -543,7 +543,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Clip-Data löschen</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Jeder Clip in Ditto besteht aus mehreren Clipboard-Elementen, alle Clipboard-Elemente in Ditto sind unten aufgeführt.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Jeder Clip in Bulb besteht aus mehreren Clipboard-Elementen, alle Clipboard-Elemente in Bulb sind unten aufgeführt.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Suchoptionen</Item>
 		<Item English_Text = "Title" ID = "1042">Titel</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Datumsbereich erstellen</Item>
@@ -675,7 +675,7 @@
 		<Item English_Text = "Delete Clip Data" ID = "84">Clip-Daten löschen</Item>
 		<Item English_Text = "Replace Top Sticky Clip" ID = "85">Erster Clip ersetzen</Item>
 		<Item English_Text = "Prompt send to friend" ID = "86">An Freund senden</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Inhalt der kopierten Datei in Ditto speichern</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Inhalt der kopierten Datei in Bulb speichern</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">Verbindung zur Zwischenablage (de-)aktivieren</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Nach oben verschieben</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Nach unten verschieben</Item>

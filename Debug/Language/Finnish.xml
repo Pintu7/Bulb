@@ -147,7 +147,7 @@
 				
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Suorita Ditto käynnistyksessä</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Suorita Bulb käynnistyksessä</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Näytä kuvake järjestelmäpalkissa</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Tallennettujen leikkeiden maksimimäärä</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Poista leikkeet, kun aikaa kulunut</Item>
@@ -157,7 +157,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Salli duplikaatit</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Päivitä leikkeiden järjestys liitettäessä</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Tallenna multi-liittämiset</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Piilota näkyvissä oleva Ditto pikanäppäimellä</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Piilota näkyvissä oleva Bulb pikanäppäimellä</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Kuvaukseksi talletettavan tekstin merkkimäärä</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Ääni kopioitaessa</Item>
 		<Item English_Text = "Play" ID = "2034">Toista</Item>
@@ -168,7 +168,7 @@
 		<Item English_Text = "Language" ID = "2069">Kieli</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ohita X millisekunnin kuluessa edellisestä kopioinnista otetut kopiot (1000 ms = 1 s)</Item>
 		<Item English_Text = "About Language" ID = "2073">Tietoa kielestä</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Varmista, että Ditto on aina yhteydessä leikepöytään</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Varmista, että Bulb on aina yhteydessä leikepöytään</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Yleinen</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Multi-liittämisen erotin ([LF] = rivivaihto)</Item>
 		
@@ -190,7 +190,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Aktivoi Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Aktivoi Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Nimetty kopio</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -226,8 +226,8 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Siirrä leikkeet listan kärkeen liitettäessä</Item>
 
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Aktivoi Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Aktivoi Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Aktivoi Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Aktivoi Bulb</Item>
 		
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
@@ -344,18 +344,18 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Näppäimistöoikopolut</Item>
 		<Item English_Text = "About" ID = "AboutTitle">Tietoa</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Virhe tietokannan avaamisessa</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet -tietokantamoottorin alustus epäonnistui. \nValitse KYLLÄ ladataksesi DAO:n osoitteesta http://ditto-cp.sourceforge.net/dao_setup.exe\n\nKäynnistä Ditto uudelleen DAO-asennuksen jälkeen.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet -tietokantamoottorin alustus epäonnistui. \nValitse KYLLÄ ladataksesi DAO:n osoitteesta http://ditto-cp.sourceforge.net/dao_setup.exe\n\nKäynnistä Bulb uudelleen DAO-asennuksen jälkeen.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Tuntematon tietokantamuoto</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">tiedosto nimetään uudelleen</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">ja uusi tietokanta luodaan</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ditto-päivityksiä saatavissa. \nSiirry osoitteeseen ditto-cp.sourceforge.net saadaksesi lisätietoja\n\nAsennettu versio</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Bulb-päivityksiä saatavissa. \nSiirry osoitteeseen ditto-cp.sourceforge.net saadaksesi lisätietoja\n\nAsennettu versio</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Päivitä versio</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Lataa päivitetty versio?</Item>		
 		<Item English_Text = "No updates available" ID = "No_Updates">Ei päivityksiä saatavissa</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Tämä poistaa kaikki leikekohteet!\n\nJatka?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Katkaise yhteys leikepöytään</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Yhdistä leikepöytään</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Install">DAO/Jet -tietokantamoottorin alustus epäonnistui. \nDAO tullaan asentamaan nyt.\n\nKäynnistä Ditto uudelleen DAO-asennuksen jälkeen.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Install">DAO/Jet -tietokantamoottorin alustus epäonnistui. \nDAO tullaan asentamaan nyt.\n\nKäynnistä Bulb uudelleen DAO-asennuksen jälkeen.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">EI KOHDETTA</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -378,15 +378,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Virhe leikkeen tallennuksessa</Item>
 		<Item English_Text = "New" ID = "New">Uusi</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Tallenna, sulje ja aseta leikepöydälle</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto-muokkaus</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Nimetty liittäminen</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb-muokkaus</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Nimetty liittäminen</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Virhe tietojen latauksessa</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Virhe leikkeen löytymisessä, jossa pikalittämisen teksti on</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Poikkeus leikkeen löytämisessä</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Nimetty kopiointi</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Nimetty kopiointi</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Virhe nimetyn leikkeen tallennuksessa tietokantaan</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Poikkeus nimetyn leikkeen tallennukseessa</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto ei vastaanottanut kopiota</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb ei vastaanottanut kopiota</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Lisäosat</Item> 
@@ -488,7 +488,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Poista leiketiedot</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Jokainen Ditto-leike on tehty useista leikepöydän kohteista, kaikki Dittossa olevat leikepöydän kohteet ovat lueteltu alla.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Jokainen Bulb-leike on tehty useista leikepöydän kohteista, kaikki Dittossa olevat leikepöydän kohteet ovat lueteltu alla.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Hakuasetukset</Item>
 		<Item English_Text = "Title" ID = "1042">Nimi</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Luo aikaväli</Item>

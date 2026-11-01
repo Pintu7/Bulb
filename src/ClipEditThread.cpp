@@ -173,7 +173,7 @@ void CClipEditThread::OnFileChanged()
 				{
 					if (fileName.Find(newClipFileName, 0) == 0)
 					{
-						Log(StrF(_T("New clip file changed: %s, this was not in Ditto list of files we initiated the change for, not handling change"), fileName));						
+						Log(StrF(_T("New clip file changed: %s, this was not in Bulb list of files we initiated the change for, not handling change"), fileName));						
 						addToChanges = false;
 					}
 				}
@@ -182,12 +182,12 @@ void CClipEditThread::OnFileChanged()
 			if (fileName.Find(editClipFileName, 0) == -1 && fileName.Find(newClipFileName, 0) == -1)
 			{
 				addToChanges = false;
-				Log(StrF(_T("File %s is not a Ditto file of format EditClip or NewClip, not handling change"), fileName));
+				Log(StrF(_T("File %s is not a Bulb file of format EditClip or NewClip, not handling change"), fileName));
 			}
 
 			if (addToChanges)
 			{				
-				Log(StrF(_T("%s file changed, adding to list to be saved back to Ditto"), fileName));
+				Log(StrF(_T("%s file changed, adding to list to be saved back to Bulb"), fileName));
 				m_filesToSave[fileName] = true;
 				fileModified = true;				
 			}
@@ -220,7 +220,7 @@ bool CClipEditThread::SaveToClip(CString filePath, int id)
 {
 	bool savedClip = false;
 
-	Log(StrF(_T("ClipFile: %s, ClipId: %d, has changed saving back to Ditto"), filePath, id));
+	Log(StrF(_T("ClipFile: %s, ClipId: %d, has changed saving back to Bulb"), filePath, id));
 
 	if (id < 0)
 	{

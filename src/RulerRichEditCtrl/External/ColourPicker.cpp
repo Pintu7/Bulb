@@ -32,6 +32,7 @@
 #include "stdafx.h"
 #include "ColourPopup.h"
 #include "ColourPicker.h"
+#include "..\..\Options.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -180,56 +181,58 @@ void CColourPicker::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     UINT    state   = lpDrawItemStruct->itemState;
     CString m_strText;
 
-    CSize Margins(::GetSystemMetrics(SM_CXEDGE), ::GetSystemMetrics(SM_CYEDGE));
-
-    // Draw arrow
     if (m_bActive) state |= ODS_SELECTED;
-    pDC->DrawFrameControl(&m_ArrowRect, DFC_SCROLL, DFCS_SCROLLDOWN  | 
-                          ((state & ODS_SELECTED) ? DFCS_PUSHED : 0) |
-                          ((state & ODS_DISABLED) ? DFCS_INACTIVE : 0));
 
-    pDC->DrawEdge(rect, EDGE_SUNKEN, BF_RECT);
+    // Windows 11 drop-down button in Bulb's colors: rounded field, the label, the chosen color as a bar under it, a chevron
+    COLORREF ground = CGetSetOptions::m_Theme.MainWindowBG();
+    COLORREF field = CGetSetOptions::m_Theme.SearchTextBoxFocusBG();
+    COLORREF ink = CGetSetOptions::m_Theme.ListBoxEvenRowsText();
+    COLORREF dim = CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor();
+    COLORREF line = CGetSetOptions::m_Theme.ListBoxSelectedBG();
+    bool disabled = (state & ODS_DISABLED) != 0;
 
-    // Must reduce the size of the "client" area of the button due to edge thickness.
-    rect.DeflateRect(Margins.cx, Margins.cy);
-
-    // Fill remaining area with colour
-    rect.right -= m_ArrowRect.Width();
-
-    CBrush brush( ((state & ODS_DISABLED) || m_crColourBk == CLR_DEFAULT)? 
-                  ::GetSysColor(COLOR_3DFACE) : m_crColourBk);
-    CBrush* pOldBrush = (CBrush*) pDC->SelectObject(&brush);
-	pDC->SelectStockObject(NULL_PEN);
-    pDC->Rectangle(rect);
+    pDC->FillSolidRect(rect, ground);
+    CRect body(rect);
+    body.DeflateRect(1, 1);
+    CBrush fill((state & ODS_SELECTED) ? line : field);
+    CPen border(PS_SOLID, 1, line);
+    CBrush* pOldBrush = pDC->SelectObject(&fill);
+    CPen* pOldPen = pDC->SelectObject(&border);
+    int radius = max(4, rect.Height() / 4);
+    pDC->RoundRect(body, CPoint(radius, radius));
+    pDC->SelectObject(pOldPen);
     pDC->SelectObject(pOldBrush);
 
-    // Draw the window text (if any)
+    CRect textRect(body);
+    textRect.right -= m_ArrowRect.Width();
+    pDC->SetBkMode(TRANSPARENT);
+
     GetWindowText(m_strText);
     if (m_strText.GetLength())
     {
-        pDC->SetBkMode(TRANSPARENT);
-        if (state & ODS_DISABLED)
-        {
-            rect.OffsetRect(1,1);
-            pDC->SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
-            pDC->DrawText(m_strText, rect, DT_CENTER|DT_SINGLELINE|DT_VCENTER);
-            rect.OffsetRect(-1,-1);
-            pDC->SetTextColor(::GetSysColor(COLOR_3DSHADOW));
-            pDC->DrawText(m_strText, rect, DT_CENTER|DT_SINGLELINE|DT_VCENTER);
-        }
-        else
-        {
-            pDC->SetTextColor((m_crColourText == CLR_DEFAULT)? 0 : m_crColourText);
-            pDC->DrawText(m_strText, rect, DT_CENTER|DT_SINGLELINE|DT_VCENTER);
-        }
+        pDC->SetTextColor(disabled ? dim : ink);
+        pDC->DrawText(m_strText, textRect, DT_CENTER|DT_SINGLELINE|DT_VCENTER);
     }
 
-    // Draw focus rect
-    if (state & ODS_FOCUS) 
+    // the color the selection will get, "Automatic" being black
+    COLORREF chosen = (m_crColourText == CLR_DEFAULT) ? RGB(0, 0, 0) : m_crColourText;
+    int barWidth = textRect.Width() * 6 / 10;
+    CRect bar(textRect.CenterPoint().x - barWidth / 2, body.bottom - max(4, rect.Height() / 6), textRect.CenterPoint().x + barWidth / 2, body.bottom - max(2, rect.Height() / 10));
+    pDC->FillSolidRect(bar, disabled ? dim : chosen);
+    if (chosen == ground || chosen == field)
     {
-        rect.DeflateRect(1,1);
-        pDC->DrawFocusRect(rect);
+        pDC->Draw3dRect(bar, dim, dim);
     }
+
+    CFont chevronFont;
+    chevronFont.CreateFont(-max(8, rect.Height() * 4 / 10), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+        CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, _T("Segoe Fluent Icons"));
+    CFont* pOldFont = pDC->SelectObject(&chevronFont);
+    pDC->SetTextColor(dim);
+    CRect arrow(m_ArrowRect);
+    arrow.right -= 2;
+    pDC->DrawText(CString(L'\xE70D'), arrow, DT_CENTER|DT_SINGLELINE|DT_VCENTER);
+    pDC->SelectObject(pOldFont);
 }
 
 /////////////////////////////////////////////////////////////////////////////

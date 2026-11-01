@@ -306,14 +306,14 @@ void COptionsQuickPaste::OnBnClickedButtonTheme()
 			theme.Author(), 
 			theme.Notes());
 
-		MessageBox(csMessage, _T("Ditto"), MB_OK);
+		MessageBox(csMessage, _T("Bulb"), MB_OK);
 	}
 	else
 	{
 		CString csError;
 		csError.Format(_T("Error loading theme file - %s - reason = "), csTheme, theme.LastError());
 
-		MessageBox(csError, _T("Ditto"), MB_OK);
+		MessageBox(csError, _T("Bulb"), MB_OK);
 	}
 }
 

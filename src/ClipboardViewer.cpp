@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 void CClipboardViewer::Create()
 {
 	CString strParentClass = AfxRegisterWndClass(0);
-	CWnd::CreateEx(0, strParentClass, _T("Ditto Clipboard Viewer"), 0, -1, -1, 0, 0, 0, 0);
+	CWnd::CreateEx(0, strParentClass, _T("Bulb Clipboard Viewer"), 0, -1, -1, 0, 0, 0, 0);
 
 	if(m_connectOnStartup)
 	{
@@ -162,7 +162,7 @@ void CClipboardViewer::SendPing()
 		if(OpenClipboard())
 		{
 			m_bPinging = true;
-			SetClipboardData(theApp.m_PingFormat, NewGlobalP("Ditto Ping", sizeof("Ditto Ping")));
+			SetClipboardData(theApp.m_PingFormat, NewGlobalP("Bulb Ping", sizeof("Bulb Ping")));
 			SetClipboardData(theApp.m_cfIgnoreClipboard , NewGlobalP("Ignore", sizeof("Ignore")));
 
 			SetTimer(TIMER_PING, 2000, NULL);

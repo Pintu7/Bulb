@@ -200,7 +200,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">允许重复</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">粘贴时更新剪贴项顺序</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">保存多项粘贴</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">如果 Ditto 可见按下热键时隐藏</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">如果 Bulb 可见按下热键时隐藏</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">保存说明文本数量</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">复制时播放声音</Item>
 		<Item English_Text = "Play" ID = "2034">播放</Item>
@@ -211,7 +211,7 @@
 		<Item English_Text = "Language" ID = "2069">语言</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">忽略距离上次复制 (1000毫秒 = 1秒) X 毫秒发生的复制</Item>
 		<Item English_Text = "About Language" ID = "2073">关于语言</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">确保 Ditto 始终连接到剪贴板</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">确保 Bulb 始终连接到剪贴板</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">通用</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">多项粘贴剪贴项分隔符（[LF] = 换行）</Item>
 
@@ -245,7 +245,7 @@
 
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">激活 Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">激活 Bulb</Item>
 		<Item English_Text = "Win" ID = "2035"></Item>
 		<Item English_Text = "Named Copy" ID = "2049">复制项命名</Item>
 		<Item English_Text = "Win" ID = "2036"></Item>
@@ -281,8 +281,8 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">粘贴时将剪贴项移动到列表顶部</Item>
 
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">激活 Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">激活 Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">激活 Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">激活 Bulb</Item>
 
 		<Item English_Text = "Win" ID = "2063"></Item>
 		<Item English_Text = "Win" ID = "2065"></Item>
@@ -362,20 +362,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">朋友</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">快速粘贴</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">键盘快捷键</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">关于 Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">关于 Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">打开数据库时出错。</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">无法初始化 DAO/Jet 数据库引擎。\n选择 '是' 将从 http://ditto-cp.sourceforge.net/dao_setup.exe 下载 DAO。\n\n安装 DAO 后请重新启动 Ditto。</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">无法初始化 DAO/Jet 数据库引擎。\n选择 '是' 将从 http://ditto-cp.sourceforge.net/dao_setup.exe 下载 DAO。\n\n安装 DAO 后请重新启动 Bulb。</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">无法识别的数据库格式</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">文件将被重命名</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">并创建一个新的数据库</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ditto 已有可用更新。\n访问 ditto-cp.sourceforge.net 了解详细信息\n\n正在运行的版本</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Bulb 已有可用更新。\n访问 ditto-cp.sourceforge.net 了解详细信息\n\n正在运行的版本</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">更新版本</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">下载更新版本？</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">无可用更新</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">这将移除所有复制项！\n\n仍要继续吗？</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">断开剪贴板连接</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">连接到剪贴板</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">无法初始化 DAO/Jet 数据库引擎。即将安装 DAO。\n\n安装 DAO 后请重新启动 Ditto。</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">无法初始化 DAO/Jet 数据库引擎。即将安装 DAO。\n\n安装 DAO 后请重新启动 Bulb。</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">没有目标</Item>
 
 		//New strings added in 3.6 6-9-06
@@ -398,15 +398,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">保存剪贴项时出错</Item>
 		<Item English_Text = "New" ID = "New">新建</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">保存，关闭并放入剪贴板</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto 编辑</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - 命名粘贴</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb 编辑</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - 命名粘贴</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">加载数据时出错</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">查找带有快速粘贴文本的剪贴项时出错</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">查找剪贴项出现异常</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - 命名复制项</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - 命名复制项</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">保存已命名的复制项到数据库时出错</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">保存已命名复制项时出现异常</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto 未接收到复制项</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb 未接收到复制项</Item> 
 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">加载项</Item>
@@ -431,7 +431,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_window">窗口置顶</Item>
 
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[已断开连接]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Ditto 正以最小化方式运行，可通过热键或单击任务栏图标打开</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Bulb 正以最小化方式运行，可通过热键或单击任务栏图标打开</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">搜索不到</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">警告，这可能需要相当长的时间，并且需要两倍于你当前数据库大小的硬盘空间，是否继续？</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">输入名字</Item>
@@ -440,7 +440,7 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">备份数据库信息</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">还原数据库信息</Item>
 
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto 无法打开数据库，将等待它可以打开的时候。 如果需要，更新选项中的路径。 路径： </Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb 无法打开数据库，将等待它可以打开的时候。 如果需要，更新选项中的路径。 路径： </Item>
 
 		<Item English_Text = "At Caret" ID = "AtCaret">插入符的位置</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">鼠标指针的位置</Item>
@@ -532,7 +532,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">删除剪贴数据</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ditto 的每个剪贴项都是由多个剪贴板项目组成，下方列表中是 Ditto 中的全部剪贴板项目。</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Bulb 的每个剪贴项都是由多个剪贴板项目组成，下方列表中是 Bulb 中的全部剪贴板项目。</Item>
 		<Item English_Text = "Search Options" ID = "2120">搜索选项</Item>
 		<Item English_Text = "Title" ID = "1042">标题</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">创建日期范围</Item>

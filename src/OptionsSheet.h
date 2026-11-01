@@ -7,6 +7,7 @@
 // OptionsSheet.h : header file
 //
 //#include "ShowTaskBarIcon.h"
+#include "FluentNav.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -59,11 +60,25 @@ protected:
 
 	//CShowTaskBarIcon m_taskBar;
 
+	// Windows 11 Settings layout: navigation on the left, the area's title, the page on a raised card
+	CFluentNav m_nav;
+	CRect m_titleRect;
+	CRect m_cardRect;
+	CRect m_pageRect;
+	UINT m_layoutDpi = 96;
+	void LayoutAsSettings();
+	afx_msg LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
+	void ShowPage(int index);
+	int Scale(int value);
+
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 	//{{AFX_MSG(COptionsSheet)
 		// NOTE - the ClassWizard will add and remove member functions here.
 	afx_msg void OnDestroy();
 	afx_msg void OnNcDestroy();
+	afx_msg void OnPaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

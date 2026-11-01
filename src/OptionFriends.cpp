@@ -6,6 +6,7 @@
 #include "OptionFriends.h"
 #include "FriendDetails.h"
 #include "DimWnd.h"
+#include "FluentDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -93,7 +94,26 @@ BOOL COptionFriends::OnInitDialog()
 	UpdateData(FALSE);
 
 	theApp.m_Language.UpdateOptionFriends(this);
-		
+
+	// Windows 11 Settings rows; the long explanations become the rows' descriptions
+	using L = FluentDialog::SettingsLayout;
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+	CString listHelp;
+	GetDlgItemText(IDC_STATIC_6, listHelp);
+	L()
+		.Row(IDC_STATIC_2, { { IDC_EDIT_PLACE_ON_CLIPBOARD, L::Fill } }, IDC_STATIC_1)
+		.Row(IDC_CHECK_DISABLE_FRIENDS, { { IDC_CHECK_DISABLE_FRIENDS, 48 } })
+		.Row(IDC_STATIC_3, { { IDC_EDIT_PASSWORD, L::Fill } })
+		.Row(IDC_STATIC_5, { { IDC_EDIT_ADDITIONAL, L::Fill } }, IDC_STATIC_4)
+		.Section(IDC_STATIC_REMOTE_FILES)
+		.Row(IDC_RADIO_USE_IP, { { IDC_RADIO_USE_IP, 48 } })
+		.Row(IDC_RADIO_USE_HOST_NAME, { { IDC_RADIO_USE_HOST_NAME, 48 } })
+		.SectionText(Text(_T("ComputersSection"), _T("Computers")))
+		.RowText(Text(_T("SendClipsTo"), _T("Send clips to")), { { IDC_LIST, L::Below } }, listHelp)
+		.Row(IDC_CHECK_LOG_SEND_RECIEVE, { { IDC_CHECK_LOG_SEND_RECIEVE, 48 } })
+		.Hide({ IDC_STATIC_6 })
+		.AttachTo(m_hWnd);
+
 	return FALSE;
 }
 

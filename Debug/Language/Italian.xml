@@ -67,7 +67,7 @@
 		<Item English_Text = "Options..." ID = "32805">Opzioni...</Item>
 		<Item English_Text = "Help" ID = "32842">Aiuto</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "32775">Disconnetti dagli Appunti</Item>
-		<Item English_Text = "Exit Program" ID = "32806">Esci da Ditto</Item>
+		<Item English_Text = "Exit Program" ID = "32806">Esci da Bulb</Item>
 
 		//New strings added in 3.6 6-9-06
 		<Item English_Text = "Prompt to Delete Clip" ID = "32852">Chiedi prima di eliminare</Item>	
@@ -148,6 +148,17 @@
 		<Item English_Text = "Backup Database" ID = "32962">Backup database</Item>
 		<Item English_Text = "Restore Dastabase" ID = "32964">Ripristina database</Item>
 		
+			// Bulb
+		<Item English_Text = "Copy Text from Image" ID = "33013">Copia testo dall&apos;immagine</Item>
+		<Item English_Text = "Format JSON" ID = "33009">Formatta JSON</Item>
+		<Item English_Text = "URL Decode" ID = "33010">Decodifica URL</Item>
+		<Item English_Text = "Base64 Decode" ID = "33011">Decodifica Base64</Item>
+		<Item English_Text = "Paste as Queue" ID = "33012">Incolla in coda</Item>
+		<Item English_Text = "Edit Tags" ID = "33003">Modifica tag</Item>
+		<Item English_Text = "Go to Entry" ID = "33002">Vai alla voce</Item>
+		<Item English_Text = "Manage Tags..." ID = "33005">Gestisci tag...</Item>
+		<Item English_Text = "Convert Groups to Tags" ID = "33004">Converti gruppi in tag</Item>
+		<Item English_Text = "More" ID = "-1">Altro</Item>
 	</Ditto_Right_Click_Menu>
 	<Ditto_Clip_Properties>
 		<Item English_Text = "Hot Key" ID = "2039">Tasto scelta rapida</Item>
@@ -168,7 +179,7 @@
 
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Esegui Ditto ad avvio sistema</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Esegui Bulb ad avvio sistema</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Visualizza icona nella barra di sistema</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Massimo numero copie salvate</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Incolla voci che scadono dopo</Item>
@@ -178,7 +189,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Consenti duplicati</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Aggiorna ordine clip all'incolla </Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Salva multipli-incolla</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Nascondi Ditto nel tasto scelta rapida se Ditto è visibile</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Nascondi Bulb nel tasto scelta rapida se Bulb è visibile</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Quantità testo da salvare per la descrizione</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Suono alla copia</Item>
 		<Item English_Text = "Play" ID = "2034">Riproduci</Item>
@@ -189,7 +200,7 @@
 		<Item English_Text = "Language" ID = "2069">Lingua</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ignora copie che avvengono x millisecondi dall'ultima copia (1000 ms = 1 sec)</Item>
 		<Item English_Text = "About Language" ID = "2073">Info lingua</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Assicura che Ditto sia sempre connesso agli Appunti</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Assicura che Bulb sia sempre connesso agli Appunti</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Generale</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Separatore clip multi-incolla ([LF] = avanzamento riga)</Item>
 
@@ -208,6 +219,9 @@
 		<Item English_Text = "Environment Variables" ID = "2165">Variabili ambiente</Item>
 		
 		<Item English_Text = "Default Font" ID = "2031">Font predefinita</Item>
+			// Bulb
+		<Item English_Text = "Read text in copied images (OCR)" ID = "2183">Leggi il testo nelle immagini copiate (OCR)</Item>
+		<Item English_Text = "Encrypt the database with Windows (EFS)" ID = "2184">Cifra il database con Windows (EFS)</Item>
 	</Ditto_Options_General>
 	<Ditto_Options_Supported_Types>
 		<Item English_Text = "Add" ID = "1015">Aggiungi</Item>
@@ -221,7 +235,7 @@
 
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Attiva Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Attiva Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Nome copia</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -257,15 +271,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Quando le incolli sposta clip in cima all'elenco</Item>
 
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Attiva Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Attiva Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Attiva Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Attiva Bulb</Item>
 	
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Salva appunti attuali</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Usa gruppo selezionato nella UI Ditto per le ultime 10 copie</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Usa gruppo selezionato nella UI Bulb per le ultime 10 copie</Item>
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Friends>
 		<Item English_Text = "When you recieve a sent copy if their ip or computer name is in this list then it will be put on the clipboard.  Otherwise it will be in the saved clips to use at a later time." ID = "2052">Se ricevi una copia inviata da un IP o computer che sono nell'elenco allora copiali begli appunti altrimenti copiali nelle clip salvate per usarle in un secondo momento.</Item>
@@ -370,11 +384,11 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Scorciatoia tastiera</Item>
 		<Item English_Text = "About" ID = "AboutTitle">Info</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Errore nell'apertura del db</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Impossibile inizializzare engine db DAO/Jet.\nSeleziona 'Sì' per scaricare DAO da http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRiavvia Ditto dopo l'installazione di DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Impossibile inizializzare engine db DAO/Jet.\nSeleziona 'Sì' per scaricare DAO da http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRiavvia Bulb dopo l'installazione di DAO.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Formato database non riconosciuto</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">il file verrà rinominato</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">e verrà creato un nuovo database</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Aggiornamenti disponibili per Ditto.\nPer i dettagli visita ditto-cp.sourceforge.net\n\nVersione attuale</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Aggiornamenti disponibili per Bulb.\nPer i dettagli visita ditto-cp.sourceforge.net\n\nVersione attuale</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Aggiorna</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Vuoi scaricare gli aggiornamenti?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Questa versione è aggiornata.\Non ci sono aggiornamenti</Item>			
@@ -403,15 +417,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Errore salvataggio</Item>
 		<Item English_Text = "New" ID = "New">Nuovo</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Salva, chiudi e copia negli appunti</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto edit</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Incolla con nome</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb edit</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Incolla con nome</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Errore caricamento dati</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Errore durante la ricerca della clip con Incolla veloce testo di</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Eccezione nel trovare la clip</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Copia nome</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Copia nome</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Errore durante il salvataggio della copia con nome nel database</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Eccezione durante il salvataggio della copia con nome</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto non ha ricevuto una copia</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb non ha ricevuto una copia</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Addin</Item> 
@@ -428,6 +442,76 @@
 		<Item English_Text = "Hot Key" ID = "QPHotKey">Tasto scelta rapida</Item>
 		<Item English_Text = "Command" ID = "QPCommand">Comando</Item>
 		<Item English_Text = "[Top Most Window]" ID = "top_most">[Finestra più in alto]</Item>
+			// Bulb
+		<Item English_Text = "Add tags to the selected clips" ID = "AddTags">Aggiungi tag alle clip selezionate</Item>
+		<Item English_Text = "At Caret" ID = "AtCaret">Al cursore di testo</Item>
+		<Item English_Text = "At Cursor" ID = "AtCursor">Al puntatore del mouse</Item>
+		<Item English_Text = "At Previous Position" ID = "AtPreviousPosition">Nella posizione precedente</Item>
+		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Backup del database in corso</Item>
+		<Item English_Text = "Cancel" ID = "CancelEdit">Annulla</Item>
+		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Attenzione: può richiedere molto tempo e fino al doppio dello spazio su disco del database attuale. Continuare?</Item>
+		<Item English_Text = "Tag every clip in a group with the group&apos;s name?" ID = "ConvertGroupsToTags">Aggiungere a ogni clip di un gruppo il tag con il nome del gruppo?\n\nI gruppi e le loro clip non vengono modificati.</Item>
+		<Item English_Text = "Copied" ID = "CopiedOn">Copiato</Item>
+		<Item English_Text = "This clip is not an image." ID = "CopyImageTextNoImage">Questa clip non è un&apos;immagine.</Item>
+		<Item English_Text = "No text found in this image." ID = "CopyImageTextNone">Nessun testo trovato in questa immagine.</Item>
+		<Item English_Text = "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key, marked as sticky or tagged." ID = "Delete_All_Non_Used_Clips">Eliminare tutte le clip che non sono gruppi, non sono in un gruppo, non sono segnate come da non eliminare, non hanno una scorciatoia, non sono fissate e non hanno tag?\n\nL&apos;operazione non si può annullare.</Item>
+		<Item English_Text = "Delete Group?" ID = "Delete_Clip_Groups">Eliminare il gruppo?</Item>
+		<Item English_Text = "Delete tag" ID = "DeleteTag">Elimina tag</Item>
+		<Item English_Text = "Delete the tag #%s?" ID = "DeleteTagConfirm">Eliminare il tag #%s?\n\nViene tolto da tutte le clip; le clip restano.</Item>
+		<Item English_Text = "Delete the tag #%s?" ID = "DeleteTagConfirmCount">Eliminare il tag #%s?\n\nViene tolto da %d clip; le clip restano.</Item>
+		<Item English_Text = "Description Options" ID = "DescriptionOptionsTooltip">Opzioni descrizione</Item>
+		<Item English_Text = "[Disconnected]" ID = "disconnected">[Disconnesso]</Item>
+		<Item English_Text = "File name for dragged clips" ID = "DragFileNameTitle">Nome del file per le clip trascinate</Item>
+		<Item English_Text = "Edit" ID = "EditClipInPanel">Modifica</Item>
+		<Item English_Text = "Tags (separated by spaces)" ID = "EditTags">Tag (separati da spazi)</Item>
+		<Item English_Text = "(Follow windows light/dark themes)" ID = "FollowWindowsTheme">(Segui il tema chiaro/scuro di Windows)</Item>
+		<Item English_Text = "Groups converted to tags" ID = "GroupsConvertedToTags">Gruppi convertiti in tag</Item>
+		<Item English_Text = "Image" ID = "ImageClip">Immagine</Item>
+		<Item English_Text = "Manage tags..." ID = "ManageTags">Gestisci tag...</Item>
+		<Item English_Text = "Manage Tags" ID = "ManageTagsTitle">Gestisci tag</Item>
+		<Item English_Text = "New group" ID = "NewGroupTitle">Nuovo gruppo</Item>
+		<Item English_Text = "New tag" ID = "NewTag">Nuovo tag</Item>
+		<Item English_Text = "None" ID = "None">Nessuna</Item>
+		<Item English_Text = "There are no results for" ID = "NoSearchResults">Nessun risultato per</Item>
+		<Item English_Text = "There are no starred clips" ID = "NoStarredClips">Non ci sono clip con la stella</Item>
+		<Item English_Text = "Paste queue finished." ID = "PasteQueueDone">Coda di incolla finita.</Item>
+		<Item English_Text = "Paste queue stopped after 10 minutes without pasting." ID = "PasteQueueExpired">Coda di incolla fermata dopo 10 minuti senza incollare.</Item>
+		<Item English_Text = "The paste queue can&apos;t watch the keyboard, so it can&apos;t start." ID = "PasteQueueCantStart">La coda di incolla non riesce a leggere la tastiera, quindi non può partire.</Item>
+		<Item English_Text = "Folder for the Bulb database" ID = "DatabaseFolderTitle">Cartella per il database di Bulb</Item>
+		<Item English_Text = "Paste queue: %d clips. Each Ctrl+V pastes the next one." ID = "PasteQueueStarted">Coda di incolla: %d clip. Ogni Ctrl+V incolla la successiva.</Item>
+		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Chiedi il nome</Item>
+		<Item English_Text = "Rename tag..." ID = "RenameTag">Rinomina tag...</Item>
+		<Item English_Text = "Rename" ID = "RenameTagTitle">Rinomina</Item>
+		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Ripristino del database in corso</Item>
+		<Item English_Text = "Save" ID = "SaveClip">Salva</Item>
+		<Item English_Text = "Save as new entry" ID = "SaveClipAsNew">Salva come nuova voce</Item>
+		<Item English_Text = "This clip also holds formatting, pictures or files." ID = "SaveEditDropsFormats">Questa clip contiene anche formattazione, immagini o file. Salva tiene solo il testo modificato e li rimuove.\n\nSalvare comunque? (&quot;Salva come nuova voce&quot; lascia la clip originale com&apos;è.)</Item>
+		<Item English_Text = "Show Starred Clips" ID = "ShowStarredClips">Mostra clip con la stella</Item>
+		<Item English_Text = "[Starred clips]" ID = "starred_clips">[Clip con la stella]</Item>
+		<Item English_Text = "Bulb is running minimized" ID = "StartupMsg">Bulb è in esecuzione ridotto a icona: si apre con le scorciatoie o con un clic sull&apos;icona nell&apos;area di notifica</Item>
+		<Item English_Text = "A tag name is a single word." ID = "TagNameOneWord">Il nome di un tag è una parola sola.</Item>
+		<Item English_Text = "Tags" ID = "TagsSubmenu">Tag</Item>
+		<Item English_Text = "Compact / Full view" ID = "ToggleFullView">Vista compatta / estesa</Item>
+		<Item English_Text = "[Always on top]" ID = "top_window">[Sempre in primo piano]</Item>
+		<Item English_Text = "Always on Top Enabled" ID = "TurnOfAlwaysOntop">Sempre in primo piano attivo</Item>
+		<Item English_Text = "Find screenshots by the words in them, and copy just their text" ID = "OcrImagesDesc">Trova gli screenshot dalle parole che contengono e copia solo il loro testo</Item>
+		<Item English_Text = "The oldest clips go first; tagged clips are kept" ID = "MaxCopiesDesc">Le clip più vecchie vengono tolte per prime; quelle con tag restano</Item>
+		<Item English_Text = "Appearance" ID = "AppearanceSection">Aspetto</Item>
+		<Item English_Text = "Storage" ID = "StorageSection">Archivio</Item>
+		<Item English_Text = "Path variables" ID = "PathVariables">Variabili nel percorso</Item>
+		<Item English_Text = "Use %APPDATA% and other variables in the database path" ID = "PathVariablesDesc">Usa %APPDATA% e altre variabili nel percorso del database</Item>
+		<Item English_Text = "Only your Windows account can read it." ID = "EncryptDbDesc">Solo il tuo account Windows può leggerlo. Fai il backup della chiave (cerca &quot;Gestisci certificati di crittografia file&quot; in Windows) o una reinstallazione di Windows lo blocca. Vale dal prossimo avvio di Bulb.</Item>
+		<Item English_Text = "More" ID = "MoreSection">Altro</Item>
+		<Item English_Text = "Advanced settings" ID = "AdvancedSettings">Impostazioni avanzate</Item>
+		<Item English_Text = "Every other option, for experienced users" ID = "AdvancedSettingsDesc">Tutte le altre opzioni, per utenti esperti</Item>
+		<Item English_Text = "Opens Bulb from any app" ID = "ActivateDesc1">Apre Bulb da qualsiasi programma</Item>
+		<Item English_Text = "A second shortcut that opens Bulb" ID = "ActivateDesc2">Una seconda scorciatoia per aprire Bulb</Item>
+		<Item English_Text = "A third shortcut that opens Bulb" ID = "ActivateDesc3">Una terza scorciatoia per aprire Bulb</Item>
+		<Item English_Text = "Keystrokes per application" ID = "KeystrokesPerApp">Tasti per singolo programma</Item>
+		<Item English_Text = "Counting since" ID = "CountingSince">Conteggio dal</Item>
+		<Item English_Text = "Database" ID = "DatabaseSection">Database</Item>
+		<Item English_Text = "Computers" ID = "ComputersSection">Computer</Item>
+		<Item English_Text = "Send clips to" ID = "SendClipsTo">Invia le clip a</Item>
 	</Ditto_String_Table>
 	<Ditto_Options_Sheet>
 		<Item English_Text = "OK" ID = "1">OK</Item>
@@ -450,6 +534,11 @@
 		//Added 12/17/16
 		<Item English_Text = "Fixup Sticky Clip Order" ID = "32909">Correggi ordine clip adesive</Item>		
 		<Item English_Text = "Save Current Clipboard" ID = "32904">Salva clip attuale</Item>
+			// Bulb
+		<Item English_Text = "Pause Recording" ID = "-1">Sospendi registrazione</Item>
+		<Item English_Text = "5 minutes" ID = "33006">5 minuti</Item>
+		<Item English_Text = "15 minutes" ID = "33007">15 minuti</Item>
+		<Item English_Text = "1 hour" ID = "33008">1 ora</Item>
 	</Ditto_Tray_Icon_Menu>
 	//Added in 9-11-09
 	<Ditto_Options_CopyBuffers>
@@ -500,7 +589,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Elimina dati clip</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ogni clip in Ditto è composta da più elementi negli appunti, tutti gli elementi negli appunti in Ditto sono elencati di seguito.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ogni clip in Bulb è composta da più elementi negli appunti, tutti gli elementi negli appunti in Bulb sono elencati di seguito.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Opzioni ricerca</Item>
 		<Item English_Text = "Title" ID = "1042">Titolo</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Crea intervallo date</Item>

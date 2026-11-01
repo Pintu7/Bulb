@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "OptionsCopyBuffers.h"
+#include "FluentDialog.h"
 
 
 // COptionsCopyBuffers dialog
@@ -84,6 +85,31 @@ BOOL COptionsCopyBuffers::OnInitDialog()
 	CheckDlgButton(IDC_PLAY_SOUND_5, Item.m_bPlaySoundOnCopy);
 
 	theApp.m_Language.UpdateOptionCopyBuffers(this);
+
+	// Windows 11 Settings rows, one section per buffer
+	using L = FluentDialog::SettingsLayout;
+	const int key = 150, win = 84;
+	const int groups[] = { IDC_BUFFER_GROUP_1, IDC_BUFFER_GROUP_2, IDC_BUFFER_GROUP_3, IDC_BUFFER_GROUP_4, IDC_BUFFER_GROUP_5 };
+	const int copyLabels[] = { IDC_STATIC_COPY_1, IDC_STATIC_COPY_2, IDC_STATIC_COPY_3, IDC_STATIC_COPY_4, IDC_STATIC_COPY_5 };
+	const int copies[] = { IDC_COPY_1, IDC_COPY_2, IDC_COPY_3, IDC_COPY_4, IDC_COPY_5 };
+	const int copyWins[] = { IDC_WIN_COPY_1, IDC_WIN_COPY_2, IDC_WIN_COPY_3, IDC_WIN_COPY_4, IDC_WIN_COPY_5 };
+	const int pasteLabels[] = { IDC_STATIC_PASTE_1, IDC_STATIC_PASTE_2, IDC_STATIC_PASTE_3, IDC_STATIC_PASTE_4, IDC_STATIC_PASTE_5 };
+	const int pastes[] = { IDC_PASTE_1, IDC_PASTE_2, IDC_PASTE_3, IDC_PASTE_4, IDC_PASTE_5 };
+	const int pasteWins[] = { IDC_WIN_PASTE_1, IDC_WIN_PASTE_2, IDC_WIN_PASTE_3, IDC_WIN_PASTE_4, IDC_WIN_PASTE_5 };
+	const int cutLabels[] = { IDC_STATIC_CUT_1, IDC_STATIC_CUT_2, IDC_STATIC_CUT_3, IDC_STATIC_CUT_4, IDC_STATIC_CUT_5 };
+	const int cuts[] = { IDC_CUT_1, IDC_CUT_2, IDC_CUT_3, IDC_CUT_4, IDC_CUT_5 };
+	const int cutWins[] = { IDC_WIN_CUT_1, IDC_WIN_CUT_2, IDC_WIN_CUT_3, IDC_WIN_CUT_4, IDC_WIN_CUT_5 };
+	const int sounds[] = { IDC_PLAY_SOUND_1, IDC_PLAY_SOUND_2, IDC_PLAY_SOUND_3, IDC_PLAY_SOUND_4, IDC_PLAY_SOUND_5 };
+	L layout;
+	for (int i = 0; i < 5; i++)
+	{
+		layout.Section(groups[i])
+			.Row(copyLabels[i], { { copies[i], key }, { copyWins[i], win } })
+			.Row(pasteLabels[i], { { pastes[i], key }, { pasteWins[i], win } })
+			.Row(cutLabels[i], { { cuts[i], key }, { cutWins[i], win } })
+			.Row(sounds[i], { { sounds[i], 48 } });
+	}
+	layout.AttachTo(m_hWnd);
 
 	return TRUE;
 }

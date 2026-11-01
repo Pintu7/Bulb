@@ -10,10 +10,12 @@
 #include "AdvGeneral.h"
 #include "DimWnd.h"
 #include "HyperLink.h"
+#include "FluentDialog.h"
+#include <shobjidl.h>
 
 using namespace nsPath;
 
-#define DEFAULT_THEME _T("(Ditto)")
+#define DEFAULT_THEME _T("(Bulb)")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -109,6 +111,16 @@ BOOL COptionsGeneral::OnInitDialog()
 	}
 #endif
 
+	// Ditto's online privacy policy does not apply: Bulb keeps everything on this computer
+	::ShowWindow(::GetDlgItem(m_hWnd, IDC_MFCLINK2), SW_HIDE);
+	::EnableWindow(::GetDlgItem(m_hWnd, IDC_MFCLINK2), FALSE);
+
+	CheckDlgButton(IDC_OCR_IMAGES,CGetSetOptions::GetProfileLong(_T("OcrImages"), TRUE) ? BST_CHECKED : BST_UNCHECKED);
+	// a portable copy travels to other PCs, where a file tied to this Windows account could not be read: always off there
+	bool portable = CGetSetOptions::GetIsPortableDitto() != FALSE;
+	CheckDlgButton(IDC_ENCRYPT_DB, portable == false && CGetSetOptions::GetProfileLong(_T("EncryptDatabase"), TRUE) ? BST_CHECKED : BST_UNCHECKED);
+	::EnableWindow(::GetDlgItem(m_hWnd, IDC_ENCRYPT_DB), portable == false);
+
 	m_btMaximumCheck.SetCheck(CGetSetOptions::GetCheckForMaxEntries());
 	if (CGetSetOptions::GetCheckForMaxEntries() == FALSE)
 	{
@@ -175,6 +187,31 @@ BOOL COptionsGeneral::OnInitDialog()
 	CString csPath = CGetSetOptions::GetDBPath(false);
 	m_ePath.SetWindowText(csPath);
 
+	// Windows 11 Settings rows: name on the left, the control on the right, switches last
+	using L = FluentDialog::SettingsLayout;
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+	L()
+		.Row(IDC_START_ON_STARTUP, { { IDC_START_ON_STARTUP, 48 } })
+		.Row(IDC_OCR_IMAGES, { { IDC_OCR_IMAGES, 48 } }).Describe(Text(_T("OcrImagesDesc"), _T("Find screenshots by the words in them, and copy just their text")))
+		.Row(IDC_MAXIMUM, { { IDC_MAX_SAVED_COPIES, 64 }, { IDC_MAXIMUM, 48 } }).Describe(Text(_T("MaxCopiesDesc"), _T("The oldest clips go first; tagged clips are kept")))
+		.Row(IDC_EXPIRE, { { IDC_EXPIRE_AFTER, 64 }, { IDC_STATIC_DAYS, 40 }, { IDC_EXPIRE, 48 } })
+		.SectionText(Text(_T("AppearanceSection"), _T("Appearance")))
+		.Row(IDC_STATIC_THEME, { { IDC_COMBO_THEME, 210 }, { IDC_BUTTON_PREVIEW_THEME, 80 }, { IDC_BUTTON_THEME, 104 } })
+		.Row(IDC_STATIC_FONT, { { IDC_BUTTON_FONT, 210 }, { IDC_BUTTON_DEFAULT_FAULT, 104 } })
+		.Row(IDC_STATIC_POPUP_POS, { { IDC_COMBO_POPUP_POSITION, 210 } })
+		.Row(IDC_STATIC_LANGUAGE, { { IDC_COMBO_LANGUAGE, 210 }, { IDC_BUTTON_ABOUT, 104 } })
+		.SectionText(Text(_T("StorageSection"), _T("Storage")))
+		.Row(IDC_STATIC_DATABASE_PATH, { { IDC_PATH, L::Fill }, { IDC_GET_PATH, 40 } })
+		.RowText(Text(_T("PathVariables"), _T("Path variables")), { { IDC_MFCLINK_ENV_VAR, 160 } }, Text(_T("PathVariablesDesc"), _T("Use %APPDATA% and other variables in the database path")))
+		.Row(IDC_ENCRYPT_DB, { { IDC_ENCRYPT_DB, 48 } }).Describe(Text(_T("EncryptDbDesc"), _T("Only your Windows account can read it. Back up your key (search Windows for 'Manage file encryption certificates') or a Windows reinstall locks it. Applies when Bulb restarts.")))
+		.Section(IDC_STATIC_APP_SEP_DESC)
+		.Row(IDC_STATIC_INCLUDE_APPS, { { IDC_EDIT_APP_COPY_INCLUDE, L::Fill } })
+		.Row(IDC_STATIC_EXCLUDE_APPS, { { IDC_EDIT_APP_COPY_EXCLUDE, L::Fill } })
+		.SectionText(Text(_T("MoreSection"), _T("More")))
+		.RowText(Text(_T("AdvancedSettings"), _T("Advanced settings")), { { IDC_BUTTON_ADVANCED, 112 } }, Text(_T("AdvancedSettingsDesc"), _T("Every other option, for experienced users")))
+		.Hide({ IDC_MFCLINK2 })
+		.AttachTo(m_hWnd);
+
 	return TRUE;
 }
 
@@ -219,6 +256,12 @@ BOOL COptionsGeneral::OnApply()
 {
 	UpdateData();
 
+	CGetSetOptions::SetProfileLong(_T("OcrImages"), IsDlgButtonChecked(IDC_OCR_IMAGES) == BST_CHECKED);
+	if (CGetSetOptions::GetIsPortableDitto() == FALSE)
+	{
+		CGetSetOptions::SetProfileLong(_T("EncryptDatabase"), IsDlgButtonChecked(IDC_ENCRYPT_DB) == BST_CHECKED);
+	}
+
 #ifndef _DEBUG
 
 	if (CGetSetOptions::GetIsWindowsApp() == FALSE)
@@ -253,7 +296,7 @@ BOOL COptionsGeneral::OnApply()
 			CString cs;
 			cs.Format(_T("Error loading language file - %s - \n\n%s"), csLanguage, theApp.m_Language.m_csLastError);
 
-			MessageBox(cs, _T("Ditto"), MB_OK);
+			MessageBox(cs, _T("Bulb"), MB_OK);
 		}
 	}
 
@@ -267,13 +310,21 @@ BOOL COptionsGeneral::OnApply()
 	{
 		if(FileExists(resolvedPath) == FALSE)
 		{
+			// a new database gets a Bulb folder of its own in the folder chosen, so only that folder is ever encrypted
+			CString placed = InBulbFolder(resolvedPath);
+			if (placed != resolvedPath)
+			{
+				resolvedPath = placed;
+				toSavePath = GetFilePath(toSavePath) + _T("Bulb\\") + GetFileName(toSavePath);
+			}
+
 			CString cs;
 			cs.Format(_T("The database %s does not exist.\n\nCreate a new database?"), resolvedPath);
 
-			if(MessageBox(cs, _T("Ditto"), MB_OKCANCEL) == IDOK)
+			if(MessageBox(cs, _T("Bulb"), MB_OKCANCEL) == IDOK)
 			{
 				// -- create a new one
-				if(CreateDB(resolvedPath))
+				if(EnsureDirectory(resolvedPath) && CreateDB(resolvedPath))
 				{
 					bOpenNewDatabase = true;
 				}
@@ -289,7 +340,7 @@ BOOL COptionsGeneral::OnApply()
 		{
 			if(ValidDB(resolvedPath) == FALSE)
 			{
-				MessageBox(_T("Invalid Database"), _T("Ditto"), MB_OK);
+				MessageBox(_T("Invalid Database"), _T("Bulb"), MB_OK);
 				m_ePath.SetFocus();
 				return FALSE;
 			}
@@ -305,7 +356,7 @@ BOOL COptionsGeneral::OnApply()
 
 			if(OpenDatabase(resolvedPath) == FALSE)
 			{
-				MessageBox(_T("Error Opening new database"), _T("Ditto"), MB_OK);
+				MessageBox(_T("Error Opening new database"), _T("Bulb"), MB_OK);
 				m_ePath.SetFocus();
 				return FALSE;
 			}
@@ -370,47 +421,40 @@ BOOL COptionsGeneral::OnSetActive()
 //	}	
 //}
 
-void COptionsGeneral::OnGetPath() 
+// the user picks a folder; the database lives in a Bulb folder inside it (see InBulbFolder), or is the one already there
+void COptionsGeneral::OnGetPath()
 {
-	OPENFILENAME	FileName;
-	TCHAR			szFileName[400];
-	TCHAR			szDir[400];
-
-	memset(&FileName, 0, sizeof(FileName));
-	memset(szFileName, 0, sizeof(szFileName));
-	memset(&szDir, 0, sizeof(szDir));
-	FileName.lStructSize = sizeof(FileName);
-	FileName.lpstrTitle = _T("Open Database");
-	FileName.Flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
-	FileName.nMaxFile = 400;
-	FileName.lpstrFile = szFileName;
-	FileName.lpstrInitialDir = szDir;
-	FileName.lpstrFilter = _T("Ditto Databases (*.db; *.mdb)\0*.db;*.mdb\0\0");
-	FileName.lpstrDefExt = _T("db");
-	FileName.hwndOwner = m_hWnd;
-
-	if(GetOpenFileName(&FileName) == 0)
+	CComPtr<IFileOpenDialog> dialog;
+	if (FAILED(dialog.CoCreateInstance(CLSID_FileOpenDialog)))
+	{
 		return;
+	}
+	FILEOPENDIALOGOPTIONS options = 0;
+	dialog->GetOptions(&options);
+	dialog->SetOptions(options | FOS_PICKFOLDERS | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST);
+	dialog->SetTitle(theApp.m_Language.GetString(_T("DatabaseFolderTitle"), _T("Folder for the Bulb database")));
 
-	CString csPath(FileName.lpstrFile);
-	if(FileExists(csPath))
+	CComPtr<IShellItem> picked;
+	PWSTR folderName = NULL;
+	if (FAILED(dialog->Show(m_hWnd)) || FAILED(dialog->GetResult(&picked)) || FAILED(picked->GetDisplayName(SIGDN_FILESYSPATH, &folderName)))
 	{
-		if(ValidDB(csPath) == FALSE)
-		{
-			MessageBox(_T("Invalid Database"), _T("Ditto"), MB_OK);
-			m_ePath.SetFocus();
-		}
-		else
-		{
-			m_ePath.SetWindowText(csPath);	
-		}
+		return;
 	}
-	else
+	CString folder(folderName);
+	CoTaskMemFree(folderName);
+	folder.TrimRight(_T("\\"));
+	folder += _T("\\");
+
+	// a database already kept loose in the folder (an older setup) is opened where it is
+	CString csPath = FileExists(folder + DEFAULT_DB_NAME) ? folder + DEFAULT_DB_NAME : InBulbFolder(folder + DEFAULT_DB_NAME);
+	if (FileExists(csPath) && ValidDB(csPath) == FALSE)
 	{
-		m_ePath.SetWindowText(csPath);
+		MessageBox(_T("Invalid Database"), _T("Bulb"), MB_OK);
+		m_ePath.SetFocus();
+		return;
 	}
+	m_ePath.SetWindowText(csPath);
 }
-
 void COptionsGeneral::OnButtonAbout() 
 {
 	CDimWnd dim(this->GetParent());
@@ -434,14 +478,14 @@ void COptionsGeneral::OnButtonAbout()
 									   Lang.GetAuthor(), 
 									   Lang.GetNotes());
 
-		MessageBox(csMessage, _T("Ditto"), MB_OK);
+		MessageBox(csMessage, _T("Bulb"), MB_OK);
 	}
 	else
 	{
 		CString csError;
 		csError.Format(_T("Error loading language file - %s - reason = "), csLanguage, Lang.m_csLastError);
 
-		MessageBox(csError, _T("Ditto"), MB_OK);
+		MessageBox(csError, _T("Bulb"), MB_OK);
 	}
 }
 
@@ -558,14 +602,14 @@ void COptionsGeneral::OnBnClickedButtonTheme()
 			theme.Author(),
 			theme.Notes());
 
-		MessageBox(csMessage, _T("Ditto"), MB_OK);
+		MessageBox(csMessage, _T("Bulb"), MB_OK);
 	}
 	else
 	{
 		CString csError;
 		csError.Format(_T("Error loading theme file - %s - reason = "), csTheme, theme.LastError());
 
-		MessageBox(csError, _T("Ditto"), MB_OK);
+		MessageBox(csError, _T("Bulb"), MB_OK);
 	}
 }
 

@@ -117,7 +117,7 @@ int CWndEx::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetWindowRect(&r);
 	ScreenToClient(&r);
 	r.InflateRect(m_DittoWindow.m_dpi.Scale(25), m_DittoWindow.m_dpi.Scale(25));
-	m_toolTip.AddTool(this, _T("Ditto"), r, 1);
+	m_toolTip.AddTool(this, _T("Bulb"), r, 1);
 	
 	return 0;
 }

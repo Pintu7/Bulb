@@ -67,7 +67,7 @@
 		<Item English_Text = "Options..." ID = "32805">Options</Item>
 		<Item English_Text = "Help" ID = "32842">Aide</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "32775">Déconnecter le presse-papier</Item>
-		<Item English_Text = "Exit Program" ID = "32806">Quitter Ditto</Item>
+		<Item English_Text = "Exit Program" ID = "32806">Quitter Bulb</Item>
 		
 		//New strings added in 3.6 6-9-06
 		<Item English_Text = "Prompt to Delete Clip" ID = "32852">Confirmer les suppressions</Item>	
@@ -178,7 +178,7 @@
 				
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Lancer Ditto au démarrage</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Lancer Bulb au démarrage</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Afficher l'icône dans la barre système</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Nombre maxi de copies sauvegardées</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Les entrées de collage expirent après </Item>
@@ -188,7 +188,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Autoriser les doublons</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Mettre à jour la date de la copie au collage</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Enregistrer les collages multiples</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Masquer Ditto avec raccourci si visible</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Masquer Bulb avec raccourci si visible</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Quantité de texte à sauver pour les descriptions</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Jouer un son à la copie</Item>
 		<Item English_Text = "Play" ID = "2034">Jouer</Item>
@@ -199,7 +199,7 @@
 		<Item English_Text = "Language" ID = "2069">Langage</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ignorer les copies qui surviennent moins de X millisecondes après la dernière copie</Item>
 		<Item English_Text = "About Language" ID = "2073">À propos de la traduction</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">S'assurer que Ditto est toujours connecté au presse-papier</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">S'assurer que Bulb est toujours connecté au presse-papier</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Général</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Séparateur de presse-papiers lors du collage multiple ([LF] = saut de ligne)</Item>
 		
@@ -233,7 +233,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Activer Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Activer Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Copie nommée </Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -269,15 +269,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Déplacer les collages vers le haut de la liste lors du collage</Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Activer Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Activer Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Activer Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Activer Bulb</Item>
 		
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Sauver presse-papiers actuel</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Utiliser le groupe actuellement choisi dans l'UI de Ditto pour les dix dernières copies</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Utiliser le groupe actuellement choisi dans l'UI de Bulb pour les dix dernières copies</Item>
 				
 		<Item English_Text = "Copy And Save Current Clipboard" ID = "2068">Copier/sauver presse-papiers actuel</Item>
 		
@@ -352,18 +352,18 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Raccourcis clavier</Item>
 		<Item English_Text = "About Ditto" ID = "AboutTitle">À propos de</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Erreur d'ouverture de la base de données.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Impossible d'initialiser le moteur de base DAO/Jet.\nSélectionnez OUI pour télécharger DAO depuis http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRedémarrez Ditto après installation de DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Impossible d'initialiser le moteur de base DAO/Jet.\nSélectionnez OUI pour télécharger DAO depuis http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRedémarrez Bulb après installation de DAO.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Format de base de données inconnu</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">le fichier sera renommé  </Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">et une nouvelle base de données sera créée </Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Des mises à jour de Ditto sont disponibles.\nVisiter ditto-cp.sourceforge.net pour les détails\n\nVersion executée </Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Des mises à jour de Bulb sont disponibles.\nVisiter ditto-cp.sourceforge.net pour les détails\n\nVersion executée </Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Mise à jour de la version</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Télécharger une mise a jour?</Item>
 		<Item English_Text = "No updates available" ID = "No_Updates">Aucune mise à jour n'est disponible</Item>
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Ceci effacera toutes vos copies!\n\nContinuer?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Déconnecter le presse-papier</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Connecter le presse-papier</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Impossible d'initialiser le moteur de base DAO/Jet. DAO sera installé.\n\nRedémarrez Ditto après installation de DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Impossible d'initialiser le moteur de base DAO/Jet. DAO sera installé.\n\nRedémarrez Bulb après installation de DAO.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">AUCUNE DESTINATION</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -386,8 +386,8 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Erreur à la sauvegarde de la copie</Item>
 		<Item English_Text = "New" ID = "New">Nouveau</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Enregistrer, Fermer et placer dans le presse-papier</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto Éditeur</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Collage nommé</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb Éditeur</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Collage nommé</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Erreur de chargement des données</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Erreur lors de la recherche de l'entrée avec le texte de</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Exception lors de la recherche du clip</Item>
@@ -419,7 +419,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_most">[Toujours visible]</Item>
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Déconnecté]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto fonctionne minimisé, Ditto peut être ouvert par un raccourci clavier ou en cliquant sur l'icône dans la zone de notification.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb fonctionne minimisé, Bulb peut être ouvert par un raccourci clavier ou en cliquant sur l'icône dans la zone de notification.</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Aucun résultat pour</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Attention : cela peut prendre beaucoup de temps et nécessiter jusqu'à deux fois la taille actuelle de la base de données sur le disque dur, continuer?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Invite pour le nom</Item>
@@ -428,7 +428,7 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Base de données de secours</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Restauration de la base de données</Item>
 		
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto n'a pas pu ouvrir la base de données. Actualiser le chemin d'accès dans les paramètres, si nécessaire:</Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb n'a pas pu ouvrir la base de données. Actualiser le chemin d'accès dans les paramètres, si nécessaire:</Item>
 				
 		<Item English_Text = "At Caret" ID = "AtCaret">Au curseur</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">Au curdeur de la souris</Item>
@@ -538,7 +538,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Supprimer données de collages</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Chaque collage dans Ditto est fait de multiples éléments de presse papier, tous les éléments de presse papier dans Ditto sont listé ci-dessous.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Chaque collage dans Bulb est fait de multiples éléments de presse papier, tous les éléments de presse papier dans Bulb sont listé ci-dessous.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Options de recherche</Item>
 		<Item English_Text = "Title" ID = "1042">Titre</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Créer plage données</Item>
@@ -670,7 +670,7 @@
 		<Item English_Text = "Delete Clip Data" ID = "84">Supprimer données des collages</Item>
 		<Item English_Text = "Replace Top Sticky Clip" ID = "85">Remplacer le premier collage épinglé</Item>
 		<Item English_Text = "Prompt send to friend" ID = "86">Envoyer à un ami</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Enregistrer le contenu du fichier copié dans Ditto</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Enregistrer le contenu du fichier copié dans Bulb</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">(Dés)activer la connexion au presse-papiers</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Monter</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Descendre</Item>

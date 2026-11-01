@@ -45,10 +45,28 @@ protected:
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	afx_msg void OnNameChange();
+	afx_msg void OnNameFocus();
+	afx_msg void OnPaint();
+	afx_msg void OnLButtonDown(UINT flags, CPoint point);
+	afx_msg HITTEST_RET OnNcHitTest(CPoint point);
 	DECLARE_MESSAGE_MAP()
 
 	int m_lastNameLength = 0;
 	bool m_completing = false;
+
+	// Windows 11 content dialog: title and hint inside, a large text box, the buttons in a footer band
+	CString m_heading;
+	CString m_hint;
+	CFont m_titleFont;
+	CFont m_bodyFont;
+	CRect m_titleRect;
+	CRect m_hintRect;
+	CRect m_fieldRect;
+	int m_footerTop = 0;
+	int Scale(int value);
+	void LayoutAsContentDialog();
+	void PlaceForScale();
+	afx_msg LRESULT OnDpiChanged(WPARAM wParam, LPARAM lParam);
 };
 
 //{{AFX_INSERT_LOCATION}}

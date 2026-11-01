@@ -39,17 +39,17 @@ bool CDittoAddin::DoLoad(LPCTSTR lpszDllName, CDittoInfo DittoInfo)
 				}
 				else
 				{
-					m_csLastError.Format((_T("Ditto Addin - DittoAddin return false, not loading Addin")));
+					m_csLastError.Format((_T("Bulb Addin - DittoAddin return false, not loading Addin")));
 				}
 			}
 			else
 			{
-				m_csLastError.Format((_T("Ditto Addin - Failed to Get Function DittoAddin")));
+				m_csLastError.Format((_T("Bulb Addin - Failed to Get Function DittoAddin")));
 			}
 		}
 		else
 		{
-			m_csLastError.Format((_T("Ditto Addin - Failed to load library on Addin %s"), lpszDllName));
+			m_csLastError.Format((_T("Bulb Addin - Failed to load library on Addin %s"), lpszDllName));
 		}
 	}
 
@@ -80,17 +80,17 @@ bool CDittoAddin::SupportedFunctions(const CDittoInfo &DittoInfo, FunctionType t
 			for(int i = 0; i < nCount; i++)
 			{
 				CFunction func = Functions[i];
-				Log(StrF(_T("Ditto Addin - Supported Function Display: %s, Function: %s, Desc: %s"), func.m_csDisplayName, CTextConvert::AnsiToUnicode(func.m_csFunction), func.m_csDetailDescription));
+				Log(StrF(_T("Bulb Addin - Supported Function Display: %s, Function: %s, Desc: %s"), func.m_csDisplayName, CTextConvert::AnsiToUnicode(func.m_csFunction), func.m_csDetailDescription));
 			}
 		}
 		else
 		{
-			m_csLastError = _T("Ditto Addin - m_SupportedFunctions returned false");
+			m_csLastError = _T("Bulb Addin - m_SupportedFunctions returned false");
 		}
 	}
 	else
 	{
-		m_csLastError = _T("Ditto Addin - m_SupportedFunctions is null, not call function load supported functions");
+		m_csLastError = _T("Bulb Addin - m_SupportedFunctions is null, not call function load supported functions");
 	}
 
 	return bRet;

@@ -20,7 +20,7 @@ CDittoCopyBuffer::~CDittoCopyBuffer(void)
 
 bool CDittoCopyBuffer::StartCopy(long lCopyBuffer, bool bCut)
 {
-	Log(StrF(_T("Start of Ditto Copy buffer = %d"), lCopyBuffer));
+	Log(StrF(_T("Start of Bulb Copy buffer = %d"), lCopyBuffer));
 
 	//Tell the timer thread to exit
 	m_ActiveTimer.SetEvent();
@@ -47,7 +47,7 @@ bool CDittoCopyBuffer::StartCopy(long lCopyBuffer, bool bCut)
 	}
 	else
 	{
-		Log(_T("Start of Ditto Failed to save buffer"));
+		Log(_T("Start of Bulb Failed to save buffer"));
 	}
 
 	return true;
@@ -88,7 +88,7 @@ bool CDittoCopyBuffer::EndCopy(long lID)
 	m_ActiveTimer.SetEvent();
 	m_bActive = false;
 
-	Log(StrF(_T("Start - Ditto EndCopy buffer = %d"), m_lCurrentDittoBuffer));
+	Log(StrF(_T("Start - Bulb EndCopy buffer = %d"), m_lCurrentDittoBuffer));
 
 	bool bRet = false;
 
@@ -97,13 +97,13 @@ bool CDittoCopyBuffer::EndCopy(long lID)
 	
 	if(PutClipOnDittoCopyBuffer(lID, m_lCurrentDittoBuffer))
 	{
-		Log(StrF(_T("Ditto end copy, saved clip successfully Clip ID = %d"), lID));	
+		Log(StrF(_T("Bulb end copy, saved clip successfully Clip ID = %d"), lID));	
 
 		bRet = true;
 	}
 	else
 	{
-		Log(StrF(_T("Ditto end copy, ERROR associating clip to Copy buffer ID = %d"), lID));
+		Log(StrF(_T("Bulb end copy, ERROR associating clip to Copy buffer ID = %d"), lID));
 	}
 
 	return bRet;

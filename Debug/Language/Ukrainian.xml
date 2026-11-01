@@ -194,7 +194,7 @@
 		<Item English_Text = "Hotkey available globally" ID = "1027">У всіх програмах</Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Запускати Ditto автоматично</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Запускати Bulb автоматично</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Показувати іконку в панелі задач</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Зберігати максимум</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Зберігати протягом</Item>
@@ -216,7 +216,7 @@
 		<Item English_Text = "Language" ID = "2069">Мова</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ігнорувати копії, зроблені протягом X мс після останньої (1000 мс = 1 с)</Item>
 		<Item English_Text = "About Language" ID = "2073">Про мову</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Стежити, щоб Ditto завжди був під’єднаний до буфера обміну</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Стежити, щоб Bulb завжди був під’єднаний до буфера обміну</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Загальне</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Роздільник під час вставлення кількох об’єктів ([LF] = розрив рядка)</Item>
 		
@@ -251,7 +251,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Активувати Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Активувати Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Лише текст</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -287,15 +287,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Переміщати об’єкт на початок списку під час вставлення</Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Активувати Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Активувати Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Активувати Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Активувати Bulb</Item>
 		
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Зберегти буфер</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Використовувати вибрану в інтерфейсі Ditto групу для останніх 10 копій</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Використовувати вибрану в інтерфейсі Bulb групу для останніх 10 копій</Item>
 		
 		//Added 3.25
 		<Item English_Text = "Copy And Save Current Clipboard" ID = "2068">Копіюв. і зберегти</Item>
@@ -369,9 +369,9 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Друзі</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Швидка вставка</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Гарячі клавіші</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Про Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Про Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Помилка відкриття бази даних.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Не вдалося ініціалізувати рушій DAO/Jet.\nНатисніть «Так», щоб завантажити DAO з http://ditto-cp.sourceforge.net/dao_setup.exe\n\nПісля встановлення DAO перезапустіть Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Не вдалося ініціалізувати рушій DAO/Jet.\nНатисніть «Так», щоб завантажити DAO з http://ditto-cp.sourceforge.net/dao_setup.exe\n\nПісля встановлення DAO перезапустіть Bulb.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Невідомий тип бази даних</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">файл буде перейменовано</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">і буде створено нову базу даних</Item>
@@ -382,7 +382,7 @@
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Буде видалено всі об’єкти!\n\nПродовжити?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Від’єднатися від буфера обміну</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Під’єднатися до буфера обміну</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Не вдалося ініціалізувати рушій DAO/Jet. Зараз буде встановлено DAO.\n\nПісля встановлення DAO перезапустіть Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Не вдалося ініціалізувати рушій DAO/Jet. Зараз буде встановлено DAO.\n\nПісля встановлення DAO перезапустіть Bulb.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">НЕМАЄ ЦІЛІ</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -405,15 +405,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Помилка збереження об’єкта</Item>
 		<Item English_Text = "New" ID = "New">Новий</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Зберегти, закрити й помістити в буфер обміну</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Редактор Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto – іменована вставка</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Редактор Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb – іменована вставка</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Помилка завантаження даних</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Не вдалося знайти об’єкт із текстом швидкої вставки</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Виняток під час пошуку об’єкта</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto – іменована копія</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb – іменована копія</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Помилка збереження іменованої копії в базі даних</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Помилка збереження іменованої копії</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto не отримав копію</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb не отримав копію</Item> 
 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Додатки</Item> 
@@ -437,7 +437,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_most">[Поверх усіх вікон]</Item>
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Від’єднано]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto працює згорнутим. Відкрити його можна гарячою клавішею або клацанням значка в області сповіщень.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb працює згорнутим. Відкрити його можна гарячою клавішею або клацанням значка в області сповіщень.</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Немає результатів для</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Увага: це може тривати довго й потребувати на диску вдвічі більше місця, ніж займає база даних. Продовжити?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Запит імені</Item>
@@ -446,14 +446,14 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Резервне копіювання бази даних</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Відновлення бази даних</Item>
 		
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Не вдається відкрити базу даних, Ditto чекатиме, доки її можна буде відкрити. За потреби змініть шлях у параметрах. Шлях:</Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Не вдається відкрити базу даних, Bulb чекатиме, доки її можна буде відкрити. За потреби змініть шлях у параметрах. Шлях:</Item>
 				
 		<Item English_Text = "At Caret" ID = "AtCaret">Під текстовим курсором</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">Під вказівником миші</Item>
 		<Item English_Text = "At Previous Position" ID = "AtPreviousPosition">У попередньому місці</Item>
 				
 		//Added 3.25
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Ditto працює згорнутим. Відкрити його можна гарячою клавішею або клацанням значка в області сповіщень.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Bulb працює згорнутим. Відкрити його можна гарячою клавішею або клацанням значка в області сповіщень.</Item>
 		<Item English_Text = "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key or marked as sticky.\n\nThis cannot be undone." ID = "Delete_All_Non_Used_Clips">Видалити всі об’єкти, крім груп, об’єктів у групах, об’єктів із позначкою «Не видаляти автоматично», із гарячою клавішею та закріплених.\n\nСкасувати цю дію буде неможливо.</Item>
 		<Item English_Text = "Delete Group?" ID = "Delete_Clip_Groups">Видалити групу?</Item>
 		<Item English_Text = "Always on Top Enabled" ID = "TurnOfAlwaysOntop">Завжди зверху: увімкнено</Item>
@@ -559,7 +559,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Видалити дані об’єктів</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Кожен об’єкт у Ditto складається з кількох елементів буфера обміну, усі вони перелічені нижче.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Кожен об’єкт у Bulb складається з кількох елементів буфера обміну, усі вони перелічені нижче.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Параметри пошуку</Item>
 		<Item English_Text = "Title" ID = "1042">Текст</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Створено</Item>
@@ -696,7 +696,7 @@
 			
 		//Added 3.25
 		<Item English_Text = "Prompt send to friend" ID = "86">Надіслати другові (із запитом)</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Зберегти в Ditto вміст скопійованого файлу (CF_HDROP)</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Зберегти в Bulb вміст скопійованого файлу (CF_HDROP)</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">Під’єднати/від’єднати буфер обміну</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Перемістити виділення вгору</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Перемістити виділення вниз</Item>

@@ -105,6 +105,8 @@ public:
 	bool GetConnectCV() { return m_CopyThread.GetConnectCV(); }
 	void SetConnectCV(bool bConnect);
 	bool ToggleConnectCV();
+	// stops recording copies for a while; any manual connect/disconnect cancels the automatic resume
+	void PauseRecording(int minutes);
 	void UpdateMenuConnectCV(CMenu* pMenu, UINT nMenuID);
 	bool ImportClips(HWND hWnd);
 	void LoadGlobalClips();

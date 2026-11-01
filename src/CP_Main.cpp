@@ -15,6 +15,7 @@
 #include "MainTableFunctions.h"
 #include "ShowTaskBarIcon.h"
 #include "NoDbFrameWnd.h"
+#include "FluentDialog.h"
 #include <clocale>
 
 #ifdef _DEBUG
@@ -167,11 +168,11 @@ CCP_MainApp::CCP_MainApp()
 
 	m_RTFFormat = ::RegisterClipboardFormat(_T("Rich Text Format"));
 	m_HTML_Format = ::RegisterClipboardFormat(_T("HTML Format"));
-	m_PingFormat = ::RegisterClipboardFormat(_T("Ditto Ping Format"));
+	m_PingFormat = ::RegisterClipboardFormat(_T("Bulb Ping Format"));
 	m_cfIgnoreClipboard = ::RegisterClipboardFormat(_T("Clipboard Viewer Ignore"));
-	m_cfDelaySavingData = ::RegisterClipboardFormat(_T("Ditto Delay Saving Data"));
-	m_RemoteCF_HDROP = ::RegisterClipboardFormat(_T("Ditto Remote CF_HDROP"));
-	m_DittoFileData = ::RegisterClipboardFormat(_T("Ditto File Data"));
+	m_cfDelaySavingData = ::RegisterClipboardFormat(_T("Bulb Delay Saving Data"));
+	m_RemoteCF_HDROP = ::RegisterClipboardFormat(_T("Bulb Remote CF_HDROP"));
+	m_DittoFileData = ::RegisterClipboardFormat(_T("Bulb File Data"));
 	m_PNG_Format = GetFormatID(_T("PNG"));
 
 	//https://learn.microsoft.com/en-us/windows/win32/dataxchg/clipboard-formats
@@ -217,6 +218,7 @@ BOOL CCP_MainApp::InitInstance()
 	ParseCommandLine(cmdInfo);
 
 	CGetSetOptions::LoadSettings();
+	FluentDialog::ThemeAllDialogs();
 
 	theApp.m_activeWnd.TrackActiveWnd(false);
 
@@ -237,7 +239,7 @@ BOOL CCP_MainApp::InitInstance()
 
 	if (cmdInfo.m_restartFromRestartManager)
 	{
-		Log(StrF(_T("Ditto was restarted from restart manager")));
+		Log(StrF(_T("Bulb was restarted from restart manager")));
 	}
 	else if(cmdInfo.m_strFileName.IsEmpty() == FALSE)
 	{
@@ -252,11 +254,11 @@ BOOL CCP_MainApp::InitInstance()
 			CClip_ImportExport clip;
 			if(clip.ImportFromSqliteDB(db, false, true))
 			{
-				ShowCommandLineError("Ditto", theApp.m_Language.GetString("Importing_Good", "Clip placed on clipboard"));
+				ShowCommandLineError("Bulb", theApp.m_Language.GetString("Importing_Good", "Clip placed on clipboard"));
 			}
 			else
 			{
-				ShowCommandLineError("Ditto", theApp.m_Language.GetString("Error_Importing", "Error importing exported clip"));
+				ShowCommandLineError("Bulb", theApp.m_Language.GetString("Error_Importing", "Error importing exported clip"));
 			}
 		}
 		catch (CppSQLite3Exception& e)
@@ -265,7 +267,7 @@ BOOL CCP_MainApp::InitInstance()
 
 			CString csError;
 			csError.Format(_T("%s - Exception - %d - %s"), theApp.m_Language.GetString("Error_Parsing", "Error parsing exported clip"), e.errorCode(), e.errorMessage());
-			ShowCommandLineError("Ditto", csError);
+			ShowCommandLineError("Bulb", csError);
 		}	
 
 		return FALSE;
@@ -370,7 +372,7 @@ BOOL CCP_MainApp::InitInstance()
 	cs.Insert(0, _T("InitInstance  -  Running Version - "));
 	Log(cs);
 
-	CString csMutex("Ditto Is Now Running");
+	CString csMutex("Bulb Is Now Running");
 	if(CGetSetOptions::GetIsPortableDitto() || CGetSetOptions::GetIsWindowsApp() || CGetSetOptions::GetIsChocolateyApp())
 	{
 		csMutex += " ";
@@ -387,7 +389,7 @@ BOOL CCP_MainApp::InitInstance()
 	if(m_hMutex == NULL ||
 		dwError == ERROR_ALREADY_EXISTS)
 	{
-		Log(StrF(_T("Ditto is already running, closing, mutex: %s"), csMutex));
+		Log(StrF(_T("Bulb is already running, closing, mutex: %s"), csMutex));
 		HWND hWnd = (HWND)(LONG_PTR)CGetSetOptions::GetMainHWND();
 		if(hWnd)
 			::SendMessage(hWnd, WM_SHOW_TRAY_ICON, TRUE, TRUE);
@@ -606,13 +608,13 @@ void CCP_MainApp::StartCopyThread()
 	if(m_connectOnStartup == FALSE || CGetSetOptions::GetConnectedToClipboard() == FALSE)
 	{
 		m_CopyThread.m_connectOnStartup = false;
-		Log(StrF(_T("Starting Ditto up disconnected from the clipboard, commandLine: %d, saved value: %d"), m_connectOnStartup, CGetSetOptions::GetConnectedToClipboard()));
+		Log(StrF(_T("Starting Bulb up disconnected from the clipboard, commandLine: %d, saved value: %d"), m_connectOnStartup, CGetSetOptions::GetConnectedToClipboard()));
 		SetConnectCV(false);
 	}
 	else if(m_connectOnStartup == TRUE)
 	{
 		SetConnectCV(true);
-		Log(_T("Starting Ditto up connected from the clipboard, passed in true from command line to start connected"));
+		Log(_T("Starting Bulb up connected from the clipboard, passed in true from command line to start connected"));
 	}
 
 	VERIFY(m_CopyThread.CreateThread(CREATE_SUSPENDED));
@@ -627,8 +629,22 @@ void CCP_MainApp::StopCopyThread()
 
 // returns the current Clipboard Viewer Connect state (though it might not yet
 //  be actually connected -- check IsClipboardViewerConnected())
+void CCP_MainApp::PauseRecording(int minutes)
+{
+	SetConnectCV(false);
+	if (m_pMainFrame != NULL)
+	{
+		m_pMainFrame->SetTimer(RESUME_RECORDING_TIMER, minutes * 60 * 1000, NULL);
+	}
+}
+
 bool CCP_MainApp::ToggleConnectCV()
 {
+	if (m_pMainFrame != NULL)
+	{
+		m_pMainFrame->KillTimer(RESUME_RECORDING_TIMER);
+	}
+
 	bool bConnect = !GetConnectCV();
 	SetConnectCV(bConnect);
 	return bConnect;
@@ -950,13 +966,13 @@ void CCP_MainApp::SetConnectCV(bool bConnect)
 	if(bConnect)
 	{
 		m_pMainFrame->m_trayIcon.SetIcon(IDR_MAINFRAME);
-		m_pMainFrame->m_trayIcon.SetTooltipText(_T("Ditto"));
+		m_pMainFrame->m_trayIcon.SetTooltipText(_T("Bulb"));
 	}
 	else
 	{
 		m_pMainFrame->m_trayIcon.SetIcon(IDI_DITTO_NOCOPYCB);
 		CString cs;
-		cs = _T("Ditto ");
+		cs = _T("Bulb ");
 		cs += theApp.m_Language.GetString("disconnected", "[Disconnected]");
 		m_pMainFrame->m_trayIcon.SetTooltipText(cs);
 	}
@@ -995,7 +1011,7 @@ bool CCP_MainApp::ImportClips(HWND hWnd)
 	FileName.nMaxFile = 400;
 	FileName.lpstrFile = szFileName;
 	FileName.lpstrInitialDir = szDir;
-	FileName.lpstrFilter = _T("Exported Ditto Clips (.dto)\0*.dto\0\0");
+	FileName.lpstrFilter = _T("Exported Bulb Clips (.dto)\0*.dto\0\0");
 	FileName.lpstrDefExt = _T("dto");
 
 	if(GetOpenFileName(&FileName) == 0)
@@ -1026,12 +1042,12 @@ bool CCP_MainApp::ImportClips(HWND hWnd)
 			else
 				cs += theApp.m_Language.GetString("Clips", "clips");
 
-			MessageBox(hWnd, cs, _T("Ditto"), MB_OK);
+			MessageBox(hWnd, cs, _T("Bulb"), MB_OK);
 		}
 		else
 		{
 			CShowTaskBarIcon show;
-			MessageBox(hWnd, theApp.m_Language.GetString("Error_Importing", "Error importing exported clip"), _T("Ditto"), MB_OK);
+			MessageBox(hWnd, theApp.m_Language.GetString("Error_Importing", "Error importing exported clip"), _T("Bulb"), MB_OK);
 		}
 	}
 	catch (CppSQLite3Exception& e)
@@ -1040,7 +1056,7 @@ bool CCP_MainApp::ImportClips(HWND hWnd)
 
 		CString csError;
 		csError.Format(_T("%s - Exception - %d - %s"), theApp.m_Language.GetString("Error_Parsing", "Error parsing exported clip"), e.errorCode(), e.errorMessage());
-		MessageBox(hWnd, csError, _T("Ditto"), MB_OK);
+		MessageBox(hWnd, csError, _T("Bulb"), MB_OK);
 	}	
 
 	return true;

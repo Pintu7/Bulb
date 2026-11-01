@@ -282,7 +282,7 @@ bool CDittoRulerRichEditCtrl::CloseEdit(bool bPrompt, BOOL bUpdateDesc)
 			cs.Format(_T("%s '%s'"), theApp.m_Language.GetString("SaveChanges", "Do you want to save changes to"), m_csDescription);
 
 			::SetForegroundWindow(m_hWnd);
-			nRet = MessageBox(cs, _T("Ditto"), MB_YESNOCANCEL);
+			nRet = MessageBox(cs, _T("Bulb"), MB_YESNOCANCEL);
 		}
 
 		if(nRet == IDYES)
@@ -291,7 +291,7 @@ bool CDittoRulerRichEditCtrl::CloseEdit(bool bPrompt, BOOL bUpdateDesc)
 			{
 				CString cs;
 				cs.Format(_T("%s '%s'"), theApp.m_Language.GetString("ErrorSaving", "Error saving clip"), m_csDescription);
-				MessageBox(cs, _T("Ditto"), MB_OK);
+				MessageBox(cs, _T("Bulb"), MB_OK);
 			}
 		}
 		else if(nRet == IDCANCEL)

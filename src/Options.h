@@ -37,7 +37,7 @@ public:
 	BOOL m_bPlaySoundOnCopy;
 };
 
-#define REG_PATH					"Software\\Ditto"
+#define REG_PATH					"Software\\Bulb"
 
 #define POS_AT_CARET	1
 #define POS_AT_CURSOR	2

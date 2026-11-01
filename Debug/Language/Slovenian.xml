@@ -143,7 +143,7 @@
 		<Item English_Text = "Quick Paste Text" ID = "2125">Hitro lepljenje besedila</Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Zaženi Ditto ob zagonu sistema</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Zaženi Bulb ob zagonu sistema</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Prikaži ikono v programski vrstici</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Najv. število shranjenih kopij</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Vnosi za lepljenje potečejo po</Item>
@@ -154,7 +154,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Dovoli dvojnike</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Posodobi zaporedje izrezka pri lepljenju</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Shrani večkratna lepljenja</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Če je Ditto viden, ga skrij iz vroče tipke</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Če je Bulb viden, ga skrij iz vroče tipke</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Količina besedila za shranjevanje opisa</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Predvajaj zvok pri kopiranju</Item>
 		<Item English_Text = "Play" ID = "2034">Predvajaj</Item>
@@ -165,7 +165,7 @@
 		<Item English_Text = "Language" ID = "2069">Jezik</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Prezri izrezka, ki se naredijo X milisekund za zadnjo kopijo (1000 ms = 1 sek)</Item>
 		<Item English_Text = "About Language" ID = "2073">O jeziku</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ditto naj bo vedno povezan z odložiščem</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Bulb naj bo vedno povezan z odložiščem</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Splošno</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Ločilo večkratnega lepljenja ([LF]</Item>
 		
@@ -184,7 +184,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130">Vrste odložišča po meri</Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Aktiviraj Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Aktiviraj Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Imenovana kopija</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -228,7 +228,7 @@
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Shrani trenutno odložišče</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Uporabite trenutno izbrano skupino v uporabniškem vmesniku Ditto za zadnjih 10 kopij</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Uporabite trenutno izbrano skupino v uporabniškem vmesniku Bulb za zadnjih 10 kopij</Item>
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Quick_Paste>
 		<Item English_Text = "History Starts at the Top of the list (vs. Bottom)" ID = "1042">Zgodovina se začne na vrhu seznama (proti dnu)</Item>
@@ -332,18 +332,18 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Bližnjice na tipkovnici</Item>
 		<Item English_Text = "About" ID = "AboutTitle">Vizitka</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Napaka pri odpiranju zbirke podatkov.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Ni bilo mogoče zagnati DAO/Jet db engine.\nIzberi YES (da), če želiš prenesti DAO iz http://ditto-cp.sourceforge.net/dao_setup.exe\n\nPo namestitvi DAO ponovno zaženi Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Ni bilo mogoče zagnati DAO/Jet db engine.\nIzberi YES (da), če želiš prenesti DAO iz http://ditto-cp.sourceforge.net/dao_setup.exe\n\nPo namestitvi DAO ponovno zaženi Bulb.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Neznan format zbirke podatkov</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">datoteka bo preimenovana</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">in ustvarjena bo nova zbirka podatkov</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Na voljo so posodobitve za Ditto.\nObišči ditto-cp.sourceforge.net za podrobnosti\n\nTrenutna vrsta</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Na voljo so posodobitve za Bulb.\nObišči ditto-cp.sourceforge.net za podrobnosti\n\nTrenutna vrsta</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Posodobitev različice</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Prenesem posodobljeno različico?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Ni novih posodobitev</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">To bo odstranilo vse kopirane vnose!\n\nNadaljujem?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Prekini povezavo z odložiščem</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Poveži se z odložiščem</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Ni mogoče zagnati DAO/Jet db engine. DAO se bo zdaj namestil.\n\nPonovno zaženite Ditto po namestitvi DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Ni mogoče zagnati DAO/Jet db engine. DAO se bo zdaj namestil.\n\nPonovno zaženite Bulb po namestitvi DAO.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">NI CILJA</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -366,15 +366,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Napaka med shranjevanjem izrezka</Item>
 		<Item English_Text = "New" ID = "New">Novo</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Shrani, zapri in postavi v odložišče</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Urejanje Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Imenovano lepljenje</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Urejanje Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Imenovano lepljenje</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Napaka med nalaganjem podatkov</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Napaka iskanja izrezka s hitrim lepljenjem besedila</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Izjema iskanja izrezka</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Imenovana kopija</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Imenovana kopija</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Napaka med shranjevanjem Imenovane kopije v zbirko podatkov</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Izjema med shranjevanjem Imenovane kopije</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto ni prejel kopije</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb ni prejel kopije</Item> 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Dodatki</Item> 
 		
@@ -470,7 +470,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Izbriši podatke izrezka</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Vsak izrezek v Ditto je sestavljen iz več vnosov odložišča, vsi predmeti iz odložišča pa so navedeni spodaj.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Vsak izrezek v Bulb je sestavljen iz več vnosov odložišča, vsi predmeti iz odložišča pa so navedeni spodaj.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Možnosti iskanja</Item>
 		<Item English_Text = "Title" ID = "1042">Naslov</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Ustvari razpon datumov</Item>

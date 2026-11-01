@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\About.cpp">
@@ -167,6 +167,33 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ClipTags.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TagBar.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TagManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImageOcr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextTransforms.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FluentSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FluentDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FluentNav.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FluentMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GlyphButton.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\GroupStatic.cpp">
@@ -677,6 +704,39 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ClipTags.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TagBar.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TagManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ImageOcr.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextTransforms.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BulbFolder.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PasteQueueKeys.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FluentDialogInternal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FluentDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FluentNav.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FluentMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlyphButton.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GroupStatic.h">

@@ -92,7 +92,7 @@ void CSelectDB::OnSelect()
 
 	if(ValidDB(csPath) == FALSE)
 	{
-		MessageBox(_T("Invalid Database"), _T("Ditto"), MB_OK);
+		MessageBox(_T("Invalid Database"), _T("Bulb"), MB_OK);
 		m_ePath.SetFocus();
 	}
 	else

@@ -143,7 +143,7 @@
 		<Item English_Text = "Quick Paste Text" ID = "2125"></Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Pornește Ditto odată cu Windows</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Pornește Bulb odată cu Windows</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Arată iconița softului în sistaler [system tray]</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Numărul maxim de copieri salvate</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Itemurile ce au fost lipite expiră după</Item>
@@ -165,7 +165,7 @@
 		<Item English_Text = "Language" ID = "2069">Limbă</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ignoră copierile care sînt făcute la X milisecunde de la ultima copiere (1000 ms = 1 sec)</Item>
 		<Item English_Text = "About Language" ID = "2073">Informații despre Traducere</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Asigură-te că Ditto e mereu conectat la cliplanșetă</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Asigură-te că Bulb e mereu conectat la cliplanșetă</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Generale</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090"></Item>
 		
@@ -326,18 +326,18 @@
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Scurtături de Tastatură</Item>
 		<Item English_Text = "About" ID = "AboutTitle">Despre</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Eroare la deschiderea bazei de date</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Nu pot inițializa motorul bazei de date DAO/Jet.\nSelectați DA [YES] pentru a descărca DAO de la http://ditto-cp.sourceforge.net/dao_setup.exe\n\nReporniți Ditto după instalarea DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Nu pot inițializa motorul bazei de date DAO/Jet.\nSelectați DA [YES] pentru a descărca DAO de la http://ditto-cp.sourceforge.net/dao_setup.exe\n\nReporniți Bulb după instalarea DAO.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Formatul bazei de date e nerecunoscut</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">fișierul va fi redenumit</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">și o bază de date nouă va fi creată</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Există actualizări disponibile pentru Ditto.\nVizitați ditto-cp.sourceforge.net pentru detalii\n\nVersiunea Instalată</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Există actualizări disponibile pentru Bulb.\nVizitați ditto-cp.sourceforge.net pentru detalii\n\nVersiunea Instalată</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Versiunea Actualizată</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Descarc versiunea actualizată?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Nu sînt disponibile actualizări</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Aceasta va înlătura toate intrările ce conțin copieri!\n\nContinui?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Deconectează de la Cliplanșetă</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Conectează la Cliplanșetă</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Nu pot inițializa motorul bazei de date DAO/Jet.  DAO va fi instalat acum.\n\nRepornește Ditto după instalarea lui DAO.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Nu pot inițializa motorul bazei de date DAO/Jet.  DAO va fi instalat acum.\n\nRepornește Bulb după instalarea lui DAO.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">NICI O ȚINTĂ</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -360,15 +360,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Eroare la salvarea clipului</Item>
 		<Item English_Text = "New" ID = "New">Nou</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Salvează, închide și pune în cliplanșetă</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Editează cu Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Eticheta Lipirii</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Editează cu Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Eticheta Lipirii</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Eroare la încărcarea datelor</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Eroare la găsirea clipului cu ajutorul etichetei</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Excepție la găsirea clipului</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Eticheta Copierii</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Eticheta Copierii</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Eroare la salvarea în baza de date a etichetei copierii</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Excepție la salvarea etichetei copierii</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto nu a recepționat o etichetă a copierii</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb nu a recepționat o etichetă a copierii</Item> 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins"></Item> 
 		

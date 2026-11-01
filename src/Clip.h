@@ -103,7 +103,7 @@ class CClipFormats : public CArray<CClipFormat,CClipFormat&>, public IClipFormat
 public:
 	// returns a pointer to the CClipFormat in this array which matches the given type
 	//  or NULL if that type doesn't exist in this array.
-	CClipFormat* FindFormat(UINT cfType); 
+	CClipFormat* FindFormat(UINT cfType);
 
 	virtual int Size() { return (int)this->GetCount(); }
 	virtual IClipFormat *GetAt(int nPos) { return &this->ElementAt(nPos); }
@@ -113,6 +113,19 @@ public:
 	virtual IClipFormat *FindFormatEx(CLIPFORMAT type)	{ return FindFormat((UINT)type); }
 	virtual bool RemoveFormat(CLIPFORMAT type);
 };
+
+// a picture to read with OCR: CF_DIB bytes, or an encoded image file (the "PNG" clipboard format)
+struct OcrJob
+{
+	int clipId = 0;
+	CString dbPath;  // the database the clip was saved in; Bulb may have switched to another by the time it is read
+	std::vector<unsigned char> image;
+	bool isDib = true;
+};
+// the clip's picture, empty when it has none
+OcrJob OcrJobFromFormats(CClipFormats& formats);
+// reads the picture on Bulb's one OCR worker and stores the words in Main.ocrText, for search
+void QueueOcr(OcrJob job);
 
 
 /*----------------------------------------------------------------------------*\
@@ -133,6 +146,7 @@ public:
 	CClipFormats m_Formats;
 	CTime m_Time;
 	CString m_Desc;
+	CString m_sourceApp; // exe the clip was copied from, empty when unknown
 	ULONG m_lTotalCopySize;
 	int m_parentId;
 	int m_dontAutoDelete;

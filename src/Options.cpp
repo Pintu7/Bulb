@@ -451,7 +451,7 @@ void CGetSetOptions::ConverSettingsToIni()
 
 CString CGetSetOptions::GetIniFileName(bool bLocalIniFile)
 {
-	CString csPath = _T("c:\\program files\\Ditto\\");
+	CString csPath = _T("c:\\program files\\Bulb\\");
 	
 	if(bLocalIniFile)
 	{
@@ -462,7 +462,7 @@ CString CGetSetOptions::GetIniFileName(bool bLocalIniFile)
 		csPath = GetAppDataPath();
 	}
 
-	csPath += "Ditto.Settings";
+	csPath += "Bulb.Settings";
 
 	return csPath;
 }
@@ -527,7 +527,7 @@ CString CGetSetOptions::GetAppDataPath()
 			csPath = string;
 		}
 		FIX_CSTRING_PATH(csPath);
-		csPath += "Ditto\\";
+		csPath += "Bulb\\";
 	}
 
 	return csPath;
@@ -541,7 +541,7 @@ CString CGetSetOptions::GetTempFilePath()
 	if (GetTempPathW(MAX_PATH, wchPath))
 	{
 		csPath = wchPath;
-		csPath += _T("Ditto\\");
+		csPath += _T("Bulb\\");
 		CreateDirectory(csPath, NULL);
 	}
 
@@ -575,7 +575,7 @@ long CGetSetOptions::GetProfileLong(CString csName, long lDefaultValue, CString 
 {
 	if(m_bFromIni && !m_bInConversion)
 	{
-		CString csApp(_T("Ditto"));
+		CString csApp(_T("Bulb"));
 
 		if(csNewPath.IsEmpty() == FALSE)
 		{
@@ -619,7 +619,7 @@ CString CGetSetOptions::GetProfileString(CString csName, CString csDefault, CStr
 
 	if(m_bFromIni && !m_bInConversion)
 	{
-		CString csApp(_T("Ditto"));
+		CString csApp(_T("Bulb"));
 
 		if(csNewPath.IsEmpty() == FALSE)
 		{
@@ -705,7 +705,7 @@ BOOL CGetSetOptions::SetProfileLong(CString csName, long lValue)
 {
 	if(m_bFromIni)
 	{
-		return WritePrivateProfileInt(_T("Ditto"), csName, lValue, m_csIniFileName);
+		return WritePrivateProfileInt(_T("Bulb"), csName, lValue, m_csIniFileName);
 	}
 
 	HKEY hkKey;
@@ -729,7 +729,7 @@ BOOL CGetSetOptions::SetProfileString(CString csName, CString csValue)
 {
 	if(m_bFromIni)
 	{
-		return WritePrivateProfileString(_T("Ditto"), csName, csValue, m_csIniFileName);
+		return WritePrivateProfileString(_T("Bulb"), csName, csValue, m_csIniFileName);
 	}
 
 	HKEY hkKey;
@@ -945,7 +945,7 @@ CString CGetSetOptions::GetExeFileName()
 
 CString CGetSetOptions::GetAppName()
 {
-	return "Ditto";
+	return "Bulb";
 }
 
 BOOL CGetSetOptions::SetQuickPastePosition(long lPosition)
@@ -1285,7 +1285,7 @@ void CGetSetOptions::SetShowTextForFirstTenHotKeys(BOOL bVal)
 }
 BOOL CGetSetOptions::GetShowTextForFirstTenHotKeys()			
 {	
-	return GetProfileLong("ShowTextForFirstTenHotKeys", TRUE);	
+	return GetProfileLong("ShowTextForFirstTenHotKeys", FALSE);	
 }
 
 void CGetSetOptions::SetMainHWND(long lhWnd)	
@@ -1303,7 +1303,7 @@ void CGetSetOptions::SetCaptionPos(long lPos)
 }
 long CGetSetOptions::GetCaptionPos()			
 {	
-	return GetProfileLong("CaptionPos", CAPTION_RIGHT);	
+	return GetProfileLong("CaptionPos", CAPTION_TOP);	
 }
 
 void CGetSetOptions::SetAutoHide(BOOL bAutoHide)
@@ -1477,7 +1477,7 @@ long CGetSetOptions::GetPort()
 
 BOOL CGetSetOptions::GetDisableRecieve()
 {
-	BOOL bDefault = FALSE;
+	BOOL bDefault = TRUE; // Bulb: no listening port unless turned on
 	if(GetIsPortableDitto())
 		bDefault = TRUE;
 
@@ -1532,7 +1532,7 @@ BOOL CGetSetOptions::GetFont(LOGFONT &font)
 	font.lfHeight = -13;
 	font.lfWeight = 400;
 	font.lfCharSet = 1;
-	STRCPY(font.lfFaceName, _T("Segoe UI"));
+	STRCPY(font.lfFaceName, ModernUIFontName());
 	return TRUE;
 }
 
@@ -2086,7 +2086,7 @@ long CGetSetOptions::GetKeyStatePasteDelay()
 
 DWORD CGetSetOptions::GetDittoHotKey()
 {
-	return (DWORD)GetProfileLong(_T("DittoHotKey"), 704);
+	return (DWORD)GetProfileLong(_T("DittoHotKey"), 854); // Ctrl+Shift+V, so Bulb does not clash with Ditto's Ctrl+`
 }
 
 DWORD CGetSetOptions::SendKeysDelay()

@@ -282,7 +282,7 @@ CString ActionEnums::EnumDescription(ActionEnumValues value)
 		val = "Prompt send to friend";
 		break;
 	case SAVE_CF_HDROP_FIlE_DATA:
-		val = "Save copied file (cf_hdrop) contents into Ditto";
+		val = "Save copied file (cf_hdrop) contents into Bulb";
 		break;
 	case TOGGLE_CLIPBOARD_CONNECTION:
 		val = "Toggle clipboard connection";
@@ -446,6 +446,9 @@ CString ActionEnums::EnumDescription(ActionEnumValues value)
 	case EDIT_TAGS:
 		val = "Edit Tags";
 		break;
+	case TOGGLE_FULL_VIEW:
+		val = "Toggle Compact / Full View";
+		break;
 	}
 
 	CString translatedValue = theApp.m_Language.GetQuickPasteKeyboardString(value, val);
@@ -531,6 +534,8 @@ int ActionEnums::GetDefaultShortCutKeyA(ActionEnumValues value, int pos)
 			return ACCEL_MAKEKEY(VK_RETURN, HOTKEYF_CONTROL);
 		case EDIT_TAGS:
 			return ACCEL_MAKEKEY('T', HOTKEYF_CONTROL);
+		case TOGGLE_FULL_VIEW:
+			return ACCEL_MAKEKEY('F', HOTKEYF_CONTROL | HOTKEYF_SHIFT);
 		}
 		break;
 	case 1:

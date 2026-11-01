@@ -14,7 +14,7 @@ CDittoAddins::~CDittoAddins(void)
 
 bool CDittoAddins::UnloadAll()
 {
-	Log(StrF(_T("Ditto Addin - Unloading all addins Count: %d"), m_Addins.size()));
+	Log(StrF(_T("Bulb Addin - Unloading all addins Count: %d"), m_Addins.size()));
 
 	INT_PTR count = m_Addins.size();
 	for(int i = 0; i < count; i++)
@@ -46,17 +46,17 @@ bool CDittoAddins::LoadAll()
 	{
 		bCont = find.FindNextFile();
 
-		Log(StrF(_T("Ditto Addin - Trying to load addin file %s"), find.GetFilePath()));
+		Log(StrF(_T("Bulb Addin - Trying to load addin file %s"), find.GetFilePath()));
 
 		CDittoAddin *pAddin = new CDittoAddin;
 		if(pAddin->DoLoad(find.GetFilePath(), DittoInfo))
 		{
-			Log(StrF(_T("Ditto Addin - Success, loaded addin: %s"), find.GetFilePath()));
+			Log(StrF(_T("Bulb Addin - Success, loaded addin: %s"), find.GetFilePath()));
 			m_Addins.push_back(pAddin);
 		}
 		else
 		{
-			Log(StrF(_T("Ditto Addin - Failed loading Adding Error: %s"), pAddin->LastError()));
+			Log(StrF(_T("Bulb Addin - Failed loading Adding Error: %s"), pAddin->LastError()));
 
 			delete pAddin;
 			pAddin = NULL;
@@ -119,8 +119,8 @@ bool CDittoAddins::AddPrePasteAddinsToMenu(CMenu *pMenu)
 
 	if(bRet)
 	{
-		pMenu->InsertMenu(17, MF_BYPOSITION | MF_SEPARATOR);
-		pMenu->InsertMenu(18, MF_BYPOSITION|MF_ENABLED|MF_STRING|MF_POPUP, (UINT_PTR)AllAddinsMenu, theApp.m_Language.GetString("Add_Ins", "Add-Ins"));
+		pMenu->AppendMenu(MF_SEPARATOR);
+		pMenu->AppendMenu(MF_ENABLED|MF_STRING|MF_POPUP, (UINT_PTR)AllAddinsMenu, theApp.m_Language.GetString("Add_Ins", "Add-Ins"));
 	}
 
 	return bRet;

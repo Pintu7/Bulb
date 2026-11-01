@@ -16,7 +16,7 @@ bool DittoAddin(const CDittoInfo &DittoInfo, CDittoAddinInfo &info)
 		return false;
 	}
 
-	info.m_Name = _T("Ditto Utils");
+	info.m_Name = _T("Bulb Utils");
 	info.m_AddinVersion = 1;
 
 	return true;

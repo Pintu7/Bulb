@@ -4,6 +4,7 @@
 #include "WndEx.h"
 #include "DittoWindow.h"
 #include "GdipButton.h"
+#include "GlyphButton.h"
 #include "ImageViewer.h"
 #include "GroupStatic.h"
 #include "Accels.h"
@@ -45,6 +46,11 @@ public:
 	void SetFolderPath(CString path) { m_folderPath = path; }
 
 	bool GetShowPersistant() { return m_showPersistant; }
+	bool IsEditing() { return m_editing; }
+
+	// Full view: shown at this screen rect beside the popup instead of floating; empty = not docked
+	void SetDockRect(CRect rect) { m_dockRect = rect; }
+	bool IsDocked() { return m_dockRect.IsRectEmpty() == FALSE; }
 	void ToggleShowPersistant() { OnFirstAlwaysontop(); }
 	bool ToggleWordWrap();
 	void SetTooltipActions(CAccels *pToolTipActions) { m_pToolTipActions = pToolTipActions; }
@@ -82,7 +88,14 @@ protected:
 	CRichEditCtrlEx m_RichEdit;
 	SimpleBrowser m_browser;
 	CWnd *m_pNotifyWnd;
-	CGdipButton m_optionsButton;
+	CGlyphButton m_optionsButton;
+	CGlyphButton m_editButton;
+	CGlyphButton m_saveButton;
+	CGlyphButton m_saveNewButton;
+	CGlyphButton m_cancelButton;
+	bool m_editing;
+	bool m_confirming;
+	CRect m_cardRect;
 	int m_clipId;
 	CString m_searchText;
 	CScrollBar m_vScroll;
@@ -106,6 +119,7 @@ protected:
 	bool m_showingRTF;
 	bool m_showingHTML;
 	bool m_showingImage;
+	CRect m_dockRect;
 
 protected:
 	CString GetFieldFromString(CString ref, int nIndex, TCHAR ch);	
@@ -113,6 +127,11 @@ protected:
 	void HighlightSearchText();	
 	void ApplyWordWrap();
 	void SaveWindowSize();
+	void BeginEdit();
+	void EndEdit();
+	void SaveEdit(bool asNew);
+	CString EditedText();
+	CString FooterText();
 	CString m_mouseDownOnLink;
 
 	// Generated message map functions
@@ -156,4 +175,8 @@ public:
 	afx_msg void OnUpdateFirstViewtext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFirstViewrtf(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateFirstViewhtml(CCmdUI* pCmdUI);
+	afx_msg void OnEditButton();
+	afx_msg void OnSaveButton();
+	afx_msg void OnSaveNewButton();
+	afx_msg void OnCancelButton();
 };

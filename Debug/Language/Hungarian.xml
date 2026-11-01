@@ -168,7 +168,7 @@
 		<Item English_Text = "Language" ID = "2069">Nyelv</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Az utolsó (1000 ms=1 s) után eltelt, X ms után készített másolatok figyelmen kívül hagyása</Item>
 		<Item English_Text = "About Language" ID = "2073">A nyelvről</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ellenőrizze, hogy a Ditto mindig csatlakoztatva van-e a Vágólaphoz</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ellenőrizze, hogy a Bulb mindig csatlakoztatva van-e a Vágólaphoz</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Általános</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Elválasztó több bejegyzés beillesztésekor ([LF] = line break)</Item>
 		
@@ -190,7 +190,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Aktiválja a Ditto-t</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Aktiválja a Bulb-t</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Nevesített másolat</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -234,7 +234,7 @@
 		<Item English_Text = "Save Current Clipboard" ID = "2062">A jelenlegi Vágólap mentése</Item>
 		<Item English_Text = "Win" ID = "2047">WIN</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Használja a kiválasztott csoportot a Ditto legutóbbi 10 másolatkezelő felhasználói felületén</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Használja a kiválasztott csoportot a Bulb legutóbbi 10 másolatkezelő felhasználói felületén</Item>
 		
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Quick_Paste>
@@ -342,20 +342,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Ismerősök</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Gyors beillesztés</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Gyorsbillentyűk</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Ditto-ról</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Bulb-ról</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Hiba az adatbázis megnyitása közben.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet adatbázis inicializálás sikertelen\n Kattintson az Igen gombra a DAO letöltéséhez a http://ditto-cp.sourceforge.net/dao_setup.exe helyről.\n\n A DAO telepítése után indítsa újra a Ditto-t.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet adatbázis inicializálás sikertelen\n Kattintson az Igen gombra a DAO letöltéséhez a http://ditto-cp.sourceforge.net/dao_setup.exe helyről.\n\n A DAO telepítése után indítsa újra a Bulb-t.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Ismeretlen adatbázis formátum</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">a fájl át lesz nevezve</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">és létrehoz egy új adatbázist</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">A Ditto új verziója elérhető.\n Részletek a ditto-cp.sourceforge.net\n\nA telepített verzió jelenleg</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">A Bulb új verziója elérhető.\n Részletek a ditto-cp.sourceforge.net\n\nA telepített verzió jelenleg</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Frissítse a verziót</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Frissített verzió letöltése</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Nincs frissítés</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Ez eltávolítja az összes másolási bejegyzést!\n\nFolytatja?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Kilépés a vágólapról</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Csatlakozás a vágólaphoz</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">A DAO/Jet adatbázis-motor inicializálása sikertelen.\nDAO telepítésre kerül.\n\n A DAO telepítése után a Ditto-t újra kell indítani.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">A DAO/Jet adatbázis-motor inicializálása sikertelen.\nDAO telepítésre kerül.\n\n A DAO telepítése után a Bulb-t újra kell indítani.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">NINCS CÉLPONT</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -378,15 +378,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Hiba történt a kivágás mentése közben</Item>
 		<Item English_Text = "New" ID = "Új"></Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Mentés, Bezárás és elhelyezés a vágólapra</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto Szerkesztés</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - A név beillesztése</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb Szerkesztés</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - A név beillesztése</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Hiba az adatok beillesztése során</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Hiba történt a vágólap bejegyzésének szövegbevitelével</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Kivétel a kivágás megtalálása esetén</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Nevezett másolat</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Nevezett másolat</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Hiba történt a nevezett másolat adatbázisba másolása során</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Kivétel a nevezett másolat mentésekor</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto nem kapta meg a másolatot</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb nem kapta meg a másolatot</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Bővítmények</Item> 
@@ -411,7 +411,7 @@
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Szétkapcsolva]</Item>
 		
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">A Ditto minimalizálva lett, gyorsbillentyűkkel vagy a tálcán lévő ikonra történő kattintással nyitható meg</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">A Bulb minimalizálva lett, gyorsbillentyűkkel vagy a tálcán lévő ikonra történő kattintással nyitható meg</Item>
 		
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Nincs eredmény</Item>
 				
@@ -493,7 +493,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Kivágás adatainak törlése</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Minden Ditto kivágás több vágólap objektumból készül, a Ditto összes vágólap eleme az alábbiakban látható.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Minden Bulb kivágás több vágólap objektumból készül, a Bulb összes vágólap eleme az alábbiakban látható.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Keresési lehetőségek</Item>
 		<Item English_Text = "Title" ID = "1042">Cím</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Dátumtartomány létrehozása</Item>

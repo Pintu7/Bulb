@@ -193,7 +193,7 @@
 		<Item English_Text = "Hotkey available globally" ID = "1027">Во всех программах</Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Запускать Ditto вместе с системой</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Запускать Bulb вместе с системой</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Показывать значок в области уведомлений</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Максимум объектов для сохранения</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Срок хранения истекает через</Item>
@@ -215,7 +215,7 @@
 		<Item English_Text = "Language" ID = "2069">Язык</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Игнорировать копии, сделанные через Х мс после последней (1000 мс = 1 с)</Item>
 		<Item English_Text = "About Language" ID = "2073">Сведения о языке</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Проверять, чтобы Ditto всегда был подключен к буферу обмена</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Проверять, чтобы Bulb всегда был подключен к буферу обмена</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Общие</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Разделитель для вставок ([LF] = новая строка)</Item>
 		
@@ -249,7 +249,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130">Пользовательский тип буфера обмена</Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Открыть Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Открыть Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Только текст</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -283,14 +283,14 @@
 		//Added 1/10/15
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Перемещать объект наверх списка при вставке</Item>
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Активировать Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Активировать Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Активировать Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Активировать Bulb</Item>
 		<Item English_Text = "Win" ID = "2063"></Item>
 		<Item English_Text = "Win" ID = "2065"></Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Сохранить буфер</Item>
         <Item English_Text = "Copy And Save Current Clipboard" ID = "2068">Копир. и сохранить</Item>
 		<Item English_Text = "Win" ID = "2047"></Item>
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Использовать текущую выбранную группу в интерфейсе Ditto для последних 10 копий</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Использовать текущую выбранную группу в интерфейсе Bulb для последних 10 копий</Item>
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Quick_Paste>
 		<Item English_Text = "History Starts at the Top of the list (vs. Bottom)" ID = "1042">История начинается с верха списка (а не с низа)</Item>
@@ -403,20 +403,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Друзья</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Быстрая вставка</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Горячие клавиши</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">О программе Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">О программе Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Ошибка открытия базы данных.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Ошибка инициализации механизма БД DAO/Jet.\nНажмите «Да», чтобы загрузить компонент DAO с сайта http://ditto-cp.sourceforge.net/dao_setup.exe\nПосле установки компонента DAO перезапустите Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Ошибка инициализации механизма БД DAO/Jet.\nНажмите «Да», чтобы загрузить компонент DAO с сайта http://ditto-cp.sourceforge.net/dao_setup.exe\nПосле установки компонента DAO перезапустите Bulb.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Неизвестный тип базы данных</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">файл будет переименован</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">и будет создана новая база данных</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Для Ditto доступно обновление.\nПодробности см. на сайте ditto-cp.sourceforge.net\n\nУстановленная версия:</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Для Bulb доступно обновление.\nПодробности см. на сайте ditto-cp.sourceforge.net\n\nУстановленная версия:</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Новая версия:</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Загрузить новую версию?</Item>
 		<Item English_Text = "No updates available" ID = "No_Updates">Обновлений нет</Item>
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">При этом будут удалены все скопированные объекты!\n\nПродолжить?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Отключиться от буфера обмена</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Подключиться к буферу обмена</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Ошибка инициализации механизма БД DAO/Jet.\nБудет установлен компонент DAO.\nПосле установки компонента DAO перезапустите Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Ошибка инициализации механизма БД DAO/Jet.\nБудет установлен компонент DAO.\nПосле установки компонента DAO перезапустите Bulb.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">НЕТ ЦЕЛИ</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -439,15 +439,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Ошибка сохранения объекта</Item>
 		<Item English_Text = "New" ID = "New">Новый</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Сохранить, закрыть и поместить в буфер обмена</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Редактор Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto – именованная вставка</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Редактор Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb – именованная вставка</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Ошибка загрузки данных</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Ошибка поиска объекта по тексту в быстрой вставке</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Исключение при поиске объекта</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto – именованная копия</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb – именованная копия</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Ошибка сохранения именованной копии в базе данных</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Исключение при сохранении именованной копии</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto не получил копию</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb не получил копию</Item> 
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Дополнения</Item> 
 		
@@ -465,7 +465,7 @@
 		<Item English_Text = "[Top Most Window]" ID = "top_most">[Поверх всех окон]</Item>
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Отключен]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Программа Ditto свёрнута, ее можно открыть с помощью горячих клавиш или щелкнув значок на панели задач.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Программа Bulb свёрнута, ее можно открыть с помощью горячих клавиш или щелкнув значок на панели задач.</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Нет результатов по запросу</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Внимание: это может занять много времени и потребовать на диске вдвое больше места, чем занимает база данных. Продолжить?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Запрос имени</Item>
@@ -474,11 +474,11 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Резервное копирование базы данных</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Восстановление базы данных</Item>
 		
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto не удаётся открыть базу данных, ожидание доступа. При необходимости измените путь в параметрах. Путь: </Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb не удаётся открыть базу данных, ожидание доступа. При необходимости измените путь в параметрах. Путь: </Item>
 		
 		
 		//Added 3.25
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Ditto работает в свёрнутом виде. Открыть его можно горячей клавишей или щелчком по значку в области уведомлений.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartupMsg">Bulb работает в свёрнутом виде. Открыть его можно горячей клавишей или щелчком по значку в области уведомлений.</Item>
 		<Item English_Text = "Delete all clips that are not groups, in groups, marked as never auto delete, has a shortcut key or marked as sticky.\n\nThis cannot be undone." ID = "Delete_All_Non_Used_Clips">Удалить все объекты, кроме групп, объектов в группах, объектов с пометкой «Не удалять автоматически», с горячей клавишей и закреплённых.\n\nОтменить это будет нельзя.</Item>
 		<Item English_Text = "Delete Group?" ID = "Delete_Clip_Groups">Удалить группу?</Item>
 		<Item English_Text = "At Caret" ID = "AtCaret">Под курсором</Item>
@@ -582,7 +582,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Удалить данные объектов</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Каждый объект в Ditto состоит из нескольких элементов буфера обмена, все они перечислены ниже.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Каждый объект в Bulb состоит из нескольких элементов буфера обмена, все они перечислены ниже.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Параметры поиска</Item>
 		<Item English_Text = "Title" ID = "1042">Текст</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Создан</Item>
@@ -718,7 +718,7 @@
 		<Item English_Text = "Replace Top Sticky Clip" ID = "85">Заменить верхний закрепленный объект</Item>
 		//Added 3.25
 		<Item English_Text = "Prompt send to friend" ID = "86">Отправить другу (с запросом)</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Сохранить в Ditto содержимое скопированного файла (CF_HDROP)</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Сохранить в Bulb содержимое скопированного файла (CF_HDROP)</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">Подключить/отключить буфер обмена</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Переместить выделение вверх</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Переместить выделение вниз</Item>

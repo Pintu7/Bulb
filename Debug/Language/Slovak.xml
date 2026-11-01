@@ -170,7 +170,7 @@
 				
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Spustiť Ditto pri spustení systému</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Spustiť Bulb pri spustení systému</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">Zobraziť ikonu v oblasti oznámení</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Maximálny počet uložených kópií</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Vložené položky exspirujú po</Item>
@@ -180,7 +180,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Povoliť duplikáty</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Aktualizovať poradie výstrižkov po vložení</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Uložiť viacnásobné vloženie</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Skryť Ditto klávesovou skratkou, ak je viditeľný</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Skryť Bulb klávesovou skratkou, ak je viditeľný</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Množstvo textu pre uloženie popisu</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">Po skopírovaní prehrať zvuk</Item>
 		<Item English_Text = "Play" ID = "2034">Prehrať</Item>
@@ -191,7 +191,7 @@
 		<Item English_Text = "Language" ID = "2069">Jazyk</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Ignorovať kópie, ktoré vzniknú X milisekúnd od poslednej kópie (1000 ms = 1 sek)</Item>
 		<Item English_Text = "About Language" ID = "2073">O jazyku</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ditto bude vždy pripojený na schránku</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Bulb bude vždy pripojený na schránku</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Všeobecné</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Oddeľovač viacnás. vloženia ([LF] = line feed)</Item>
 		
@@ -225,7 +225,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Aktivovať Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Aktivovať Bulb</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">Názov kópie</Item>
 		<Item English_Text = "Copy And Save Current Clipboard" ID = "2068">Kopírovať a uložiť aktuálny obsah</Item>
@@ -262,15 +262,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Presunúť výstrižky po vložení navrch zoznamu </Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Aktivovať Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Aktivovať Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Aktivovať Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Aktivovať Bulb</Item>
 		
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Uložiť obsah schránky</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Použiť zvolenú skupinu v Ditto pre posledných 10 kópií</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Použiť zvolenú skupinu v Bulb pre posledných 10 kópií</Item>
 		
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Friends>
@@ -338,20 +338,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Priatelia</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Rýchle vloženie</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Klávesové skratky</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">O programe Ditto</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">O programe Bulb</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Chyba pri otváraní databázy.</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Nepodarilo sa inicializovať databázový engine DAO/Jet.\nKliknite na ÁNO pre stiahnutie DAO z http://ditto-cp.sourceforge.net/dao_setup.exe\n\nPo inštalácii DAO reštartujte Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Nepodarilo sa inicializovať databázový engine DAO/Jet.\nKliknite na ÁNO pre stiahnutie DAO z http://ditto-cp.sourceforge.net/dao_setup.exe\n\nPo inštalácii DAO reštartujte Bulb.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Nerozpoznaný formát databázy</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">súbor bude premenovaný</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">a bude vytvorený nová databáza</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Je dostupná aktualizácia pre Ditto.\nPrejdite na ditto-cp.sourceforge.net pre viac podrobností\n\nSpustená verzia</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Je dostupná aktualizácia pre Bulb.\nPrejdite na ditto-cp.sourceforge.net pre viac podrobností\n\nSpustená verzia</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">Aktualizovať verziu</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Stiahnuť aktualizáciu</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">Nie sú dostupné žiadne aktualizácie</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">Týmto sa odstránia všetky položky!\n\nPokračovať?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Odpojiť od schránky</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Pripojiť ku schránke</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Nepodarilo sa inicializovať databázový engine DAO/Jet. DAO bude nainštalovaný.\n\nPo inštalácii DAO reštartujte Ditto.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Nepodarilo sa inicializovať databázový engine DAO/Jet. DAO bude nainštalovaný.\n\nPo inštalácii DAO reštartujte Bulb.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">ŽIADNY CIEĽ</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -374,15 +374,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Chyba pri ukladaní výstrižku</Item>
 		<Item English_Text = "New" ID = "New">Nový</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Uložiť, zavrieť a vložiť do schránky</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Úprava Ditto</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - pomenované vloženie</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Úprava Bulb</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - pomenované vloženie</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Chyba pri načítavaní údajov</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Chyba pri vyhľadávaní výstrižkov s textom Rýchleho vloženia</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Výnimka pri hľadaní výstrižku</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - pomenovaná kópia</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - pomenovaná kópia</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Chyba pri ukladaní pomenovanej kópie do databázy</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Výnimka pri ukladaní pomenovanej kópie</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto neprijal kópiu</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb neprijal kópiu</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">Doplnky</Item> 
@@ -406,7 +406,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_most">[Vždy navrchu]</Item>
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[Odpojené]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto je spustený minimalizovane, Ditto môžete spustiť klávesovou skratkou alebo kliknutím na ikonu v oblasti oznámení</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb je spustený minimalizovane, Bulb môžete spustiť klávesovou skratkou alebo kliknutím na ikonu v oblasti oznámení</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">Žiadne výsledky pre</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">Upozorňujeme, že to môže dlho trvať a vyžaduje sa až dvojnásobok voľného miesta ako je súčasná veľkosť databázy, pokračovať?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">Výzva na zadanie názvu</Item>
@@ -415,7 +415,7 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">Zálohuje sa databáza</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">Obnovuje sa databáza</Item>
 			
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto nedokázal otvoriť svoju databázu, čaká, dokiaľ ju nebude možné otvoriť. V prípade potreby aktualizujte cestu v Možnostiach. Cesta: </Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb nedokázal otvoriť svoju databázu, čaká, dokiaľ ju nebude možné otvoriť. V prípade potreby aktualizujte cestu v Možnostiach. Cesta: </Item>
 		
 		<Item English_Text = "At Caret" ID = "AtCaret">Textový kurzor</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">Kurzore</Item>
@@ -506,7 +506,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Odstrániť údaje výstrižku</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Každý výstrižok v Ditto je vytvorený z viacerých vložení zo schránky, všetky položky schránky v Ditto sú zobrazené nižšie.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Každý výstrižok v Bulb je vytvorený z viacerých vložení zo schránky, všetky položky schránky v Bulb sú zobrazené nižšie.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Možnosti vyhľadávania</Item>
 		<Item English_Text = "Title" ID = "1042">Názov</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Vytvoriť rozsah dátumov</Item>
@@ -637,7 +637,7 @@
 		<Item English_Text = "Global HotKeys" ID = "83">Všeobecné klávesové skratky</Item>
 		<Item English_Text = "Delete Clip Data" ID = "84">Odstrániť údaje výstrižku</Item>
 		<Item English_Text = "Paste CamelCase" ID = "122">Ťavia notácia (CamelCase)</Item>
-		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Uložiť obsah skopírovaného súboru (cf_hdrop) do Ditto</Item>
+		<Item English_Text = "Save copied file (cf_hdrop) contents into Ditto" ID = "87">Uložiť obsah skopírovaného súboru (cf_hdrop) do Bulb</Item>
 		<Item English_Text = "Toggle clipboard connection" ID = "88">Prepnúť pripojenie schránky</Item>
 		<Item English_Text = "Move Selection Up" ID = "89">Presunúť výber hore</Item>
 		<Item English_Text = "Move Selection Down" ID = "90">Presunúť výber dole</Item>

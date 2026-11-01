@@ -5,6 +5,7 @@
 #include "SymbolEdit.h"
 #include "cp_main.h"
 #include "QListCtrl.h"
+#include "FluentMenu.h"
 #include "..\Shared\TextConvert.h"
 
 // CSymbolEdit
@@ -336,7 +337,7 @@ bool CSymbolEdit::ShowSearchHistoryMenu()
 	ClientToScreen(&x);
 	x.y += windowRect.Height();
 
-	cmPopUp.TrackPopupMenu(TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, x.x, x.y, this, NULL);
+	FluentMenu::Track(cmPopUp.m_hMenu, TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON, x.x, x.y, m_hWnd);
 	
 	Invalidate();
 	
@@ -470,7 +471,7 @@ void CSymbolEdit::OnPaint()
 	textRect.right -= HIWORD(margins);
 
 	// Clearing the background
-	dc.FillSolidRect(rect, GetSysColor(COLOR_WINDOW));	
+	dc.FillSolidRect(rect, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());	
 
 	if (m_hSymbolIcon)
 	{
@@ -527,7 +528,7 @@ void CSymbolEdit::OnPaint()
 	}
 	else
 	{
-		dc.FillSolidRect(rect, CGetSetOptions::m_Theme.MainWindowBG());
+		dc.FillSolidRect(rect, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
 	}
 
 
@@ -539,7 +540,7 @@ void CSymbolEdit::OnPaint()
 
 		oldFont = dc.SelectObject(&m_fontPrompt);
 		COLORREF color = dc.GetTextColor();
-		dc.SetTextColor(m_colorPromptText);
+		dc.SetTextColor(CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
 
 		dc.DrawText(m_strPromptText, textRect, DT_LEFT | DT_SINGLELINE | DT_EDITCONTROL | DT_VCENTER | DT_NOPREFIX);
 		dc.SetTextColor(color);
@@ -615,8 +616,8 @@ HBRUSH CSymbolEdit::CtlColor(CDC* pDC, UINT n)
 	}
 	else
 	{
-		pDC->SetBkColor(CGetSetOptions::m_Theme.MainWindowBG());
-		color = CGetSetOptions::m_Theme.MainWindowBG();
+		pDC->SetBkColor(CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
+		color = CGetSetOptions::m_Theme.SearchTextBoxFocusBG();
 	}
 
 	if (color != m_lastBrushColor)
@@ -944,19 +945,19 @@ void CSymbolEdit::OnNcPaint()
 
 	CRect b(0, r.Height() - m_centerTextDiff- m_windowDpi->Scale(1), r.Width(), r.Height());
 
-	COLORREF c = CGetSetOptions::m_Theme.MainWindowBG();
+	COLORREF c = CGetSetOptions::m_Theme.SearchTextBoxFocusBG();
 
 	if (this == GetFocus() || text.GetLength() > 0)
 	{		
 		dc.FillSolidRect(t, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
 		dc.FillSolidRect(b, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
 
-		c = CGetSetOptions::m_Theme.SearchTextBoxFocusBorder();
+		// the focus line is drawn by the popup under the rounded search surface
 	}
 	else
 	{
-		dc.FillSolidRect(t, CGetSetOptions::m_Theme.MainWindowBG());
-		dc.FillSolidRect(b, CGetSetOptions::m_Theme.MainWindowBG());
+		dc.FillSolidRect(t, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
+		dc.FillSolidRect(b, CGetSetOptions::m_Theme.SearchTextBoxFocusBG());
 	}	
 
 	//if ((text.GetLength() > 0 || this == GetFocus()) && m_windowDpi)

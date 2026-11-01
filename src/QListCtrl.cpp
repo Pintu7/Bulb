@@ -24,7 +24,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define ROW_BOTTOM_BORDER		4
+#define ROW_BOTTOM_BORDER		14
 #define ROW_LEFT_BORDER			3
 #define COLOR_SHADOW			RGB(245, 245, 245)
 #define DUMMY_COL_WIDTH			2
@@ -427,6 +427,21 @@ void CQListCtrl::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 	::ReleaseDC(NULL, hDC);
 }
 
+// value of a <name=value> marker in the row's symbol prefix, empty if absent
+static CString SymbolValue(const CString& symbols, LPCTSTR name)
+{
+	CString marker = CString(_T("<")) + name + _T("=");
+	int start = symbols.Find(marker);
+	if (start < 0)
+	{
+		return _T("");
+	}
+
+	start += marker.GetLength();
+	int end = symbols.Find('>', start);
+	return end < 0 ? _T("") : symbols.Mid(start, end - start);
+}
+
 void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
@@ -460,6 +475,20 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 
 		// Get the rect that bounds the text label.
 		GetItemRect(nItem, rcItem, LVIR_SELECTBOUNDS);
+
+		// the popup makes the list wider than it shows (to hide the native scrollbar) and clips it with a window region;
+		// keep the right-aligned parts of the row inside what is visible
+		CRect visible;
+		GetClientRect(visible);
+		CRgn windowRegion;
+		windowRegion.CreateRectRgn(0, 0, 0, 0);
+		if (GetWindowRgn(windowRegion) != ERROR)
+		{
+			CRect box;
+			windowRegion.GetRgnBox(box);
+			visible.right = min(visible.right, box.right);
+		}
+		rcItem.right = min(rcItem.right, visible.right);
 
 		COLORREF OldColor = -1;
 		int nOldBKMode = -1;
@@ -498,31 +527,49 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 			//Shade alternating Rows
 			if ((nItem % 2) == 0)
 			{
-				crBkgnd = CGetSetOptions::m_Theme.ListBoxOddRowsBG();
 				OldColor = pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxOddRowsText());
 			}
 			else
 			{
-				crBkgnd = CGetSetOptions::m_Theme.ListBoxEvenRowsBG();
 				OldColor = pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText());
 			}
 		}
 
-		pDC->FillSolidRect(rcItem, crBkgnd);
+		// the row keeps its own ground; a selection is a rounded pill inset from the edges
+		COLORREF rowGround = (nItem % 2) == 0 ? CGetSetOptions::m_Theme.ListBoxOddRowsBG() : CGetSetOptions::m_Theme.ListBoxEvenRowsBG();
+		pDC->FillSolidRect(rcItem, rowGround);
+		if (rItem.state & LVIS_SELECTED)
+		{
+			CRect pill(rcItem);
+			pill.DeflateRect(m_windowDpi->Scale(6), m_windowDpi->Scale(1));
+			CBrush pillBrush(crBkgnd);
+			CPen pillPen(PS_SOLID, 1, crBkgnd);
+			CBrush* oldBrush = pDC->SelectObject(&pillBrush);
+			CPen* oldPen = pDC->SelectObject(&pillPen);
+			pDC->RoundRect(pill, CPoint(m_windowDpi->Scale(8), m_windowDpi->Scale(8)));
+			pDC->SelectObject(oldPen);
+			pDC->SelectObject(oldBrush);
+		}
+		else
+		{
+			crBkgnd = rowGround;
+		}
 		nOldBKMode = pDC->SetBkMode(TRANSPARENT);
 
 		CRect rcText = rcItem;
-		rcText.left += m_windowDpi->Scale(ROW_LEFT_BORDER);
-		rcText.top += m_windowDpi->Scale(1);
-		rcText.bottom -= m_windowDpi->Scale(1);
+		rcText.left += m_windowDpi->Scale(ROW_LEFT_BORDER + 12);
+		rcText.right -= m_windowDpi->Scale(16);
+		rcText.top += m_windowDpi->Scale(ROW_BOTTOM_BORDER / 2);
+		rcText.bottom -= m_windowDpi->Scale(ROW_BOTTOM_BORDER / 2);
 
 		if (m_showIfClipWasPasted &&
 			strSymbols.GetLength() > 0 &&
 			strSymbols.Find(_T("<pasted>")) >= 0) //clip was pasted from ditto
 		{
 			CRect pastedRect(rcItem);
-			pastedRect.left++;
-			pastedRect.right = pastedRect.left + m_windowDpi->Scale(2);
+			pastedRect.left += m_windowDpi->Scale(8);
+			pastedRect.right = pastedRect.left + m_windowDpi->Scale(3);
+			pastedRect.DeflateRect(0, m_windowDpi->Scale(9));
 
 			pDC->FillSolidRect(pastedRect, CGetSetOptions::m_Theme.ClipPastedColor());
 		}
@@ -536,10 +583,6 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 		{
 			rcText.left += m_windowDpi->Scale(12);
 		}
-		else
-		{
-			rcText.left += m_windowDpi->Scale(3);
-		}
 
 		bool drawInGroupIcon = true;
 		// if we are inside a group, don't display the "in group" flag
@@ -552,7 +595,12 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 
 		DrawCopiedColorCode(csText, rcText, pDC);
 
-		DrawBitMap(nItem, rcText, pDC, csText);
+		// a clip that is only a picture is named by its thumbnail; one with text too (Excel, Word, OneNote put a
+		// picture next to the copied text) keeps showing its text
+		if (DrawBitMap(nItem, rcText, pDC, csText) && strSymbols.Find(_T("<notext>")) >= 0)
+		{
+			csText = theApp.m_Language.GetString(_T("ImageClip"), _T("Image"));
+		}
 
 		// draw the symbol box
 		if (strSymbols.GetLength() > 0)
@@ -588,24 +636,72 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 			}
 		}
 
-		// tags: right-aligned and dimmed, the clip text gets the width that is left
-		int tagsStart = strSymbols.Find(_T("<tags="));
-		if (tagsStart >= 0)
+		// right side of the first line: tag pills, then the copy time; the clip text gets the width that is left
+		int lineHeight = pDC->GetTextExtent(_T("Ag")).cy;
+		int right = rcText.right;
+		COLORREF dim = CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor();
+
+		CString time = SymbolValue(strSymbols, _T("time"));
+		if (time.IsEmpty() == FALSE)
 		{
-			int tagsEnd = strSymbols.Find('>', tagsStart);
-			CString tags = _T("#") + strSymbols.Mid(tagsStart + 6, tagsEnd - tagsStart - 6);
-			tags.Replace(_T(" "), _T("  #"));
-
-			CRect rcTags = rcText;
-			rcTags.right -= m_windowDpi->Scale(4);
-			rcTags.left = max(rcText.left + rcText.Width() / 2, rcTags.right - pDC->GetTextExtent(tags).cx);
-
-			COLORREF oldTagsColor = pDC->SetTextColor(CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());
-			pDC->DrawText(tags, rcTags, DT_RIGHT | DT_TOP | DT_SINGLELINE | DT_END_ELLIPSIS | DT_NOPREFIX);
-			pDC->SetTextColor(oldTagsColor);
-
-			rcText.right = rcTags.left - m_windowDpi->Scale(8);
+			CFont* oldFont = pDC->SelectObject(&m_metaFont);
+			CRect rcTime(right - pDC->GetTextExtent(time).cx, rcText.top, right, rcText.top + lineHeight);
+			COLORREF oldTimeColor = pDC->SetTextColor(dim);
+			pDC->DrawText(time, rcTime, DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
+			pDC->SetTextColor(oldTimeColor);
+			pDC->SelectObject(oldFont);
+			right = rcTime.left - m_windowDpi->Scale(10);
 		}
+
+		CString tags = SymbolValue(strSymbols, _T("tags"));
+		if (tags.IsEmpty() == FALSE)
+		{
+			CFont* oldFont = pDC->SelectObject(&m_metaFont);
+			COLORREF ink = pDC->GetTextColor();
+			COLORREF pillColor = RGB((GetRValue(crBkgnd) * 86 + GetRValue(ink) * 14) / 100,
+				(GetGValue(crBkgnd) * 86 + GetGValue(ink) * 14) / 100,
+				(GetBValue(crBkgnd) * 86 + GetBValue(ink) * 14) / 100);
+			CBrush pillBrush(pillColor);
+			CPen pillPen(PS_SOLID, 1, pillColor);
+			CBrush* oldBrush = pDC->SelectObject(&pillBrush);
+			CPen* oldPen = pDC->SelectObject(&pillPen);
+			COLORREF oldTagColor = pDC->SetTextColor(dim);
+
+			int padding = m_windowDpi->Scale(7);
+			int pillHeight = pDC->GetTextExtent(_T("Ag")).cy + m_windowDpi->Scale(4);
+			int pillTop = rcText.top + (lineHeight - pillHeight) / 2;
+			int minLeft = rcText.left + rcText.Width() / 2;
+
+			// drawn right to left so the first tag ends up leftmost; tags that don't fit are dropped
+			std::vector<CString> names;
+			int pos = 0;
+			for (CString name = tags.Tokenize(_T(" "), pos); pos >= 0; name = tags.Tokenize(_T(" "), pos))
+			{
+				names.push_back(_T("#") + name);
+			}
+
+			for (int i = (int)names.size() - 1; i >= 0; i--)
+			{
+				int width = pDC->GetTextExtent(names[i]).cx + padding * 2;
+				if (right - width < minLeft)
+				{
+					break;
+				}
+
+				CRect pill(right - width, pillTop, right, pillTop + pillHeight);
+				pDC->RoundRect(pill, CPoint(pillHeight, pillHeight));
+				pDC->DrawText(names[i], pill, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
+				right = pill.left - m_windowDpi->Scale(4);
+			}
+
+			pDC->SetTextColor(oldTagColor);
+			pDC->SelectObject(oldPen);
+			pDC->SelectObject(oldBrush);
+			pDC->SelectObject(oldFont);
+			right -= m_windowDpi->Scale(6);
+		}
+
+		rcText.right = right;
 
 		if (DrawRtfText(nItem, rcText, pDC) == FALSE)
 		{
@@ -618,7 +714,7 @@ void CQListCtrl::OnCustomdrawList(NMHDR* pNMHDR, LRESULT* pResult)
 			}
 			else
 			{
-				pDC->DrawText(csText, rcText, DT_VCENTER | DT_EXPANDTABS | DT_NOPREFIX);
+				pDC->DrawText(csText, rcText, DT_VCENTER | DT_EXPANDTABS | DT_NOPREFIX | DT_END_ELLIPSIS);
 			}
 		}
 
@@ -1196,12 +1292,27 @@ BOOL CQListCtrl::DrawBitMap(int nItem, CRect& crRect, CDC* pDC, const CString& c
 		HGLOBAL smallImage = format->GetDibFittingToHeight(pDC, crRect.Height());
 		if (smallImage != NULL)
 		{
-			//Will return the width of the bitmap in nWidth
-			int nWidth = 0;
-			if (CBitmapHelper::DrawDIB(pDC, smallImage, crRect.left, crRect.top, nWidth))
+			// a fixed thumbnail box, the picture centred and cropped in it, so a wide screenshot never runs
+			// under the clip's text or its app and time
+			int imageWidth = 0;
+			if (LPBITMAPINFOHEADER header = (LPBITMAPINFOHEADER)::GlobalLock(smallImage))
 			{
-				// adjust the rect so other information can be drawn next to the thumbnail
-				crRect.left += nWidth + 3;
+				imageWidth = header->biWidth;
+				::GlobalUnlock(smallImage);
+			}
+			int boxWidth = min(imageWidth, m_windowDpi->Scale(64));
+			CRect box(crRect.left, crRect.top, crRect.left + boxWidth, crRect.bottom);
+
+			int saved = pDC->SaveDC();
+			pDC->IntersectClipRect(box);
+			int nWidth = 0;
+			BOOL drawn = CBitmapHelper::DrawDIB(pDC, smallImage, box.left - (imageWidth - boxWidth) / 2, box.top, nWidth);
+			pDC->RestoreDC(saved);
+
+			if (drawn)
+			{
+				crRect.left = box.right + m_windowDpi->Scale(10);
+				return TRUE;
 			}
 		}
 	}
@@ -1210,7 +1321,7 @@ BOOL CQListCtrl::DrawBitMap(int nItem, CRect& crRect, CDC* pDC, const CString& c
 		crRect.left += crRect.Height();
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 void CQListCtrl::RefreshVisibleRows()
@@ -1269,19 +1380,16 @@ BOOL CQListCtrl::OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult)
 	if (nID == 0)	  	// Notification in NT from automatically
 		return FALSE;   	// created tooltip
 
-	::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, 500);
+	::SendMessage(pNMHDR->hwndFrom, TTM_SETMAXTIPWIDTH, 0, m_windowDpi->Scale(340));
 
 	if (CGetSetOptions::m_tooltipTimeout > 0)
 	{
 		::SendMessage(pNMHDR->hwndFrom, TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELPARAM(CGetSetOptions::m_tooltipTimeout, 0));
 	}
 
-	// Use Item's name as the tool tip. Change this for something different.
-	// Like use its file size, etc.
-	GetToolTipText((int)nID - 1, strTipText);
-
-	//Replace the tabs with spaces, the tooltip didn't like the \t s
-	strTipText.Replace(_T("\t"), _T("  "));
+	// a hover preview, not the whole clip (the side panel shows the rest)
+	GetToolTipText((int)nID - 1, strTipText, true);
+	strTipText.Replace(_T("\t"), _T("  ")); // the tooltip didn't like the \t s
 
 	int nLength = strTipText.GetLength() + 2;
 
@@ -1540,6 +1648,12 @@ bool CQListCtrl::PostEventLoadedCheckDescription(int updatedRow)
 
 bool CQListCtrl::ShowFullDescription(bool bFromAuto, bool fromNextPrev)
 {
+	// never throw away an edit in progress
+	if (VALID_TOOLTIP && ::IsWindow(m_toolTipHwnd) && m_pToolTip->IsEditing())
+	{
+		return false;
+	}
+
 	if (this->GetSelectedCount() == 0)
 	{
 		return false;
@@ -1613,6 +1727,7 @@ bool CQListCtrl::ShowFullDescription(bool bFromAuto, bool fromNextPrev)
 
 	if (VALID_TOOLTIP)
 	{
+		m_pToolTip->SetDockRect(m_descriptionDockRect);
 		m_pToolTip->SetTooltipActions(m_pToolTipActions);
 		m_pToolTip->SetClipId(clipId);
 		m_pToolTip->SetClipRow(clipRow);
@@ -1769,7 +1884,7 @@ bool CQListCtrl::ShowFullDescription(bool bFromAuto, bool fromNextPrev)
 	return true;
 }
 
-void CQListCtrl::GetToolTipText(int nItem, CString& csText)
+void CQListCtrl::GetToolTipText(int nItem, CString& csText, bool hover)
 {
 	CWnd* pParent = GetParent();
 	if (pParent && (pParent->GetSafeHwnd() != NULL))
@@ -1780,6 +1895,7 @@ void CQListCtrl::GetToolTipText(int nItem, CString& csText)
 		info.hdr.hwndFrom = GetSafeHwnd();
 		info.hdr.idFrom = GetDlgCtrlID();
 		info.lItem = nItem;
+		info.hover = hover;
 		//plus 100 for extra info - shortcut and such
 		int maxCharacters = CGetSetOptions::GetMaxToolTipCharacters();
 		info.cchTextMax = min(maxCharacters, CGetSetOptions::m_bDescTextSize) + 200;
@@ -2206,9 +2322,33 @@ void CQListCtrl::HidePopup(bool checkShowPersistant)
 	if (VALID_TOOLTIP)
 	{
 		if (checkShowPersistant == false ||
-			m_pToolTip->GetShowPersistant() == false)
+			(m_pToolTip->GetShowPersistant() == false && m_pToolTip->IsDocked() == false))
 		{
 			m_pToolTip->Hide();
+		}
+	}
+}
+
+void CQListCtrl::SetDescriptionDockRect(CRect rect)
+{
+	m_descriptionDockRect = rect;
+
+	if (VALID_TOOLTIP)
+	{
+		bool wasDocked = m_pToolTip->IsDocked();
+		m_pToolTip->SetDockRect(rect);
+
+		if (rect.IsRectEmpty())
+		{
+			if (wasDocked)
+			{
+				m_pToolTip->Hide();
+			}
+		}
+		else if (::IsWindowVisible(m_toolTipHwnd))
+		{
+			m_pToolTip->MoveWindow(rect);
+			m_pToolTip->MoveControls();
 		}
 	}
 }
@@ -2258,7 +2398,7 @@ bool CQListCtrl::IsToolTipShowPersistant()
 {
 	if (VALID_TOOLTIP)
 	{
-		return m_pToolTip->GetShowPersistant();
+		return m_pToolTip->GetShowPersistant() || m_pToolTip->IsDocked();
 	}
 
 	return false;
@@ -2329,6 +2469,9 @@ void CQListCtrl::CreateSmallFont()
 	lstrcpy(lf.lfFaceName, _T("Small Font"));
 
 	m_SmallFont = ::CreateFontIndirect(&lf);
+
+	m_metaFont.DeleteObject();
+	m_metaFont.CreateFont(-m_windowDpi->Scale(12), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 }
 
 void CQListCtrl::OnMouseHWheel(UINT nFlags, short zDelta, CPoint pt)

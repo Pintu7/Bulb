@@ -101,6 +101,7 @@ void CMoveToGroupDlg::OnSize(UINT nType, int cx, int cy)
 void CMoveToGroupDlg::OnButtonNewGroup() 
 {
 	CGroupName Name;
+	Name.m_title = theApp.m_Language.GetString(_T("NewGroupTitle"), _T("New group"));
 	if(Name.DoModal() != IDOK)
 		return;
 		

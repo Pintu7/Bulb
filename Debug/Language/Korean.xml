@@ -177,7 +177,7 @@
 				
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">시스템 시작 시 Ditto 실행</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">시스템 시작 시 Bulb 실행</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">시스템 트레이 아이콘 표시</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">저장된 복사본 최대 수</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">붙여넣기 항목 만료 기간</Item>
@@ -187,7 +187,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">중복 허용</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">붙여넣기 시 클립 순서 업데이트</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">여러 번 붙여넣기 저장</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Ditto 표시 시 핫키로 숨기기</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Bulb 표시 시 핫키로 숨기기</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">설명용 텍스트 저장량</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">복사 시 소리 재생</Item>
 		<Item English_Text = "Play" ID = "2034">재생</Item>
@@ -232,7 +232,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Ditto 활성화</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Bulb 활성화</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">이름 붙여 복사</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -268,8 +268,8 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">붙여넣기 시 클립을 목록 상단으로 이동</Item>
 
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Ditto 활성화</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Ditto 활성화</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Bulb 활성화</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Bulb 활성화</Item>
 
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
@@ -346,20 +346,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">친구</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">빠른 붙여넣기</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">키보드 단축키</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Ditto 정보</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Bulb 정보</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">데이터베이스 열기 오류</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet 데이터베이스 엔진 초기화 실패.\n예를 선택하면 DAO를 http://ditto-cp.sourceforge.net/dao_setup.exe에서 다운로드합니다.\n\nDAO 설치 후 Ditto를 재시작하세요.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet 데이터베이스 엔진 초기화 실패.\n예를 선택하면 DAO를 http://ditto-cp.sourceforge.net/dao_setup.exe에서 다운로드합니다.\n\nDAO 설치 후 Bulb를 재시작하세요.</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">인식할 수 없는 데이터베이스 형식</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">파일 이름이 변경됩니다</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">새 데이터베이스가 생성됩니다</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ditto 업데이트가 있습니다.\n자세한 내용은 ditto-cp.sourceforge.net 방문\n\n현재 버전</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Bulb 업데이트가 있습니다.\n자세한 내용은 ditto-cp.sourceforge.net 방문\n\n현재 버전</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">업데이트 버전</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">업데이트된 버전을 다운로드하시겠습니까?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">사용 가능한 업데이트 없음</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">모든 복사 항목이 삭제됩니다!\n\n계속하시겠습니까?</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">클립보드 연결 해제</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">클립보드 연결</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine. DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet 데이터베이스 엔진 초기화 실패. DAO를 설치합니다.\n\nDAO 설치 후 Ditto를 재시작하세요.</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine. DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet 데이터베이스 엔진 초기화 실패. DAO를 설치합니다.\n\nDAO 설치 후 Bulb를 재시작하세요.</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">대상 없음</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -382,15 +382,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">클립 저장 오류</Item>
 		<Item English_Text = "New" ID = "New">새로 만들기</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">저장 후 닫고 클립보드에 배치</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto 편집</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - 이름 붙여 붙여넣기</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb 편집</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - 이름 붙여 붙여넣기</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">데이터 로드 오류</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">빠른 붙여넣기 텍스트 검색 오류</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">클립 찾기 예외 발생</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - 이름 붙여 복사</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - 이름 붙여 복사</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">이름 붙여 복사 저장 오류</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">이름 붙여 복사 예외 발생</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto가 복사본을 수신하지 못함</Item>
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb가 복사본을 수신하지 못함</Item>
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">애드인</Item>
@@ -414,7 +414,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_most">[항상 위로]</Item>
 
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[연결 해제됨]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto가 최소화되어 실행 중입니다. 핫키 또는 작업 표시줄 아이콘 클릭으로 열 수 있습니다.</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb가 최소화되어 실행 중입니다. 핫키 또는 작업 표시줄 아이콘 클릭으로 열 수 있습니다.</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">검색 결과 없음:</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">경고: 시간이 오래 걸리며 현재 데이터베이스 크기의 두 배 저장 공간이 필요합니다. 계속하시겠습니까?</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">이름 입력 요청</Item>
@@ -423,7 +423,7 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">데이터베이스 백업 중</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">데이터베이스 복원 중</Item>
 
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto가 데이터베이스를 열 수 없습니다. 옵션에서 경로를 수정하세요. 경로:</Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb가 데이터베이스를 열 수 없습니다. 옵션에서 경로를 수정하세요. 경로:</Item>
 
 		<Item English_Text = "At Caret" ID = "AtCaret">캐럿 위치</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">커서 위치</Item>
@@ -515,7 +515,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">클립 데이터 삭제</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ditto의 각 클립은 여러 클립보드 항목으로 구성되며, 모든 항목이 아래에 나열됩니다.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Bulb의 각 클립은 여러 클립보드 항목으로 구성되며, 모든 항목이 아래에 나열됩니다.</Item>
 		<Item English_Text = "Search Options" ID = "2120">검색 옵션</Item>
 		<Item English_Text = "Title" ID = "1042">제목</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">생성 날짜 범위</Item>

@@ -9,6 +9,8 @@
 #include "DittoPopupWindow.h"
 #include "NTray.h"
 #include "EditFrameWnd.h"
+#include <deque>
+#include <vector>
 
 #define CLOSE_WINDOW_TIMER				1	
 #define HIDE_ICON_TIMER					2
@@ -25,6 +27,9 @@
 #define DELAYED_SHOW_DITTO_TIMER		16
 #define SET_WINDOWS_THEME_TIMER			17
 #define CLOSE_NO_DB_WINDOW_TIMER        18
+#define RESUME_RECORDING_TIMER          31
+#define PASTE_QUEUE_EXPIRE_TIMER        33
+#define WM_PASTE_QUEUE_NEXT             (WM_USER + 240)
 
 class CMainFrame: public CFrameWnd
 {
@@ -107,6 +112,15 @@ protected:
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnFirstShowquickpaste();
     afx_msg void OnFirstToggleConnectCV();
+	afx_msg void OnPauseRecording(UINT id);
+
+public:
+	// Paste queue: while active, Ctrl+V anywhere pastes the next clip of the queue instead of the clipboard
+	void StartPasteQueue(const std::vector<int>& clipIds);
+	void StopPasteQueue(const CString& message);
+	void PasteNextFromQueue();
+	std::deque<int> m_pasteQueue;
+	afx_msg LRESULT OnPasteQueueNext(WPARAM wParam, LPARAM lParam);
     afx_msg void OnUpdateFirstToggleConnectCV(CCmdUI *pCmdUI);
     afx_msg void OnFirstHelp();
     //}}AFX_MSG

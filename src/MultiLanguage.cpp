@@ -93,6 +93,22 @@ void CMultiLanguage::ClearMap(LANGUAGE_MAP &Map)
 	Map.RemoveAll();
 }
 
+CString CMultiLanguage::EnglishMenuText(const CString& text)
+{
+	for (LANGUAGE_ARRAY* menu : { &m_RightClickMenu, &m_GroupsRightClickMenu, &m_TrayIconRightClickMenu })
+	{
+		for (INT_PTR i = 0; i < menu->GetSize(); i++)
+		{
+			CLangItem* item = (*menu)[i];
+			if (item->m_nID <= 0 && item->m_csForeignLang == text)
+			{
+				return item->m_csEnglishLang;
+			}
+		}
+	}
+	return text;
+}
+
 CString CMultiLanguage::GetString(CString csID, CString csDefault)
 {
 	CLangItem *pItem;

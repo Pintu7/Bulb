@@ -21,6 +21,8 @@
 #include "Popup.h"
 #include "CustomFriendsHelper.h"
 #include "ModernScrollBar.h"
+#include "TagBar.h"
+#include "GlyphButton.h"
 
 class CMainTable
 {
@@ -56,6 +58,8 @@ public:
 	__int64 m_dateCopied;
 	__int64 m_datePasted;
 	CString m_tags;
+	CString m_sourceApp;
+	bool m_noText = false; // only a picture (or files): the row names it instead of showing its description
 
 	static bool SortDesc(const CMainTable& d1, const CMainTable& d2)
 	{
@@ -144,7 +148,34 @@ public:
     CGdipButton m_ShowGroupsFolderBottom;
     CGdipButton m_BackButton;
 	CGroupStatic m_alwaysOnToWarningStatic;
-	CGdipButton m_systemMenu;
+	CGlyphButton m_systemMenu;
+	// rounded box the search edit sits in, painted by OnEraseBkgnd
+	CRect m_searchSurface;
+	CTagBar m_tagBar;
+	CGlyphButton m_fullViewButton;
+	// Full view: the description window stays docked beside the popup and follows the selection
+	bool m_fullView = false;
+
+	void RefreshTagBar();
+	afx_msg void OnTagChipClicked();
+	afx_msg void OnTagChipRightClicked();
+	afx_msg void OnMenuManageTags();
+	afx_msg void OnPauseRecording(UINT id);
+	afx_msg void OnSpecialPasteTransform(UINT id);
+	afx_msg void OnMenuPasteQueue();
+	afx_msg void OnMenuCopyImageText();
+	// "Tags" submenu of the clip right-click menu: one checkable item per tag
+	std::vector<CString> m_tagMenuNames;
+	void AddTagsSubmenu(CMenu* menu);
+	afx_msg void OnTagMenuToggle(UINT id);
+	// re-reads the tags of the selected rows into the list cache and redraws them
+	void RefreshSelectedRowTags();
+	// after tags changed elsewhere: refresh the chips and drop #words from the search that no tag matches any more
+	void AfterTagsChanged();
+	// sets the search box to search and refills the list
+	void ApplySearch(const CString& search);
+	CRect FullViewPanelRect();
+	void UpdateFullViewPanel();
 	CGroupStatic m_noSearchResultsStatic;
 
     long m_lRecordCount;
@@ -260,6 +291,8 @@ public:
 	bool DoActionCancelFilter();
 	bool DoActionGoToEntry();
 	bool DoActionEditTags();
+	bool DoActionToggleFullView();
+	void LeaveFullView();
 	bool DoActionHomeList();
 	bool DoActionBackGroup();
 	bool DoActionToggleShowPersistant();
@@ -356,6 +389,9 @@ protected:
     DECLARE_MESSAGE_MAP()
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnMove(int x, int y);
+	afx_msg void OnFullViewButton();
+	afx_msg void OnSearchFocusChange();
     afx_msg void OnSetFocus(CWnd *pOldWnd);
 	afx_msg void OnKillFocus(CWnd *pOldWnd);
     afx_msg void OnActivate(UINT nState, CWnd *pWndOther, BOOL bMinimized);
@@ -442,6 +478,7 @@ protected:
     afx_msg LRESULT OnSearch(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnDelete(WPARAM wParam, LPARAM lParam);
     afx_msg void OnGetToolTipText(NMHDR *pNMHDR, LRESULT *pResult);
+	CString HoverPreview(int clipId, int row);
     afx_msg LRESULT OnListSelect_DB_ID(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnListMoveSelectionToGroup(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnRefreshView(WPARAM wParam, LPARAM lParam);
@@ -466,6 +503,9 @@ protected:
     afx_msg LRESULT OnUpDown(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnItemDeleted(WPARAM wParam, LPARAM lParam);
     LRESULT OnToolTipWndInactive(WPARAM wParam, LPARAM lParam);
+    LRESULT OnDockedPanelClosed(WPARAM wParam, LPARAM lParam);
+    LRESULT OnOcrTextReady(WPARAM wParam, LPARAM lParam);
+	void ShowCopyImageTextMessage(const CString& message);
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnMenuExport();
     afx_msg void OnMenuImport();

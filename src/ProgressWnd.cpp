@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ProgressWnd.h"
+#include "FluentDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -110,6 +111,7 @@ BOOL CProgressWnd::Create(CWnd* pParent, LPCTSTR pszTitle, BOOL bSmooth /* = FAL
 
     m_CancelButton.SetFont(&m_font, TRUE);
     m_Text.SetFont(&m_font, TRUE);
+    FluentDialog::Apply(m_hWnd);
 
     // Resize the whole thing according to the number of text lines, desired window
     // width and current font.

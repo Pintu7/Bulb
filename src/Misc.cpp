@@ -11,6 +11,8 @@
 #include "Path.h"
 #include <regex>
 #include <vector>
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
 
 CString GetIPAddress()
 {
@@ -106,7 +108,7 @@ void log(const TCHAR* msg, bool bFromSendRecieve, CString csFile, long lLine)
 #endif
 	
 	CString csExeFile = CGetSetOptions::GetPath(PATH_LOG_FILE);
-	csExeFile += "Ditto.log";
+	csExeFile += "Bulb.log";
 
 	AppendToFile(csExeFile, csText);
 }
@@ -843,6 +845,63 @@ CRect DefaultMonitorRect()
 	return crMonitor;
 }
 
+void SetRoundedCorners(HWND hWnd)
+{
+	// DWMWA_WINDOW_CORNER_PREFERENCE = DWMWCP_ROUND, as numbers so older SDK headers still build
+	DWORD preference = 2;
+	DwmSetWindowAttribute(hWnd, 33, &preference, sizeof(preference));
+}
+
+void ApplyMenuTheme(bool dark)
+{
+	// SetPreferredAppMode (ordinal 135) and FlushMenuThemes (136) are undocumented uxtheme exports, the same ones Explorer uses
+	HMODULE uxtheme = LoadLibraryExW(L"uxtheme.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
+	if (uxtheme == NULL)
+	{
+		return;
+	}
+
+	typedef int (WINAPI* SetPreferredAppModeFn)(int);
+	typedef void (WINAPI* FlushMenuThemesFn)();
+	SetPreferredAppModeFn setPreferredAppMode = (SetPreferredAppModeFn)GetProcAddress(uxtheme, MAKEINTRESOURCEA(135));
+	FlushMenuThemesFn flushMenuThemes = (FlushMenuThemesFn)GetProcAddress(uxtheme, MAKEINTRESOURCEA(136));
+
+	if (setPreferredAppMode != NULL)
+	{
+		setPreferredAppMode(dark ? 2 : 3); // ForceDark : ForceLight
+	}
+	if (flushMenuThemes != NULL)
+	{
+		flushMenuThemes();
+	}
+}
+
+static int CALLBACK OnFontFound(const LOGFONT*, const TEXTMETRIC*, DWORD, LPARAM found)
+{
+	*(bool*)found = true;
+	return 0;
+}
+
+bool FontInstalled(LPCTSTR faceName)
+{
+	LOGFONT lf = {};
+	lf.lfCharSet = DEFAULT_CHARSET;
+	lstrcpyn(lf.lfFaceName, faceName, LF_FACESIZE);
+
+	bool found = false;
+	HDC hdc = ::GetDC(NULL);
+	EnumFontFamiliesEx(hdc, &lf, OnFontFound, (LPARAM)&found, 0);
+	::ReleaseDC(NULL, hdc);
+
+	return found;
+}
+
+CString ModernUIFontName()
+{
+	static CString name = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
+	return name;
+}
+
 CRect MonitorRectFromRect(CRect rect)
 {
 	BOOL ret = FALSE;
@@ -1102,18 +1161,18 @@ bool IsRunningLimited()
 		//otherwise we are xp and the reg key probably doesn't exist and we are not a limited running app
 		if(IsVista())
 		{
-			OutputDebugString(_T("Ditto - Failed to read registry entry finding UAC, Running as limited application"));
+			OutputDebugString(_T("Bulb - Failed to read registry entry finding UAC, Running as limited application"));
 			return true;
 		}
 	}
 
 	if(dwValue == 1)
 	{
-		OutputDebugString(_T("Ditto - UAC ENABLED, Running as limited application"));
+		OutputDebugString(_T("Bulb - UAC ENABLED, Running as limited application"));
 		return true;
 	}
 
-	OutputDebugString(_T("Ditto - Running as standard application"));	
+	OutputDebugString(_T("Bulb - Running as standard application"));	
 	return false;
 }
 
@@ -1648,7 +1707,7 @@ BOOL RestoreDbPrompt(HWND hwnd)
 	ofn.hwndOwner = hwnd;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = _T("Ditto database backups (.zdb)\0*.zdb\0\0");
+	ofn.lpstrFilter = _T("Bulb database backups (.zdb)\0*.zdb\0\0");
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
@@ -1684,7 +1743,7 @@ BOOL BackupDbPrompt(HWND hwnd)
 	ofn.hwndOwner = hwnd;
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
-	ofn.lpstrFilter = _T("Ditto database backups (.zdb)\0*.zdb\0\0");
+	ofn.lpstrFilter = _T("Bulb database backups (.zdb)\0*.zdb\0\0");
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;

@@ -178,7 +178,7 @@
 				
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">システム起動時に Ditto を開始する</Item>
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">システム起動時に Bulb を開始する</Item>
 		<Item English_Text = "Display Icon in System Tray" ID = "2003">システムトレイにアイコンを表示する</Item>
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">コピーを保存する最大数</Item>
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">貼り付け項目を期限切れにする</Item>
@@ -188,7 +188,7 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">重複を許可する</Item>
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">貼り付け時にクリップの時間を更新する</Item>
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">複数貼り付けを保存する</Item>
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Ditto 表示状態なら一度ホットキーで非表示</Item>
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Bulb 表示状態なら一度ホットキーで非表示</Item>
 		<Item English_Text = "Amount of text to save for description" ID = "2044">内容を保存するテキストの量</Item>
 		<Item English_Text = "On copy play the sound" ID = "2045">コピー時の効果音</Item>
 		<Item English_Text = "Play" ID = "2034">再生</Item>
@@ -199,7 +199,7 @@
 		<Item English_Text = "Language" ID = "2069">言語/Lang</Item>
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">最後のコピーから X ミリ秒に発生するコピーを無視する (1000 ms = 1 sec)</Item>
 		<Item English_Text = "About Language" ID = "2073">翻訳ファイルの情報</Item>
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Ditto が常にクリップボードへ接続されているのを確実にする</Item>
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Bulb が常にクリップボードへ接続されているのを確実にする</Item>
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">一般</Item>
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">複数貼り付けの区切り ([LF]=改行)</Item>
 		
@@ -233,7 +233,7 @@
 		
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>
-		<Item English_Text = "Activate Ditto" ID = "2048">Ditto をアクティブにする</Item>
+		<Item English_Text = "Activate Ditto" ID = "2048">Bulb をアクティブにする</Item>
 		<Item English_Text = "Win" ID = "2035">Win</Item>
 		<Item English_Text = "Named Copy" ID = "2049">指定項目をコピー</Item>
 		<Item English_Text = "Win" ID = "2036">Win</Item>
@@ -269,8 +269,8 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">貼り付けたクリップを一覧の最初に移動</Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Ditto をアクティブにする</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Ditto をアクティブにする</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Bulb をアクティブにする</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Bulb をアクティブにする</Item>
 		
 		<Item English_Text = "Win" ID = "2063"></Item>
 		<Item English_Text = "Win" ID = "2065"></Item>
@@ -349,20 +349,20 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">フレンド</Item>
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">クイックペースト</Item>
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">ショートカットキー</Item>
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Ditto について</Item>
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Bulb について</Item>
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">データベースの起動エラーです。</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet db エンジンが初期化できませんでした。\n「はい」の選択で以下からDAOをダウンロードします。 http://ditto-cp.sourceforge.net/dao_setup.exe\n\nDAO のインストール後に Ditto を再起動します。</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">DAO/Jet db エンジンが初期化できませんでした。\n「はい」の選択で以下からDAOをダウンロードします。 http://ditto-cp.sourceforge.net/dao_setup.exe\n\nDAO のインストール後に Bulb を再起動します。</Item>
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">未認識のデータベース形式</Item>
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">ファイルの名前は変更されます</Item>
 		<Item English_Text = "and a new database will be created" ID = "New_Database">そして新しいデータベースが作成されます</Item>
-		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Ditto の最新版があります。\n詳細は ditto-cp.sourceforge.net を参照してください。\n\nご利用のバージョン</Item>
+		<Item English_Text = "Updates available for Ditto.\nVisit ditto-cp.sourceforge.net for details\n\nRunning Version" ID = "Updates_Available">Bulb の最新版があります。\n詳細は ditto-cp.sourceforge.net を参照してください。\n\nご利用のバージョン</Item>
 		<Item English_Text = "Update Version" ID = "Update_Version">最新バージョン</Item>
 		<Item English_Text = "Download updated version?" ID = "Download_Update">最新版をダウンロードしますか?</Item>			
 		<Item English_Text = "No updates available" ID = "No_Updates">更新はありません</Item>			
 		<Item English_Text = "This will remove all Copy Entries!\n\nContinue?" ID = "Remove_All">すべてのコピー項目を削除します！\n\nよろしいですか？</Item>
 		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">クリップボードから切断(&amp;D)</Item>
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">クリップボードに接続(&amp;C)</Item>
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet db エンジンが初期化できませんでした。DAO は今すぐインストールされます。\n\nDAO のインストール後に Ditto を再起動します。</Item>
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">DAO/Jet db エンジンが初期化できませんでした。DAO は今すぐインストールされます。\n\nDAO のインストール後に Bulb を再起動します。</Item>
 		<Item English_Text = "NO TARGET" ID = "No_Target">対象なし</Item>
 		
 		//New strings added in 3.6 6-9-06
@@ -385,15 +385,15 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">クリップの保存時のエラーです</Item>
 		<Item English_Text = "New" ID = "New">新規</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">保存して、閉じてクリップボードに配置します</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto 編集</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - 指定項目貼り付け</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb 編集</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - 指定項目貼り付け</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">データの読み込みエラーです</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">次の QuickPaste テキストでのクリップの検索エラーです:</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">クリップ検索の例外の発生</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto 指定項目コピー</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb 指定項目コピー</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">データベースへの指定項目コピーの保存エラーです</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">指定項目コピーの保存時の例外です</Item>
-		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Ditto がコピーを受信しませんでした</Item> 
+		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Bulb がコピーを受信しませんでした</Item> 
 		
 		//New strings added in 3.17 2-28-10
 		<Item English_Text = "Add-Ins" ID = "Add_Ins">アドオン(&amp;A)</Item> 
@@ -418,7 +418,7 @@
 		<Item English_Text = "[Always on top]" ID = "top_window">[前面]</Item>
 		
 		<Item English_Text = "[Disconnected]" ID = "disconnected">[切断]</Item>
-		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Ditto は最小化して起動されています。ホットキーやタスクトレイのアイコンをクリックすることで Ditto を開くことができます。</Item>
+		<Item English_Text = "Ditto is running minimized, Ditto can be opened by hot keys or by clicking the task tray icon" ID = "StartuMsg">Bulb は最小化して起動されています。ホットキーやタスクトレイのアイコンをクリックすることで Bulb を開くことができます。</Item>
 		<Item English_Text = "There are no results for" ID = "NoSearchResults">見つかりません。</Item>
 		<Item English_Text = "Warning this can take quite a long time and require up to double the hard drive space as your current database size, Continue?" ID = "CompactRepairWarning">警告: 長時間かかる可能性があり、現在のデータベース容量の2倍のハードディスクの空き容量が必要となります。よろしいですか？</Item>
 		<Item English_Text = "Prompt For Name" ID = "prompt_for_name">名前の入力</Item>
@@ -427,7 +427,7 @@
 		<Item English_Text = "Backing up database" ID = "BackupDbMsg">データベースをバックアップ中</Item>
 		<Item English_Text = "Restoring database" ID = "RestoreDbMsg">データベースを復元中</Item>
 		
-		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Ditto がデータベースを開けないため、可能になるまで待機します。必要であれば、設定からパスを更新してください。パス: </Item>
+		<Item English_Text = "Ditto was unable to open its database, waiting until it can be opened. Update the path in Options if needed. Path: " ID = "StartupNoDbMsg">Bulb がデータベースを開けないため、可能になるまで待機します。必要であれば、設定からパスを更新してください。パス: </Item>
 				
 		<Item English_Text = "At Caret" ID = "AtCaret">キャレット</Item>
 		<Item English_Text = "At Cursor" ID = "AtCursor">カーソル</Item>
@@ -519,7 +519,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">クリップデータの削除</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Ditto のそれぞれのクリップは複数の項目から構成され、すべてのクリップボードの項目は以下となります。</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Bulb のそれぞれのクリップは複数の項目から構成され、すべてのクリップボードの項目は以下となります。</Item>
 		<Item English_Text = "Search Options" ID = "2120">検索オプション</Item>
 		<Item English_Text = "Title" ID = "1042">内容(&amp;T)</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">作成日時/範囲(&amp;C)</Item>

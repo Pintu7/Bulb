@@ -7,6 +7,7 @@
 #include "cp_main.h"
 #include "About.h"
 #include "misc.h"
+#include "FluentDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,7 +58,7 @@ BOOL CAbout::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	m_List.AddString(_T("Ditto"));
+	m_List.AddString(_T("Bulb"));
 
 	auto runningVersion = GetRunningVersion();
 	CString cs = GetVersionString(runningVersion);
@@ -106,25 +107,33 @@ BOOL CAbout::OnInitDialog()
 		m_List.AddString(_T("    ") + arr[i]);
 	}
 
+	// the list fills the page; the two links sit in two rows under it, inside the page
+	UINT dpi = ::GetDpiForWindow(m_hWnd);
+	int row = MulDiv(22, dpi ? dpi : 96, 96);
 	CRect rect;
 	GetClientRect(rect);
-	
-	rect.bottom -= 30;
-	
+
+	rect.bottom -= row * 2 + row / 2;
+
 	m_List.MoveWindow(rect);
 
-	rect.top = rect.bottom + 10;
-	rect.bottom = rect.top + 30;
-	
+	rect.top = rect.bottom + row / 2;
+	rect.bottom = rect.top + row;
+
 	m_HyperLink.MoveWindow(rect);
 
 	m_HyperLink.SetURL(_T("mailto:sabrogden@gmail.com"));
 
-	rect.top = rect.bottom + 5;
-	rect.bottom = rect.top + 5;
+	rect.top = rect.bottom;
+	rect.bottom = rect.top + row;
 	m_Link.MoveWindow(rect);
-	m_Link.SetURL(_T("https://ditto-cp.sourceforge.io/"));
-		
+	m_Link.SetURL(_T("https://github.com/sabrogden/Ditto")); // credit and source of the original program (GPL-3.0)
+
+	m_HyperLink.SetUnderline(FALSE);
+	m_Link.SetUnderline(FALSE);
+	FluentDialog::MarkLink(m_HyperLink);
+	FluentDialog::MarkLink(m_Link);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

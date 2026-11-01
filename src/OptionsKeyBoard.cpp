@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "OptionsKeyBoard.h"
+#include "FluentDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -102,8 +103,34 @@ BOOL COptionsKeyBoard::OnInitDialog()
 
 	m_HotKey.SetFocus();
 
-	theApp.m_Language.UpdateOptionShortcuts(this);	
-		
+	theApp.m_Language.UpdateOptionShortcuts(this);
+
+	// Windows 11 Settings rows: the action on the left, its shortcut and the Win switch on the right
+	using L = FluentDialog::SettingsLayout;
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+	const int key = 150, win = 84;
+	L layout;
+	layout
+		.Row(IDC_STATIC_ACTIVATE, { { IDC_HOTKEY, key }, { IDC_CHECK_WIN_DITTO, win } }).Describe(Text(_T("ActivateDesc1"), _T("Opens Bulb from any app")))
+		.Row(IDC_STATIC_ACTIVATE3, { { IDC_HOTKEY_ACTIVATE_2, key }, { IDC_CHECK_WIN_DITTO2, win } }).Describe(Text(_T("ActivateDesc2"), _T("A second shortcut that opens Bulb")))
+		.Row(IDC_STATIC_ACTIVATE4, { { IDC_HOTKEY_ACTIVATE_3, key }, { IDC_CHECK_WIN_DITTO3, win } }).Describe(Text(_T("ActivateDesc3"), _T("A third shortcut that opens Bulb")))
+		.Row(IDC_STATIC_ACTIVATE2, { { IDC_HOTKEY_TEXT_ONLY, key }, { IDC_CHECK_WIN_TEXT_ONLY, win } })
+		.Row(IDC_STATIC_COLLECT_CLIPBOARD, { { IDC_HOTKEY_SAVE_CLIPBOARD, key }, { IDC_CHECK_WIN_SAVE_CLIPBOARD, win } })
+		.Row(IDC_STATIC_COLLECT_CLIPBOARD2, { { IDC_HOTKEY_COPYSAVECLIPBOARD, key }, { IDC_CHECK_WIN_COPY_SAVE_CLIPBOARD, win } })
+		.RowText(Text(_T("KeystrokesPerApp"), _T("Keystrokes per application")), { { IDC_STATIC_CUSTOM_KEYS, 250 } })
+		.Section(IDC_STATIC_GROUP)
+		.Row(IDC_CHECK_SEND_PASTE, { { IDC_CHECK_SEND_PASTE, 48 } })
+		.Row(IDC_CHECK_MOVE_CLIPS_ON_PASTE, { { IDC_CHECK_MOVE_CLIPS_ON_PASTE, 48 } })
+		.Row(IDC_CHECK_USE_UI_GROUP_LAST_10, { { IDC_CHECK_USE_UI_GROUP_LAST_10, 48 } });
+	const int labels[] = { IDC_STATIC_1, IDC_STATIC_2, IDC_STATIC_3, IDC_STATIC_4, IDC_STATIC_5, IDC_STATIC_6, IDC_STATIC_7, IDC_STATIC_8, IDC_STATIC_9, IDC_STATIC_10 };
+	const int keys[] = { IDC_HOTKEY1, IDC_HOTKEY2, IDC_HOTKEY3, IDC_HOTKEY4, IDC_HOTKEY5, IDC_HOTKEY6, IDC_HOTKEY7, IDC_HOTKEY8, IDC_HOTKEY9, IDC_HOTKEY10 };
+	const int wins[] = { IDC_CHECK_WIN1, IDC_CHECK_WIN2, IDC_CHECK_WIN3, IDC_CHECK_WIN4, IDC_CHECK_WIN5, IDC_CHECK_WIN6, IDC_CHECK_WIN7, IDC_CHECK_WIN8, IDC_CHECK_WIN9, IDC_CHECK_WIN10 };
+	for (int i = 0; i < 10; i++)
+	{
+		layout.Row(labels[i], { { keys[i], key }, { wins[i], win } });
+	}
+	layout.Hide({ IDC_STATIC_WIN }).AttachTo(m_hWnd);
+
 	return FALSE;
 }
 

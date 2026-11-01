@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "DittoPopupWindow.h"
+#include "FluentDialog.h"
+#include <Uxtheme.h>
 
 
 CDittoPopupWindow::CDittoPopupWindow()
@@ -29,16 +31,20 @@ int CDittoPopupWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CWndEx::SetCaptionOn(CAPTION_TOP, false, CGetSetOptions::m_Theme.GetCaptionSize(), CGetSetOptions::m_Theme.GetCaptionFontSize());
 		
-	m_font.CreateFont(-m_DittoWindow.m_dpi.Scale(12), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, _T("MS Sans Serif"));
+	m_font.CreateFont(-m_DittoWindow.m_dpi.Scale(14), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, CLEARTYPE_QUALITY, 34, _T("Segoe UI Variable Text"));
 	m_textLabel.Create(_T("test"), WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this);
 	m_textLabel.SetFont(&m_font);
 	
 
 	m_progressWnd.Create(WS_CHILD|PBS_SMOOTH, CRect(0, 0, 0, 0), this, 2);
+	if (FluentDialog::IsDark())
+	{
+		SetWindowTheme(m_progressWnd.m_hWnd, L"DarkMode_Explorer", NULL);
+	}
 
 	m_progressWnd.SetRange(0, 100);
 
-	SetWindowText(_T("Running Ditto Updates"));
+	SetWindowText(_T("Running Bulb Updates"));
 
 	//m_textLabel.SetWindowText(_T("test"));
 
@@ -113,6 +119,7 @@ HBRUSH CDittoPopupWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	if (pWnd->GetDlgCtrlID() == 0xffff)
 	{
 		pDC->SetBkMode(TRANSPARENT);
+		pDC->SetTextColor(CGetSetOptions::m_Theme.ListBoxEvenRowsText()); // readable on the dark theme too
 		return reinterpret_cast<HBRUSH>(::GetStockObject(NULL_BRUSH));
 	}
 	else

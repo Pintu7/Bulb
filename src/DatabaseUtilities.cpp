@@ -11,6 +11,7 @@
 #include "zlib.h"
 #include "..\Shared\TextConvert.h"
 #include "ClipTags.h"
+#include "BulbFolder.h"
 using namespace nsPath;
 
 //////////////////////////////////////////////////////////////////////
@@ -61,7 +62,7 @@ CString GetOLDDefaultDBName()
 		pMalloc->Release();
 
 		csDefaultPath = string;
-		csDefaultPath += "\\Ditto\\";
+		csDefaultPath += "\\Bulb\\";
 
 		csDefaultPath += "DittoDB.mdb";
 	}
@@ -71,7 +72,7 @@ CString GetOLDDefaultDBName()
 
 CString GetDefaultDBName()
 {
-	CString csDefaultPath = _T("c:\\program files\\Ditto\\");
+	CString csDefaultPath = _T("c:\\program files\\Bulb\\");
 
 	//If portable then default to the running path
 	if (CGetSetOptions::GetIsPortableDitto())
@@ -83,11 +84,11 @@ CString GetDefaultDBName()
 		csDefaultPath = CGetSetOptions::GetAppDataPath();
 	}
 
-	CString csTempName = csDefaultPath + "Ditto.db";
+	CString csTempName = csDefaultPath + "Bulb.db";
 	int i = 1;
 	while (FileExists(csTempName))
 	{
-		csTempName.Format(_T("%sDitto_%d.db"), csDefaultPath, i);
+		csTempName.Format(_T("%sBulb_%d.db"), csDefaultPath, i);
 		i++;
 	}
 	csDefaultPath = csTempName;
@@ -121,7 +122,13 @@ BOOL CheckDBExists(CString csDBPath)
 			return FALSE;
 		}
 
-		//first try and create create a db at the same path that was selectd
+		//first try and create a db where it was selected: in a Bulb folder there, so its folder can be encrypted alone
+		CString newPath = InBulbFolder(csDBPath);
+		if (newPath != csDBPath && EnsureDirectory(newPath))
+		{
+			csDBPath = newPath;
+			CGetSetOptions::SetDBPath(csDBPath);
+		}
 		bRet = CreateDB(csDBPath);
 
 		//if that didn't work then go back to the default location
@@ -194,6 +201,59 @@ BOOL IsDatabaseOpen()
 	return theApp.m_db.IsDatabaseOpen();
 }
 
+bool IsBulbDataFolder(const CString& folder)
+{
+	return BulbFolder::IsOwn((LPCWSTR)folder, (LPCWSTR)CGetSetOptions::GetAppDataPath());
+}
+
+CString InBulbFolder(const CString& dbPath)
+{
+	return BulbFolder::Place((LPCWSTR)dbPath, (LPCWSTR)CGetSetOptions::GetAppDataPath()).c_str();
+}
+
+// Bulb keeps clips (passwords and keys included) encrypted on disk with Windows EFS: tied to the user's account,
+// unreadable when the file is copied elsewhere. A folder of Bulb's own is marked too, so the -journal file is born
+// encrypted; a folder the user keeps other files in is never marked (every new file there would be encrypted), so
+// a database kept in one (only an older setup or a hand-typed path) has just its own file encrypted.
+// Needs NTFS and Windows Pro or higher; on Home or FAT drives it is skipped and logged.
+// Options > General > Storage turns it off; the database is then decrypted the next time it is opened (here).
+static void ApplyDatabaseEncryption(const CString& dbPath)
+{
+	// a portable copy is carried to other PCs, where an EFS file tied to this account could not be read
+	bool encrypt = CGetSetOptions::GetIsPortableDitto() == FALSE && CGetSetOptions::GetProfileLong(_T("EncryptDatabase"), TRUE) != FALSE;
+
+	CString folder = GetFilePath(dbPath);
+	std::vector<CString> targets;
+	if (IsBulbDataFolder(folder))
+	{
+		targets.push_back(folder);
+	}
+	targets.push_back(dbPath);
+	for (const CString& target : targets)
+	{
+		DWORD attributes = GetFileAttributes(target);
+		if (attributes == INVALID_FILE_ATTRIBUTES || ((attributes & FILE_ATTRIBUTE_ENCRYPTED) != 0) == encrypt)
+		{
+			continue;
+		}
+
+		BOOL done = encrypt ? EncryptFile(target) : DecryptFile(target, 0);
+		Log(StrF(_T("%s with EFS: %s, %s, error: %d"), encrypt ? _T("Encrypt") : _T("Decrypt"), target, done ? _T("done") : _T("failed (needs NTFS and Windows Pro)"),
+			done ? 0 : GetLastError()));
+		if (done == FALSE)
+		{
+			return;
+		}
+	}
+}
+
+static CString g_currentDatabasePath;
+
+CString CurrentDatabasePath()
+{
+	return g_currentDatabasePath;
+}
+
 BOOL OpenDatabase(CString dbPath)
 {
 	try
@@ -213,7 +273,12 @@ BOOL OpenDatabase(CString dbPath)
 
 
 		theApp.m_db.close();
+		if (theApp.m_databaseOnNetworkShare == false)
+		{
+			ApplyDatabaseEncryption(dbPath);
+		}
 		theApp.m_db.open(dbPath);
+		g_currentDatabasePath = dbPath;
 
 		theApp.m_db.setBusyTimeout(CGetSetOptions::GetDbTimeout());
 		theApp.m_db.SetRegexCaseInsensitive(CGetSetOptions::GetRegexCaseInsensitive());
@@ -512,7 +577,7 @@ BOOL BackupDB(CString dbPath, CString backupPath)
 
 	CString msg = theApp.m_Language.GetString("BackupDbMsg", "Backing up database");
 
-	status.Show(StrF(_T("Ditto - %s - %s"), msg, backupPath));
+	status.Show(StrF(_T("Bulb - %s - %s"), msg, backupPath));
 
 	BOOL ret = FALSE;
 
@@ -549,7 +614,7 @@ BOOL BackupDB(CString dbPath, CString backupPath)
 							percentageComplete = percent;
 							Log(StrF(_T("backing up db percent done: %d"), percentageComplete));
 
-							status.Show(StrF(_T("Ditto - %02d%% %s - %s"), percentageComplete, msg, backupPath));
+							status.Show(StrF(_T("Bulb - %02d%% %s - %s"), percentageComplete, msg, backupPath));
 						}
 
 					} while (readBytes >= 65536);
@@ -593,7 +658,7 @@ BOOL RestoreDB(CString backupPath)
 	CPopup status((r.right - 500), r.bottom - 100, ::GetForegroundWindow());
 
 	CString msg = theApp.m_Language.GetString("RestoreDbMsg", "Restoring database");
-	status.Show(StrF(_T("Ditto - %s - %s"), msg, backupPath));
+	status.Show(StrF(_T("Bulb - %s - %s"), msg, backupPath));
 
 	BOOL ret = FALSE;
 
@@ -673,7 +738,7 @@ BOOL RestoreDB(CString backupPath)
 			}
 			else
 			{
-				errorMessage.Format(_T("Unpacked database is not a valid Ditto database"));
+				errorMessage.Format(_T("Unpacked database is not a valid Bulb database"));
 			}
 		}
 		else
@@ -862,6 +927,7 @@ BOOL RepairDatabase()
 
 BOOL RemoveOldEntries(bool checkIdleTime)
 {
+	// Bulb: a clip with any tag is kept by the user on purpose, so neither the max-entries limit nor expiry removes it
 	Log(StrF(_T("Beginning of RemoveOldEntries MaxEntries: %d - Keep days: %d"), CGetSetOptions::GetMaxEntries(), CGetSetOptions::GetExpiredEntries()));
 
 	try
@@ -878,7 +944,7 @@ BOOL RemoveOldEntries(bool checkIdleTime)
 				CClipIDs IDs;
 				int clipId;
 
-				CppSQLite3Query q = db.execQueryEx(_T("SELECT lID, lShortCut, lParentID, lDontAutoDelete, stickyClipOrder, stickyClipGroupOrder FROM Main WHERE bIsGroup = 0 ORDER BY clipOrder DESC LIMIT -1 OFFSET %d"), lMax);
+				CppSQLite3Query q = db.execQueryEx(_T("SELECT lID, lShortCut, lParentID, lDontAutoDelete, stickyClipOrder, stickyClipGroupOrder FROM Main WHERE bIsGroup = 0 AND NOT EXISTS (SELECT 1 FROM ClipTags WHERE ClipTags.clipID = Main.lID) ORDER BY clipOrder DESC LIMIT -1 OFFSET %d"), lMax);
 				while (q.eof() == false)
 				{
 					int shortcut = q.getIntField(_T("lShortCut"));
@@ -922,7 +988,8 @@ BOOL RemoveOldEntries(bool checkIdleTime)
 
 				CppSQLite3Query q = db.execQueryEx(_T("SELECT lID FROM Main ")
 					_T("WHERE lastPasteDate < %d AND ")
-					_T("bIsGroup = 0 AND lShortCut = 0 AND lParentID <= 0 AND lDontAutoDelete = 0 AND stickyClipOrder = -(2147483647) AND stickyClipGroupOrder = -(2147483647)"), (int)now.GetTime());
+					_T("bIsGroup = 0 AND lShortCut = 0 AND lParentID <= 0 AND lDontAutoDelete = 0 AND stickyClipOrder = -(2147483647) AND stickyClipGroupOrder = -(2147483647) AND ")
+					_T("NOT EXISTS (SELECT 1 FROM ClipTags WHERE ClipTags.clipID = Main.lID)"), (int)now.GetTime());
 
 				while (q.eof() == false)
 				{
@@ -984,7 +1051,9 @@ BOOL DeleteNonUsedClips(bool fromAppWindow)
 	Log(_T("Start of delete all non used clips"));
 	CClipIDs IDs;
 
-	CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT lID FROM Main WHERE bIsGroup = 0 AND lShortCut = 0 AND lParentID <= 0 AND lDontAutoDelete = 0 AND stickyClipOrder = -(2147483647) AND stickyClipGroupOrder = -(2147483647)"));
+	// a clip with any tag is kept on purpose, as RemoveOldEntries keeps it
+	CppSQLite3Query q = theApp.m_db.execQueryEx(_T("SELECT lID FROM Main WHERE bIsGroup = 0 AND lShortCut = 0 AND lParentID <= 0 AND lDontAutoDelete = 0 AND stickyClipOrder = -(2147483647) AND stickyClipGroupOrder = -(2147483647) AND ")
+		_T("NOT EXISTS (SELECT 1 FROM ClipTags WHERE ClipTags.clipID = Main.lID)"));
 
 	while (q.eof() == false)
 	{
@@ -1096,9 +1165,9 @@ BOOL EnsureDirectory(CString csPath)
 // 	FIX_CSTRING_PATH(csZippedPath);
 // 	
 // 	CString csUnZippedPath = csZippedPath;
-// 	csUnZippedPath += "Ditto.db";
+// 	csUnZippedPath += "Bulb.db";
 // 
-// 	csZippedPath += "Ditto.7z";
+// 	csZippedPath += "Bulb.7z";
 // 	
 // 	CString csLocalPath = GETENV(_T("U3_HOST_EXEC_PATH"));
 // 	FIX_CSTRING_PATH(csLocalPath);
@@ -1123,11 +1192,11 @@ BOOL EnsureDirectory(CString csPath)
 // 
 // 		bRet = RunZippApp(csCommandLine);
 // 
-// 		csLocalPath += "Ditto.db";
+// 		csLocalPath += "Bulb.db";
 // 	}
 // 	else if(FileExists(csUnZippedPath))
 // 	{
-// 		csLocalPath += "Ditto.db";
+// 		csLocalPath += "Bulb.db";
 // 		bRet = CopyFile(csUnZippedPath, csLocalPath, FALSE);
 // 	}
 // 
@@ -1145,11 +1214,11 @@ BOOL EnsureDirectory(CString csPath)
 //{
 //	CStringA csZippedPath = "C:\\";//getenv("U3_APP_DATA_PATH");
 //	FIX_CSTRING_PATH(csZippedPath);
-//	csZippedPath += "Ditto.zip";
+//	csZippedPath += "Bulb.zip";
 
 //	CStringA csLocalPath = GetDBName();//getenv("U3_HOST_EXEC_PATH");
 //	//FIX_CSTRING_PATH(csLocalPath);
-//	//csLocalPath += "Ditto.db";
+//	//csLocalPath += "Bulb.db";
 //
 //	CZipper Zip;
 //

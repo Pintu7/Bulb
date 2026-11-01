@@ -146,7 +146,7 @@
 		<Item English_Text = "Quick Paste Text" ID = "2125">Snel tekst plakken</Item>
 	</Ditto_Clip_Properties>
 	<Ditto_Options_General>			
-		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Start Ditto als systeem start</Item>		
+		<Item English_Text = "Start Ditto on System Startup" ID = "2004">Start Bulb als systeem start</Item>		
 		<Item English_Text = "Display Icon in Systeem Tray" ID = "2003">Toon pictogram in System Tray </Item>		
 		<Item English_Text = "Maximum Number of Saved Copies" ID = "2008">Maximum aantal opgeslagen clips</Item>		
 		<Item English_Text = "Paste Entries Expire after" ID = "2009">Opgeslagen clips vervallen na</Item>	
@@ -156,9 +156,9 @@
 		<Item English_Text = "Allow Duplicates" ID = "1037">Duplicaten toestaan</Item>		
 		<Item English_Text = "Update Clip Order On Paste" ID = "1038">Tijdstip van plakken bepaalt volgorde cliplijst</Item>		
 		<Item English_Text = "Save Multi-Pastes" ID = "1039">Diverse geselecteerde clips gelijktijdig plakken</Item>		
-		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Verberg Ditto met sneltoets</Item>		
+		<Item English_Text = "Hide Ditto on Hot Key if Ditto is Visible" ID = "1040">Verberg Bulb met sneltoets</Item>		
 		<Item English_Text = "Amount of text to save for description" ID = "2044">Hoeveel tekst opslaan in de omschrijving? </Item>		
-		<Item English_Text = "On copy play the sound" ID = "2045">Speel geluid af bij kopiëren</Item>		
+		<Item English_Text = "On copy play the sound" ID = "2045">Speel geluid af bij kopiï¿½ren</Item>		
 		<Item English_Text = "Play" ID = "2034">Speel</Item>		
 		<Item English_Text = "Paste Clip in active window after selection" ID = "1041">Geselecteerde Clip plakken in het actieve venster</Item>		
 		<Item English_Text = "Maximum Clip Size in Bytes" ID = "2046">Maximale Clipgrootte in Bytes</Item>		
@@ -167,12 +167,12 @@
 		<Item English_Text = "Language" ID = "2069">Taal</Item>		
 		<Item English_Text = "Ignore copies that occur X milliseconds from the last copy (1000 ms = 1 sec)" ID = "2072">Clips negeren, die X Milliseconden (1000 ms = 1 Sec) na de laatste copy optreden</Item>		
 		<Item English_Text = "About Language" ID = "2073">Info vertaling</Item>		
-		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Verkrijg zekerheid dat Ditto altijd verbinding maakt met het klembord</Item>		
+		<Item English_Text = "Ensure Ditto is always connected to the clipboard" ID = "1042">Verkrijg zekerheid dat Bulb altijd verbinding maakt met het klembord</Item>		
 		<Item English_Text = "General" ID = "-1" PropertyPage = "true">Algemeen</Item>	
 		<Item English_Text = "Multi-Paste clip separator ([LF] = line feed)" ID = "2090">Regelwijziging bij multi-plakken ([LF] = line feed)</Item>
 		
 		//New item added 3/1/11
-		<Item English_Text = "Accepted Copy Applications (seperate by ;)" ID = "2098">Aanvaarde programma's voor Kopiëren(scheidingsteken= ;)</Item>
+		<Item English_Text = "Accepted Copy Applications (seperate by ;)" ID = "2098">Aanvaarde programma's voor Kopiï¿½ren(scheidingsteken= ;)</Item>
 		<Item English_Text = "Include" ID = "2095">Inclusief</Item>
 		<Item English_Text = "Exclude" ID = "2096">Exclusief</Item>
 	</Ditto_Options_General>
@@ -187,7 +187,7 @@
 		<Item English_Text = "Custom Clipboard Type" ID = "2130">Eigen Klembord Types</Item>
 	</Ditto_Options_Supported_Types>
 	<Ditto_Options_Shortcuts>				
-		<Item English_Text = "Activate Ditto" ID = "2048">Ditto Aktiveren</Item>		
+		<Item English_Text = "Activate Ditto" ID = "2048">Bulb Aktiveren</Item>		
 		<Item English_Text = "Win" ID = "2035">Win</Item>		
 		<Item English_Text = "Named Copy" ID = "2049">Benoemde Clip</Item>		
 		<Item English_Text = "Win" ID = "2036">Win</Item>		
@@ -223,15 +223,15 @@
 		<Item English_Text = "Move clips to the top of the list on paste" ID = "1043">Verhuis clip naar top na plakken</Item>
 		
 		//Added 12/17/16
-		<Item English_Text = "Activate Ditto" ID = "2064">Activeer Ditto</Item>
-		<Item English_Text = "Activate Ditto" ID = "2066">Activeer Ditto</Item>
+		<Item English_Text = "Activate Ditto" ID = "2064">Activeer Bulb</Item>
+		<Item English_Text = "Activate Ditto" ID = "2066">Activeer Bulb</Item>
 
 		<Item English_Text = "Win" ID = "2063">Win</Item>
 		<Item English_Text = "Win" ID = "2065">Win</Item>
 		<Item English_Text = "Save Current Clipboard" ID = "2062">Bewaar huidige klembord</Item>
 		<Item English_Text = "Win" ID = "2047">Win</Item>
 		
-		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Gebruik huidige groep in Ditto UI voor laatste 10 kopien</Item>
+		<Item English_Text = "Use currently selected group in Ditto's UI for last ten copies" ID = "1044">Gebruik huidige groep in Bulb UI voor laatste 10 kopien</Item>
 		
 	</Ditto_Options_Shortcuts>
 	<Ditto_Options_Quick_Paste>			
@@ -338,27 +338,27 @@
 		<Item English_Text = "Friends" ID = "FriendsTitle">Vrienden</Item>		
 		<Item English_Text = "Quick Paste" ID = "QuickPasteTitle">Snel Menu</Item>		
 		<Item English_Text = "Keyboard Shortcuts" ID = "KeyboardShortcutsTitle">Sneltoetsen</Item>		
-		<Item English_Text = "About Ditto" ID = "AboutTitle">Over Ditto</Item>		
+		<Item English_Text = "About Ditto" ID = "AboutTitle">Over Bulb</Item>		
 		<Item English_Text = "Error Opening Database." ID = "Error_Opening_Database">Fout bij openen database</Item>		
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.\\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\\n\\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Niet in staat DAO/Jet te initialiseren\\n Selecteer YES om DAO te downloaden van http://ditto-cp.sourceforge.net/dao_setup.exe\\n\\nHerstart Ditto na installatie van DAO. </Item>		
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.\\nSelect YES to download DAO from http://ditto-cp.sourceforge.net/dao_setup.exe\\n\\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao">Niet in staat DAO/Jet te initialiseren\\n Selecteer YES om DAO te downloaden van http://ditto-cp.sourceforge.net/dao_setup.exe\\n\\nHerstart Bulb na installatie van DAO. </Item>		
 		<Item English_Text = "Unrecognized Database Format" ID = "Database_Format">Onbekend database formaat</Item>		
 		<Item English_Text = "the file will be renamed" ID = "File_Renamed">bestand wordt opnieuw benoemd</Item>		
 		<Item English_Text = "and a new database will be created" ID = "New_Database">en een nieuwe database wordt aangemaakt</Item>		
-		<Item English_Text = "Updates available for Ditto.\\nVisit ditto-cp.sourceforge.net for details\\n\\nRunning Version" ID = "Updates_Available">Updates beschikbaar voor Ditto.\\nBezoek ditto-cp.sourceforge.net voor details\\n\\nhuidige versie </Item>		
+		<Item English_Text = "Updates available for Ditto.\\nVisit ditto-cp.sourceforge.net for details\\n\\nRunning Version" ID = "Updates_Available">Updates beschikbaar voor Bulb.\\nBezoek ditto-cp.sourceforge.net voor details\\n\\nhuidige versie </Item>		
 		<Item English_Text = "Update Version" ID = "Update_Version">Update Versie</Item>		
 		<Item English_Text = "Download updated version?" ID = "Download_Update">Download nieuwe versie?</Item>		
 		<Item English_Text = "No updates available" ID = "No_Updates">Geen updates beschikbaar</Item>		
 		<Item English_Text = "This will remove all Copy Entries!\\n\\nContinue?" ID = "Remove_All">Alle clip ingangen worden verwijderd</Item>		
-		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Verbinding met klembord beëindigd</Item>		
+		<Item English_Text = "Disconnect from Clipboard" ID = "Disconnect_Clipboard">Verbinding met klembord beï¿½indigd</Item>		
 		<Item English_Text = "Connect to Clipboard" ID = "Connect_Clipboard">Met klembord verbinden</Item>		
-		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Niet mogenlijk DAO/Jet db machine te initialiseren. DAO wordt nu geinstalleerd.\\n\\n Herstart Ditto na installatie van DAO.</Item>		
+		<Item English_Text = "Unable to initialize DAO/Jet db engine.  DAO will now be installed.\n\nRestart Ditto after installation of DAO." ID = "Error_Init_Dao_Intall">Niet mogenlijk DAO/Jet db machine te initialiseren. DAO wordt nu geinstalleerd.\\n\\n Herstart Bulb na installatie van DAO.</Item>		
 		<Item English_Text = "NO TARGET" ID = "No_Target">Geen bestemming</Item>	
 		
 		//New strings added in 3.6 6-9-06
 		<Item English_Text = "Prompt when deleting clips" ID = "2039">Waarschuwen wanneer clips gewist worden</Item>
 		<Item English_Text = "Delete Selected Clips?" ID = "Delete_Clip">Geselecteerde clips wissen?</Item>
-		<Item English_Text = "Error importing exported clip" ID = "Error_Importing">Foute import van geëxporteerde clip</Item>
-		<Item English_Text = "Error parsing exported clip" ID = "Error_Parsing">Foute analyse van geëxporteerde clip</Item>
+		<Item English_Text = "Error importing exported clip" ID = "Error_Importing">Foute import van geï¿½xporteerde clip</Item>
+		<Item English_Text = "Error parsing exported clip" ID = "Error_Parsing">Foute analyse van geï¿½xporteerde clip</Item>
 		<Item English_Text = "Clip placed on clipboard" ID = "Importing_Good">Clip op klembord geplaatst </Item>
 		<Item English_Text = "Successfully imported" ID = "Import_Successfully">Importeren geslaagd</Item>
 		<Item English_Text = "clip" ID = "Clip">Clip</Item>
@@ -374,12 +374,12 @@
 		<Item English_Text = "Error saving clip" ID = "ErrorSaving">Fout tijdens opslaan clip</Item>
 		<Item English_Text = "New" ID = "New">Nieuw</Item>
 		<Item English_Text = "Save, Close and place on clipboard" ID = "Save_Close">Opslaan, afsluiten en plaatsen op klembord</Item>
-		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Ditto textverwerker</Item>
-		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Ditto - Benoemd plakken</Item>
+		<Item English_Text = "Ditto Edit" ID = "Ditto_Edit">Bulb textverwerker</Item>
+		<Item English_Text = "Ditto - Named Paste" ID = "Named_Paste_Title">Bulb - Benoemd plakken</Item>
 		<Item English_Text = "Error loading data" ID = "Named_Paste_Error1">Fout tijdens laden van data</Item>
 		<Item English_Text = "Error finding clip with QuickPaste Text of" ID = "Named_Paste_Error2">Tijdens benoemd plakken, clip onvindbaar</Item>
 		<Item English_Text = "Exception finding the clip" ID = "Named_Paste_Error3">Bij uitzondering benoemde clip niet gevonden</Item>
-		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Ditto - Clip benoemen</Item>
+		<Item English_Text = "Ditto - Named Copy" ID = "Named_Copy_Title">Bulb - Clip benoemen</Item>
 		<Item English_Text = "Error saving Named Copy to Database" ID = "Named_Copy_Error1">Opslaan benoemde clip in database mislukt</Item>
 		<Item English_Text = "Exception saving Named Copy" ID = "Named_Copy_Error2">Bij uitzondering benoemde clip niet opgeslagen</Item>
 		<Item English_Text = "Ditto did not receive a copy" ID = "Named_Copy_Error3">Benoemde Clip niet ontvangen</Item>
@@ -443,7 +443,7 @@
 		<Item English_Text = "Copy" ID = "2079">Kopieer</Item>
 		<Item English_Text = "Paste" ID = "2080">Plakken</Item>
 		<Item English_Text = "Cut" ID = "2081">Knippen</Item>
-		<Item English_Text = "Play Sound on Copy" ID = "1042">Speel geluid bij kopiëren</Item>
+		<Item English_Text = "Play Sound on Copy" ID = "1042">Speel geluid bij kopiï¿½ren</Item>
 		<Item English_Text = "Win" ID = "2085">Win</Item>
 		<Item English_Text = "Win" ID = "2086">Win</Item>
 		<Item English_Text = "Win" ID = "2087">Win</Item>
@@ -452,7 +452,7 @@
 		<Item English_Text = "Copy" ID = "2093">Kopieer</Item>
 		<Item English_Text = "Paste" ID = "2094">Plakken</Item>
 		<Item English_Text = "Cut" ID = "2097">Knippen</Item>
-		<Item English_Text = "Play Sound on Copy" ID = "1043">Speel geluid bij kopiëren</Item>
+		<Item English_Text = "Play Sound on Copy" ID = "1043">Speel geluid bij kopiï¿½ren</Item>
 		<Item English_Text = "Win" ID = "2090">Win</Item>
 		<Item English_Text = "Win" ID = "2092">Win</Item>
 		<Item English_Text = "Win" ID = "2096">Win</Item>
@@ -461,7 +461,7 @@
 		<Item English_Text = "Copy" ID = "2103">Kopieer</Item>
 		<Item English_Text = "Paste" ID = "2104">Plakken</Item>
 		<Item English_Text = "Cut" ID = "2107">Knippen</Item>
-		<Item English_Text = "Play Sound on Copy" ID = "1044">Speel geluid bij kopiëren</Item>
+		<Item English_Text = "Play Sound on Copy" ID = "1044">Speel geluid bij kopiï¿½ren</Item>
 		<Item English_Text = "Win" ID = "2100">Win</Item>
 		<Item English_Text = "Win" ID = "2102">Win</Item>
 		<Item English_Text = "Win" ID = "2106">Win</Item>
@@ -486,7 +486,7 @@
 	//Added 1/10/15
 	<Ditto_DeleteClipData>
 		<Item English_Text = "Delete Clip Data" ID = "-1">Verwijder Clip Gegevens</Item>
-		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Elke clip in Ditto is gemaakt uit meerdere clipboard elementen, elk hiervan is onder opgesomd.</Item>
+		<Item English_Text = "Each clip in Ditto is made of multiple clipboard items, all clipboard items in Ditto are listed below." ID = "2126">Elke clip in Bulb is gemaakt uit meerdere clipboard elementen, elk hiervan is onder opgesomd.</Item>
 		<Item English_Text = "Search Options" ID = "2120">Zoek Opties</Item>
 		<Item English_Text = "Title" ID = "1042">Titel</Item>
 		<Item English_Text = "Create Date Range" ID = "1043">Definieer Datum Periode</Item>
