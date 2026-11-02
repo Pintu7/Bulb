@@ -1805,11 +1805,7 @@ int WordCount(const CString &text)
 CString GetVersionString(VersionInfo version)
 {
 	CString csLine;
-	csLine.Format(_T("%02i.%02i.%02i.%02i"),
-		version.Major,
-		version.Minor,
-		version.Revision,
-		version.Build);
+	csLine.Format(_T("%i.%i.%i"), version.Major, version.Minor, version.Revision);
 
 	return csLine;
 }
