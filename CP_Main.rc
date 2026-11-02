@@ -1366,8 +1366,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,1,0
- PRODUCTVERSION 0,9,1,0
+ FILEVERSION 0,9,2,0
+ PRODUCTVERSION 0,9,2,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1383,13 +1383,13 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Bulb"
-            VALUE "FileVersion", "0.9.1"
+            VALUE "FileVersion", "0.9.2"
             VALUE "InternalName", "CP_Main"
             VALUE "CompanyName", "Andrea Rinaldi"
             VALUE "LegalCopyright", "Bulb (C) 2026 Andrea Rinaldi. Based on Ditto (C) 2003 Scott Brogden and contributors. GPL-3.0"
             VALUE "OriginalFilename", "Bulb.exe"
             VALUE "ProductName", "Bulb"
-            VALUE "ProductVersion", "0.9.1"
+            VALUE "ProductVersion", "0.9.2"
         END
     END
     BLOCK "VarFileInfo"
