@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "GlyphButton.h"
+#include "FluentDialog.h"
 
 BOOL CGlyphButton::Create(LPCTSTR accessibleName, CWnd* pParent, UINT id, CDPI* dpi)
 {
@@ -12,11 +13,6 @@ void CGlyphButton::SetGlyph(WCHAR glyph)
 {
 	m_glyph = glyph;
 	Invalidate();
-}
-
-static int Luma(COLORREF c)
-{
-	return (GetRValue(c) * 299 + GetGValue(c) * 587 + GetBValue(c) * 114) / 1000;
 }
 
 void CGlyphButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -37,7 +33,7 @@ void CGlyphButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		COLORREF pill = m_accent ? CGetSetOptions::m_Theme.SearchTextBoxFocusBorder() : CGetSetOptions::m_Theme.SearchTextBoxFocusBG();
 		if (pressed)
 		{
-			pill = Luma(pill) > 128 ? RGB(GetRValue(pill) * 9 / 10, GetGValue(pill) * 9 / 10, GetBValue(pill) * 9 / 10)
+			pill = FluentDialog::Luma(pill) > 128 ? RGB(GetRValue(pill) * 9 / 10, GetGValue(pill) * 9 / 10, GetBValue(pill) * 9 / 10)
 				: RGB(min(255, GetRValue(pill) + 18), min(255, GetGValue(pill) + 18), min(255, GetBValue(pill) + 18));
 		}
 
@@ -49,12 +45,11 @@ void CGlyphButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		pDC->SelectObject(oldBrush);
 		pDC->SelectObject(oldPen);
 
-		static CString textFace = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
 		CFont font;
-		font.CreateFont(-m_dpi->Scale(13), 0, 0, 0, m_accent ? FW_SEMIBOLD : FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, textFace);
+		font.CreateFont(-m_dpi->Scale(13), 0, 0, 0, m_accent ? FW_SEMIBOLD : FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 		CFont* oldFont = pDC->SelectObject(&font);
 
-		COLORREF text = m_accent ? (Luma(pill) > 140 ? RGB(0, 0, 0) : RGB(255, 255, 255)) : ink;
+		COLORREF text = m_accent ? (FluentDialog::Luma(pill) > 140 ? RGB(0, 0, 0) : RGB(255, 255, 255)) : ink;
 		pDC->SetTextColor(disabled ? CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor() : text);
 		CString caption;
 		GetWindowText(caption);
@@ -72,10 +67,9 @@ void CGlyphButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	pDC->FillSolidRect(rect, background);
 
 	// Segoe Fluent Icons ships with Windows 11, Segoe MDL2 Assets with Windows 10; the glyphs used here are in both
-	static CString iconFont = FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets");
 
 	CFont font;
-	font.CreateFont(-m_dpi->Scale(14), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, iconFont);
+	font.CreateFont(-m_dpi->Scale(14), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernIconFontName());
 	CFont* oldFont = pDC->SelectObject(&font);
 
 	pDC->SetTextColor(disabled ? CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor() : ink);

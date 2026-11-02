@@ -41,9 +41,8 @@ namespace FluentInternal
 
 	HFONT MakeFont(HWND page, int size, int weight)
 	{
-		static CString face = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
 		return CreateFont(-Scale(page, size), 0, 0, 0, weight, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-			CLEARTYPE_QUALITY, DEFAULT_PITCH, face);
+			CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 	}
 
 	HWND MakeLabel(HWND page, const CString& text, HFONT font, bool wrap)

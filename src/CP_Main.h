@@ -87,6 +87,7 @@ public:
 	CHotKey* m_pCutBuffer5;
 
 	CHotKey* m_pTextOnlyPaste;
+	CHotKey* m_pAutoType;
 	CHotKey* m_pSaveClipboard;
 	CHotKey* m_pCopyAndSaveClipboard;
 

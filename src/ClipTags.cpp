@@ -2,6 +2,7 @@
 #include "CP_Main.h"
 #include "ClipTags.h"
 #include "ClipIds.h"
+#include "SearchTags.h"
 #include <algorithm>
 
 namespace ClipTags
@@ -49,26 +50,10 @@ namespace ClipTags
 	std::vector<CString> Parse(const CString& text)
 	{
 		std::vector<CString> names;
-		CString words = text;
-		words.Replace(_T(','), _T(' '));
-
-		int pos = 0;
-		for (CString name = words.Tokenize(_T(" \t\r\n"), pos); pos >= 0; name = words.Tokenize(_T(" \t\r\n"), pos))
+		for (const std::wstring& name : SearchTags::Parse((LPCTSTR)text))
 		{
-			// quotes would break the SQL these names go into, the others clash with the list's symbol markers
-			for (TCHAR bad : { '#', '\'', '"', '|', '<', '>', '%' })
-			{
-				name.Remove(bad);
-			}
-			name.MakeLower();
-
-			if (name.IsEmpty() == FALSE &&
-				std::find(names.begin(), names.end(), name) == names.end())
-			{
-				names.push_back(name);
-			}
+			names.push_back(name.c_str());
 		}
-
 		return names;
 	}
 
@@ -194,13 +179,12 @@ namespace ClipTags
 	std::vector<CString> TagsInSearch(const CString& search)
 	{
 		std::vector<CString> tags;
-		int pos = 0;
-		for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
+		for (const std::wstring& word : SearchTags::Words((LPCTSTR)search))
 		{
-			std::vector<CString> names = (word.GetLength() > 1 && word[0] == '#') ? Parse(word) : std::vector<CString>();
-			if (names.empty() == false)
+			std::wstring tag = SearchTags::TagOf(word);
+			if (tag.empty() == false)
 			{
-				tags.push_back(names[0]);
+				tags.push_back(tag.c_str());
 			}
 		}
 
@@ -210,7 +194,7 @@ namespace ClipTags
 	// type:image / file / link / text and app:<name> search words; "" when the word is not one of them
 	static CString FilterForWord(const CString& word)
 	{
-		const TCHAR* imageSql = _T("EXISTS (SELECT 1 FROM Data WHERE Data.lParentID = Main.lID AND Data.strClipBoardFormat = 'CF_DIB')");
+		const TCHAR* imageSql = _T("EXISTS (SELECT 1 FROM Data WHERE Data.lParentID = Main.lID AND Data.strClipBoardFormat IN ('CF_DIB', 'PNG'))");
 		const TCHAR* fileSql = _T("EXISTS (SELECT 1 FROM Data WHERE Data.lParentID = Main.lID AND Data.strClipBoardFormat = 'CF_HDROP')");
 
 		CString lower = word;
@@ -243,9 +227,9 @@ namespace ClipTags
 		CString filter;
 		CString rest;
 
-		int pos = 0;
-		for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
+		for (const std::wstring& w : SearchTags::Words((LPCTSTR)search))
 		{
+			CString word = w.c_str();
 			CString wordFilter = FilterForWord(word);
 			if (wordFilter.IsEmpty() == FALSE)
 			{
@@ -253,8 +237,8 @@ namespace ClipTags
 				continue;
 			}
 
-			std::vector<CString> names = (word.GetLength() > 1 && word[0] == '#') ? Parse(word) : std::vector<CString>();
-			if (names.empty())
+			CString tag = SearchTags::TagOf(w).c_str();
+			if (tag.IsEmpty())
 			{
 				rest += rest.IsEmpty() ? word : _T(" ") + word;
 				continue;
@@ -267,7 +251,7 @@ namespace ClipTags
 			}
 
 			filter += StrF(_T("Main.lID IN (SELECT ClipTags.clipID FROM ClipTags INNER JOIN Tags ON Tags.lID = ClipTags.tagID ")
-				_T("WHERE substr(Tags.name, 1, %d) = '%s')"), names[0].GetLength(), (LPCTSTR)names[0]);
+				_T("WHERE substr(Tags.name, 1, %d) = '%s')"), tag.GetLength(), (LPCTSTR)tag);
 		}
 
 		if (filter.IsEmpty() == FALSE)

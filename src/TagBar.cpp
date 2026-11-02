@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CP_Main.h"
 #include "TagBar.h"
+#include "FluentDialog.h"
 #include <algorithm>
 
 BEGIN_MESSAGE_MAP(CTagBar, CWnd)
@@ -27,13 +28,6 @@ void CTagBar::SetActiveTags(const std::vector<CString>& tags)
 {
 	m_activeTags = tags;
 	Invalidate();
-}
-
-static COLORREF Blend(COLORREF from, COLORREF to, int percentTo)
-{
-	return RGB((GetRValue(from) * (100 - percentTo) + GetRValue(to) * percentTo) / 100,
-		(GetGValue(from) * (100 - percentTo) + GetGValue(to) * percentTo) / 100,
-		(GetBValue(from) * (100 - percentTo) + GetBValue(to) * percentTo) / 100);
 }
 
 void CTagBar::OnPaint()
@@ -74,7 +68,7 @@ void CTagBar::OnPaint()
 
 		CRect chip(x, m_dpi->Scale(2), x + width, client.Height() - m_dpi->Scale(2));
 		bool active = std::find(m_activeTags.begin(), m_activeTags.end(), tag) != m_activeTags.end();
-		COLORREF fill = active ? CGetSetOptions::m_Theme.ListBoxSelectedBG() : Blend(background, text, 12);
+		COLORREF fill = active ? CGetSetOptions::m_Theme.ListBoxSelectedBG() : FluentDialog::Mix(background, text, 12);
 
 		CBrush brush(fill);
 		CPen pen(PS_SOLID, 1, fill);

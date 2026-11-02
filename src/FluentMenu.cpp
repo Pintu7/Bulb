@@ -60,11 +60,9 @@ namespace
 			if (icon) DeleteObject(icon);
 			if (chevron) DeleteObject(chevron);
 
-			static CString textFace = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
-			static CString iconFace = FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets");
-			text = MakeFont(14, textFace);
-			icon = MakeFont(16, iconFace);
-			chevron = MakeFont(11, iconFace);
+			text = MakeFont(14, ModernUIFontName());
+			icon = MakeFont(16, ModernIconFontName());
+			chevron = MakeFont(11, ModernIconFontName());
 			dpi = s_dpi;
 		}
 	} s_fonts;

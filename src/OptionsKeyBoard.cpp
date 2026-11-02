@@ -56,6 +56,7 @@ void COptionsKeyBoard::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK_MOVE_CLIPS_ON_PASTE, m_btMoveClipOnGlobal10);
 	DDX_Control(pDX, IDC_HOTKEY_SAVE_CLIPBOARD, m_saveClipboardHotKey);
 	DDX_Control(pDX, IDC_HOTKEY_COPYSAVECLIPBOARD, m_copyAndSaveClipboardCtrl);
+	DDX_Control(pDX, IDC_HOTKEY_AUTOTYPE, m_autoTypeKey);
 }
 
 BEGIN_MESSAGE_MAP(COptionsKeyBoard, CPropertyPage)
@@ -89,6 +90,9 @@ BOOL COptionsKeyBoard::OnInitDialog()
 	theApp.m_pPosNine->CopyToCtrl(m_Nine, m_hWnd, IDC_CHECK_WIN9);
 	theApp.m_pPosTen->CopyToCtrl(m_Ten, m_hWnd, IDC_CHECK_WIN10);
 	theApp.m_pTextOnlyPaste->CopyToCtrl(m_TextOnlyKey, m_hWnd, IDC_CHECK_WIN_TEXT_ONLY);
+	theApp.m_pAutoType->CopyToCtrl(m_autoTypeKey, m_hWnd, IDC_CHECK_WIN_AUTOTYPE);
+	SetDlgItemInt(IDC_EDIT_AUTOTYPE_MAX, CGetSetOptions::GetAutoTypeMaxChars(), FALSE);
+	SetDlgItemInt(IDC_EDIT_AUTOTYPE_DELAY, CGetSetOptions::GetAutoTypeDelay(), FALSE);
 	theApp.m_pSaveClipboard->CopyToCtrl(m_saveClipboardHotKey, m_hWnd, IDC_CHECK_WIN_SAVE_CLIPBOARD);
 	theApp.m_pCopyAndSaveClipboard->CopyToCtrl(m_copyAndSaveClipboardCtrl, m_hWnd, IDC_CHECK_WIN_COPY_SAVE_CLIPBOARD);
 
@@ -115,6 +119,10 @@ BOOL COptionsKeyBoard::OnInitDialog()
 		.Row(IDC_STATIC_ACTIVATE3, { { IDC_HOTKEY_ACTIVATE_2, key }, { IDC_CHECK_WIN_DITTO2, win } }).Describe(Text(_T("ActivateDesc2"), _T("A second shortcut that opens Bulb")))
 		.Row(IDC_STATIC_ACTIVATE4, { { IDC_HOTKEY_ACTIVATE_3, key }, { IDC_CHECK_WIN_DITTO3, win } }).Describe(Text(_T("ActivateDesc3"), _T("A third shortcut that opens Bulb")))
 		.Row(IDC_STATIC_ACTIVATE2, { { IDC_HOTKEY_TEXT_ONLY, key }, { IDC_CHECK_WIN_TEXT_ONLY, win } })
+		.Row(IDC_STATIC_AUTOTYPE, { { IDC_HOTKEY_AUTOTYPE, key }, { IDC_CHECK_WIN_AUTOTYPE, win } })
+		.Describe(Text(_T("AutoTypeDesc"), _T("Types the clipboard text as key presses, for windows that refuse a paste such as TeamViewer or Remote Desktop. The remote PC must use the same keyboard layout. Esc stops it.")))
+		.RowText(Text(_T("AutoTypeMax"), _T("Type at most")), { { IDC_EDIT_AUTOTYPE_MAX, 60 } }, Text(_T("AutoTypeMaxDesc"), _T("Characters; the rest of a longer text is not typed")))
+		.RowText(Text(_T("AutoTypeDelay"), _T("Pause between characters")), { { IDC_EDIT_AUTOTYPE_DELAY, 60 } }, Text(_T("AutoTypeDelayDesc"), _T("Milliseconds; raise it if a remote session drops characters")))
 		.Row(IDC_STATIC_COLLECT_CLIPBOARD, { { IDC_HOTKEY_SAVE_CLIPBOARD, key }, { IDC_CHECK_WIN_SAVE_CLIPBOARD, win } })
 		.Row(IDC_STATIC_COLLECT_CLIPBOARD2, { { IDC_HOTKEY_COPYSAVECLIPBOARD, key }, { IDC_CHECK_WIN_COPY_SAVE_CLIPBOARD, win } })
 		.RowText(Text(_T("KeystrokesPerApp"), _T("Keystrokes per application")), { { IDC_STATIC_CUSTOM_KEYS, 250 } })
@@ -149,6 +157,8 @@ BOOL COptionsKeyBoard::OnApply()
 	CGetSetOptions::SetSendPasteOnFirstTenHotKeys(m_btSendPaste.GetCheck());
 	CGetSetOptions::SetMoveClipsOnGlobal10(m_btMoveClipOnGlobal10.GetCheck());
 	CGetSetOptions::SetUseUISelectedGroupForLastTenCopies(m_UseUiGroupForLastTen.GetCheck());
+	CGetSetOptions::SetAutoTypeMaxChars(min(GetDlgItemInt(IDC_EDIT_AUTOTYPE_MAX, NULL, FALSE), (UINT)100000));
+	CGetSetOptions::SetAutoTypeDelay(min(GetDlgItemInt(IDC_EDIT_AUTOTYPE_DELAY, NULL, FALSE), (UINT)1000));
 					
 	INT_PTR x,y;
 	CString str;
@@ -171,6 +181,7 @@ BOOL COptionsKeyBoard::OnApply()
 	theApp.m_pPosNine->CopyFromCtrl(m_Nine, m_hWnd, IDC_CHECK_WIN9);
 	theApp.m_pPosTen->CopyFromCtrl(m_Ten, m_hWnd, IDC_CHECK_WIN10);
 	theApp.m_pTextOnlyPaste->CopyFromCtrl(m_TextOnlyKey, m_hWnd, IDC_CHECK_WIN_TEXT_ONLY);
+	theApp.m_pAutoType->CopyFromCtrl(m_autoTypeKey, m_hWnd, IDC_CHECK_WIN_AUTOTYPE);
 	theApp.m_pSaveClipboard->CopyFromCtrl(m_saveClipboardHotKey, m_hWnd, IDC_CHECK_WIN_SAVE_CLIPBOARD);
 	theApp.m_pCopyAndSaveClipboard->CopyFromCtrl(m_copyAndSaveClipboardCtrl, m_hWnd, IDC_CHECK_WIN_COPY_SAVE_CLIPBOARD);
 

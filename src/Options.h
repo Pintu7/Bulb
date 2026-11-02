@@ -418,6 +418,12 @@ public:
 	static DWORD	GetTextOnlyRestoreDelay();
 	static DWORD 	GetTextOnlyPasteDelay();
 
+	// Digitazione automatica: at most this many characters, this many ms between them
+	static DWORD	GetAutoTypeMaxChars();
+	static void		SetAutoTypeMaxChars(DWORD value);
+	static DWORD	GetAutoTypeDelay();
+	static void		SetAutoTypeDelay(DWORD value);
+
 	static BOOL		GetSetFocusToApp(CString csAppName);
 
 	static DWORD	SelectedIndex();

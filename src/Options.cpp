@@ -2150,6 +2150,26 @@ DWORD CGetSetOptions::GetTextOnlyPasteDelay()
 	return (DWORD)GetProfileLong(_T("TextOnlyPasteDelay"), 0);
 }
 
+DWORD CGetSetOptions::GetAutoTypeMaxChars()
+{
+	return (DWORD)GetProfileLong(_T("AutoTypeMaxChars"), 100);
+}
+
+void CGetSetOptions::SetAutoTypeMaxChars(DWORD value)
+{
+	SetProfileLong(_T("AutoTypeMaxChars"), value);
+}
+
+DWORD CGetSetOptions::GetAutoTypeDelay()
+{
+	return (DWORD)GetProfileLong(_T("AutoTypeDelay"), 50);
+}
+
+void CGetSetOptions::SetAutoTypeDelay(DWORD value)
+{
+	SetProfileLong(_T("AutoTypeDelay"), value);
+}
+
 BOOL CGetSetOptions::GetSetFocusToApp(CString csAppName)
 {
 	CString focusCheck;

@@ -6,6 +6,8 @@
 namespace FluentInternal
 {
 	using FluentDialog::Palette;
+	using FluentDialog::Mix;
+	using FluentDialog::Luma;
 
 	inline const UINT_PTR DialogSubclassId = 0xF1E8;
 	// window property names as atoms registered once: a property left on a control then costs nothing when it goes

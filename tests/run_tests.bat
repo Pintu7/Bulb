@@ -18,5 +18,11 @@ cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\BulbFolderTest.exe" /Fo"%OUT%\\
 cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\PasteQueueKeysTest.exe" /Fo"%OUT%\\" "%~dp0PasteQueueKeysTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
 "%OUT%\PasteQueueKeysTest.exe" || set FAILED=1
 
+cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\SearchTagsTest.exe" /Fo"%OUT%\\" "%~dp0SearchTagsTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+"%OUT%\SearchTagsTest.exe" || set FAILED=1
+
+cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\AutoTypeTest.exe" /Fo"%OUT%\\" "%~dp0AutoTypeTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+"%OUT%\AutoTypeTest.exe" || set FAILED=1
+
 exit /b %FAILED%
 

@@ -498,6 +498,8 @@ void CCP_MainApp::AfterMainCreate()
 	m_pCutBuffer5 = new CHotKey("CopyBufferCutHotKey_4", 0, true);
 
 	m_pTextOnlyPaste = new CHotKey("TextOnlyPaste", 0, true);
+	// Digitazione automatica, Ctrl+Alt+V (HOTKEYF_CONTROL | HOTKEYF_ALT in the high byte)
+	m_pAutoType = new CHotKey("AutoTypeHotKey", MAKEWORD('V', HOTKEYF_CONTROL | HOTKEYF_ALT), true);
 
 	m_pSaveClipboard = new CHotKey("SaveClipboard", 0, false);
 

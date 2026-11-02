@@ -6,6 +6,7 @@
 #include "ActionEnums.h"
 #include "HyperLink.h"
 #include "FluentMenu.h"
+#include "FluentDialog.h"
 #include <Richedit.h>
 #include <Uxtheme.h>
 
@@ -134,8 +135,7 @@ BOOL CToolTipEx::Create(CWnd *pParentWnd)
 	m_RichEdit.SetEventMask(m_RichEdit.GetEventMask() | ENM_SELCHANGE | ENM_LINK | ENM_MOUSEEVENTS | ENM_SCROLLEVENTS);
 
 	// dark scroll bars on a dark theme
-	COLORREF ground = CGetSetOptions::m_Theme.MainWindowBG();
-	if ((GetRValue(ground) * 299 + GetGValue(ground) * 587 + GetBValue(ground) * 114) / 1000 < 128)
+	if (FluentDialog::IsDark())
 	{
 		SetWindowTheme(m_RichEdit.m_hWnd, L"DarkMode_Explorer", NULL);
 	}
@@ -158,8 +158,7 @@ BOOL CToolTipEx::Create(CWnd *pParentWnd)
 	m_clipDataStatic.Create(_T(""), WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP | SS_ENDELLIPSIS | SS_NOPREFIX, CRect(0, 0, 0, 0), this, 3);
 	m_folderPathStatic.Create(_T(""), WS_CHILD | WS_VISIBLE | SS_LEFTNOWORDWRAP | SS_ENDELLIPSIS | SS_NOPREFIX, CRect(0, 0, 0, 0), this, 4);
 
-	static CString metaFace = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
-	m_clipDataFont.CreateFont(-m_DittoWindow.m_dpi.Scale(12), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, metaFace);
+	m_clipDataFont.CreateFont(-m_DittoWindow.m_dpi.Scale(12), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, ModernUIFontName());
 
 	m_Font.CreateFont(-m_DittoWindow.m_dpi.Scale(13), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, _T("Segoe UI"));
 	m_fontHeight = -13;
@@ -501,9 +500,11 @@ BOOL CToolTipEx::PreTranslateMessage(MSG *pMsg)
 			break;
 		case WM_LBUTTONUP:
 			auto f = GetFocus();
+			// a button takes the focus on the press and must keep it until this release, or Windows drops the click
+			HWND buttons[] = { m_optionsButton.m_hWnd, m_editButton.m_hWnd, m_saveButton.m_hWnd, m_saveNewButton.m_hWnd, m_cancelButton.m_hWnd };
 			if (f != NULL &&
 				m_RichEdit.m_hWnd != f->m_hWnd &&
-				m_optionsButton.m_hWnd != f->m_hWnd)
+				std::find(std::begin(buttons), std::end(buttons), f->m_hWnd) == std::end(buttons))
 			{
 				auto p = GetParent();
 				if (p != NULL)
@@ -1573,7 +1574,7 @@ LRESULT CToolTipEx::OnDpiChanged(WPARAM wParam, LPARAM lParam)
 	log(StrF(_T("CQPasteWnd::OnDpiChanged dpi: %d width: %d, height: %d"), dpi, (prcNewWindow->right - prcNewWindow->left), (prcNewWindow->bottom - prcNewWindow->top)));
 
 	m_clipDataFont.DeleteObject();
-	m_clipDataFont.CreateFont(-m_DittoWindow.m_dpi.Scale(12), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, _T("Segoe UI"));
+	m_clipDataFont.CreateFont(-m_DittoWindow.m_dpi.Scale(12), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, 1, 34, ModernUIFontName());
 
 	m_clipDataStatic.SetFont(&m_clipDataFont);
 	m_folderPathStatic.SetFont(&m_clipDataFont);

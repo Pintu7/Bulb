@@ -78,3 +78,9 @@ tests/bin/
 DittoSetup/Output/
 .claude-flow/
 .swarm/
+
+# planning notes: kept on this PC, not published
+.scratch/
+CLAUDE.md
+GLOSSARY.md
+docs/agents/

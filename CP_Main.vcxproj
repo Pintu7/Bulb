@@ -187,7 +187,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Release\CP_Main.pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
@@ -203,9 +202,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Release\Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release\Bulb.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\Release\Ditto.map</MapFileName>
+      <MapFileName>.\Release\Bulb.map</MapFileName>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
@@ -247,7 +246,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\Release64\CP_Main.pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>.\Release64\</AssemblerListingLocation>
       <ObjectFileName>.\Release64\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release64\</ProgramDataBaseFileName>
@@ -263,9 +261,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Release64\Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release64\Bulb.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\Release64\Ditto.map</MapFileName>
+      <MapFileName>.\Release64\Bulb.map</MapFileName>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
       <MapExports>true</MapExports>
@@ -305,7 +303,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>.\$(Platform)\$(Configuration)\CP_Main.pch</PrecompiledHeaderOutputFile>
-      <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
       <AssemblerListingLocation>.\$(Platform)\$(Configuration)\</AssemblerListingLocation>
       <ObjectFileName>.\$(Platform)\$(Configuration)\</ObjectFileName>
       <ProgramDataBaseFileName>.\$(Platform)\$(Configuration)\</ProgramDataBaseFileName>
@@ -321,9 +318,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\$(Platform)\$(Configuration)\Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\$(Platform)\$(Configuration)\Bulb.pdb</ProgramDatabaseFile>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\$(Platform)\$(Configuration)\Ditto.map</MapFileName>
+      <MapFileName>.\$(Platform)\$(Configuration)\Bulb.map</MapFileName>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
       <MapExports>true</MapExports>
@@ -376,12 +373,12 @@
       <OutputFile>debug\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug/Bulb.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>wWinMainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\Debug/Ditto.map</MapFileName>
+      <MapFileName>.\Debug/Bulb.map</MapFileName>
       <MapExports>true</MapExports>
       <RegisterOutput>false</RegisterOutput>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -435,12 +432,12 @@
       <OutputFile>debug64\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug64/Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug64/Bulb.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\Debug64/Ditto.map</MapFileName>
+      <MapFileName>.\Debug64/Bulb.map</MapFileName>
       <MapExports>true</MapExports>
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -493,12 +490,12 @@
       <OutputFile>$(Platform)\$(Configuration)\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\$(Configuration)/Ditto.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\$(Configuration)/Bulb.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>
       </EntryPointSymbol>
       <GenerateMapFile>true</GenerateMapFile>
-      <MapFileName>.\$(Platform)\$(Configuration)/Ditto.map</MapFileName>
+      <MapFileName>.\$(Platform)\$(Configuration)/Bulb.map</MapFileName>
       <MapExports>true</MapExports>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <RegisterOutput>false</RegisterOutput>
@@ -593,6 +590,7 @@
     <ClCompile Include="src\GroupName.cpp" />
     <ClCompile Include="src\ClipTags.cpp" />
     <ClCompile Include="src\TagBar.cpp" />
+    <ClCompile Include="src\AutoType.cpp" />
     <ClCompile Include="src\TagManager.cpp" />
     <ClCompile Include="src\TextTransforms.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -878,6 +876,8 @@
     <ClInclude Include="src\TextTransforms.h" />
     <ClInclude Include="src\BulbFolder.h" />
     <ClInclude Include="src\PasteQueueKeys.h" />
+    <ClInclude Include="src\SearchTags.h" />
+    <ClInclude Include="src\AutoType.h" />
     <ClInclude Include="src\FluentDialog.h" />
     <ClInclude Include="src\FluentDialogInternal.h" />
     <ClInclude Include="src\FluentMenu.h" />
@@ -1052,7 +1052,7 @@
     <None Include="res\cursor2.cur" />
     <None Include="res\cursor_zoom_in.cur" />
     <None Include="res\Ditto.ico" />
-    <None Include="res\Ditto2_NoCopyCb.ico" />
+    <None Include="res\Bulb_NoCopyCb.ico" />
     <None Include="res\DittoNew.ico" />
     <None Include="res\Ditto_NoCopyCb.ico" />
     <None Include="res\folder_open.png" />
@@ -1098,7 +1098,7 @@
     <None Include="res\opened_folder_24_24.png" />
     <None Include="res\opened_folder_32_32.png" />
     <None Include="res\open_fol.bmp" />
-    <None Include="res\Ditto2.ico" />
+    <None Include="res\Bulb.ico" />
     <None Include="res\open_folder_24.png" />
     <None Include="res\open_folder_30.png" />
     <None Include="res\open_folder_36.png" />
@@ -1233,7 +1233,7 @@
     <Image Include="res\close_48.png" />
     <Image Include="res\close_52.png" />
     <Image Include="res\close_56.png" />
-    <Image Include="res\Ditto2_NoDb.ico" />
+    <Image Include="res\Bulb_NoDb.ico" />
     <Image Include="res\down_16.png" />
     <Image Include="res\down_20.png" />
     <Image Include="res\down_24.png" />

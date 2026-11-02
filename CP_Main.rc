@@ -66,13 +66,13 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\Ditto2.ico"
+IDR_MAINFRAME           ICON                    "res\\Bulb.ico"
 
 IDR_CP_MAITYPE          ICON                    "res\\CP_MainDoc.ico"
 
-IDI_DITTO_NOCOPYCB      ICON                    "res\\Ditto2_NoCopyCb.ico"
+IDI_DITTO_NOCOPYCB      ICON                    "res\\Bulb_NoCopyCb.ico"
 
-IDI_MAINFRAME_NO_DB     ICON                    "res\\Ditto2_NoDb.ico"
+IDI_MAINFRAME_NO_DB     ICON                    "res\\Bulb_NoDb.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -859,6 +859,11 @@ BEGIN
     CONTROL         "Win",IDC_CHECK_WIN_DITTO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,210,10,33,14
     CONTROL         "",IDC_HOTKEY_TEXT_ONLY,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,128,58,80,14
     CONTROL         "Win",IDC_CHECK_WIN_TEXT_ONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,210,58,33,14
+    LTEXT           "Type Clipboard",IDC_STATIC_AUTOTYPE,12,72,71,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_HOTKEY_AUTOTYPE,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,128,72,80,14
+    CONTROL         "Win",IDC_CHECK_WIN_AUTOTYPE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,210,72,33,14
+    EDITTEXT        IDC_EDIT_AUTOTYPE_MAX,128,86,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT_AUTOTYPE_DELAY,128,100,40,14,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "HotKey1",IDC_HOTKEY1,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,59,162,80,14
     CONTROL         "Win",IDC_CHECK_WIN1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,141,162,33,14
     CONTROL         "HotKey1",IDC_HOTKEY2,"msctls_hotkey32",WS_BORDER | WS_TABSTOP,59,177,80,14

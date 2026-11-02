@@ -19,6 +19,7 @@
 #include "DeleteClipData.h"
 #include "DatabaseUtilities.h"
 #include "PasteQueueKeys.h"
+#include "AutoType.h"
 
 #ifdef _DEBUG
     #define new DEBUG_NEW
@@ -442,6 +443,10 @@ LRESULT CMainFrame::OnHotKey(WPARAM wParam, LPARAM lParam)
 	{
 		DoTextOnlyPaste();
 	}
+	else if (theApp.m_pAutoType && wParam == theApp.m_pAutoType->m_Atom)
+	{
+		DoAutoType();
+	}
 	else if(theApp.m_pSaveClipboard && wParam == theApp.m_pSaveClipboard->m_Atom)
 	{
 		OnFirstSavecurrentclipboard();
@@ -546,6 +551,44 @@ void CMainFrame::DoTextOnlyPaste()
 	theApp.m_activeWnd.SendPaste(false);
 
 	Log(_T("Text Only paste, Post sending paste"));
+}
+
+void CMainFrame::DoAutoType()
+{
+	std::wstring clipboard;
+	if (OpenClipboard())
+	{
+		HANDLE data = GetClipboardData(CF_UNICODETEXT);
+		LPCWSTR text = data ? (LPCWSTR)GlobalLock(data) : NULL;
+		if (text != NULL)
+		{
+			clipboard = text;
+			GlobalUnlock(data);
+		}
+		CloseClipboard();
+	}
+
+	DWORD limit = CGetSetOptions::GetAutoTypeMaxChars();
+	AutoType::Prepared prepared = AutoType::Prepare(clipboard, limit);
+	if (prepared.text.empty())
+	{
+		// no text (an image, or nothing): no window in the middle of a remote session, just the error sound
+		MessageBeep(MB_ICONHAND);
+		return;
+	}
+
+	Log(StrF(_T("Auto-type, typing at most %d of %d characters"), (int)limit, (int)prepared.total));
+	if (AutoType::Start(prepared.text, CGetSetOptions::GetAutoTypeDelay()) == false)
+	{
+		return; // still typing the previous one
+	}
+
+	if (prepared.total > limit)
+	{
+		CString message;
+		message.Format(theApp.m_Language.GetString(_T("AutoTypeLimited"), _T("Typed %d of %d characters")), (int)limit, (int)prepared.total);
+		m_trayIcon.SetBalloonDetails(message, _T("Bulb"), CTrayNotifyIcon::BalloonStyle::Info, CGetSetOptions::GetBalloonTimeout());
+	}
 }
 
 void CMainFrame::DoFirstTenPositionsPaste(int nPos)

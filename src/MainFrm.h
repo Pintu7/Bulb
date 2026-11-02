@@ -95,6 +95,7 @@ public:
     void ShowErrorMessage(CString csTitle, CString csMessage);
     bool CloseAllOpenDialogs();
 	void DoTextOnlyPaste();
+	void DoAutoType();
 	void RefreshShowInTaskBar();
 
     void ShowEditWnd(CClipIDs &Ids);

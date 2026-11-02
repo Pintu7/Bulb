@@ -899,12 +899,18 @@
 
 // Next default values for new objects
 //
+#define IDC_STATIC_AUTOTYPE             2185
+#define IDC_HOTKEY_AUTOTYPE             2186
+#define IDC_CHECK_WIN_AUTOTYPE          2187
+#define IDC_EDIT_AUTOTYPE_MAX           2188
+#define IDC_EDIT_AUTOTYPE_DELAY         2189
+
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        395
 #define _APS_NEXT_COMMAND_VALUE         33014
-#define _APS_NEXT_CONTROL_VALUE         2185
+#define _APS_NEXT_CONTROL_VALUE         2190
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

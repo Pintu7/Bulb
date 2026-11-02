@@ -172,6 +172,9 @@
     <ClCompile Include="src\TagBar.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\AutoType.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\TagManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -724,6 +727,12 @@
     <ClInclude Include="src\PasteQueueKeys.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\SearchTags.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AutoType.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\FluentDialogInternal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1141,10 +1150,10 @@
     <None Include="res\DittoNew.ico">
       <Filter>res</Filter>
     </None>
-    <None Include="res\Ditto2.ico">
+    <None Include="res\Bulb.ico">
       <Filter>res</Filter>
     </None>
-    <None Include="res\Ditto2_NoCopyCb.ico">
+    <None Include="res\Bulb_NoCopyCb.ico">
       <Filter>res</Filter>
     </None>
     <None Include="res\search_close.bmp">
@@ -1732,7 +1741,7 @@
     <Image Include="res\search_close_32.png">
       <Filter>res</Filter>
     </Image>
-    <Image Include="res\Ditto2_NoDb.ico">
+    <Image Include="res\Bulb_NoDb.ico">
       <Filter>res</Filter>
     </Image>
     <Image Include="src\RulerRichEditCtrl\toolbar.bmp">

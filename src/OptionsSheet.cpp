@@ -290,9 +290,8 @@ void COptionsSheet::OnPaint()
 	info.cchTextMax = 128;
 	GetTabControl()->GetItem(GetActiveIndex(), &info);
 
-	static CString face = FontInstalled(_T("Segoe UI Variable Display")) ? _T("Segoe UI Variable Display") : _T("Segoe UI");
 	CFont font;
-	font.CreateFont(-Scale(28), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, face);
+	font.CreateFont(-Scale(28), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernDisplayFontName());
 	CFont* oldFont = dc.SelectObject(&font);
 	dc.SetBkMode(TRANSPARENT);
 	dc.SetTextColor(FluentDialog::ColorsFor(m_hWnd).ink);

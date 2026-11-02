@@ -25,6 +25,11 @@ namespace FluentDialog
 	// true when Bulb draws with its dark colors
 	bool IsDark();
 
+	// 'a' moved 'percentOfB' percent of the way to 'b'
+	COLORREF Mix(COLORREF a, COLORREF b, int percentOfB);
+	// perceived brightness, 0 (black) to 255 (white)
+	int Luma(COLORREF color);
+
 	// the colors for what is drawn on 'surface': the window ground, or the card of a settings page
 	Palette ColorsFor(HWND surface);
 

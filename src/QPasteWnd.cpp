@@ -10,6 +10,7 @@
 #include "client.h"
 #include "ClipCompare.h"
 #include "ClipTags.h"
+#include "SearchTags.h"
 #include "TagManager.h"
 
 // command ids of the clip menu's Tags submenu
@@ -806,27 +807,7 @@ void CQPasteWnd::OnTagChipClicked()
 	CString search;
 	m_search.GetWindowText(search);
 
-	// toggle the #tag word, keeping whatever else is typed in the search
-	CString newSearch;
-	bool removed = false;
-	int pos = 0;
-	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
-	{
-		if (word.CompareNoCase(_T("#") + tag) == 0)
-		{
-			removed = true;
-			continue;
-		}
-
-		newSearch += word + _T(" ");
-	}
-
-	if (removed == false)
-	{
-		newSearch += _T("#") + tag + _T(" ");
-	}
-
-	ApplySearch(newSearch);
+	ApplySearch(SearchTags::Toggle((LPCTSTR)search, (LPCTSTR)tag).c_str());
 }
 
 void CQPasteWnd::ApplySearch(const CString& search)
@@ -921,24 +902,8 @@ void CQPasteWnd::OnTagChipRightClicked()
 	// the search may hold the old #tag: rename it there, or drop it when the tag is gone
 	CString search;
 	m_search.GetWindowText(search);
-	CString newSearch;
-	int pos = 0;
-	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
-	{
-		if (word.CompareNoCase(_T("#") + tag) == 0)
-		{
-			if (newName.IsEmpty() == FALSE)
-			{
-				newSearch += _T("#") + newName + _T(" ");
-			}
-			continue;
-		}
-
-		newSearch += word + _T(" ");
-	}
-
 	RefreshTagBar();
-	ApplySearch(newSearch);
+	ApplySearch(SearchTags::Rename((LPCTSTR)search, (LPCTSTR)tag, (LPCTSTR)newName).c_str());
 	m_lstHeader.SetFocus();
 }
 
@@ -1223,35 +1188,21 @@ void CQPasteWnd::OnMenuManageTags()
 
 void CQPasteWnd::AfterTagsChanged()
 {
-	std::vector<CString> names;
+	std::vector<std::wstring> names;
 	try
 	{
-		names = ClipTags::AllNames();
+		for (const CString& name : ClipTags::AllNames())
+		{
+			names.push_back((LPCTSTR)name);
+		}
 	}
 	CATCH_SQLITE_EXCEPTION
 
-	// #words match by prefix, so keep a word while some tag still starts with it
 	CString search;
 	m_search.GetWindowText(search);
-	CString newSearch;
-	int pos = 0;
-	for (CString word = search.Tokenize(_T(" "), pos); pos >= 0; word = search.Tokenize(_T(" "), pos))
-	{
-		std::vector<CString> tag = (word.GetLength() > 1 && word[0] == '#') ? ClipTags::Parse(word) : std::vector<CString>();
-		bool stillMatches = tag.empty();
-		for (const CString& name : names)
-		{
-			stillMatches = stillMatches || name.Left(tag[0].GetLength()) == tag[0];
-		}
-
-		if (stillMatches)
-		{
-			newSearch += word + _T(" ");
-		}
-	}
 
 	RefreshTagBar();
-	ApplySearch(newSearch);
+	ApplySearch(SearchTags::KeepMatching((LPCTSTR)search, names).c_str());
 }
 
 void CQPasteWnd::MoveControls()
@@ -7576,9 +7527,8 @@ BOOL CQPasteWnd::OnEraseBkgnd(CDC* pDC)
 			pDC->FillSolidRect(line, CGetSetOptions::m_Theme.SearchTextBoxFocusBorder());
 		}
 
-		static CString iconFont = FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets");
 		CFont glyphFont;
-		glyphFont.CreateFont(-dpi.Scale(14), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, iconFont);
+		glyphFont.CreateFont(-dpi.Scale(14), 0, 0, 0, FW_NORMAL, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernIconFontName());
 		CFont* oldFont = pDC->SelectObject(&glyphFont);
 		pDC->SetBkMode(TRANSPARENT);
 		pDC->SetTextColor(CGetSetOptions::m_Theme.ListSmallQuickPasteIndexColor());

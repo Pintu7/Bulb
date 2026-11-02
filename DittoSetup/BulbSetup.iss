@@ -14,6 +14,7 @@ AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher=Pintu7
 WizardStyle=modern
 UninstallDisplayIcon={app}\{#MyAppExe}
+SetupIconFile=..\res\Bulb.ico
 UninstallDisplayName={#MyAppName}
 VersionInfoDescription={#MyAppName} installer
 VersionInfoProductName={#MyAppName}

@@ -902,6 +902,18 @@ CString ModernUIFontName()
 	return name;
 }
 
+CString ModernDisplayFontName()
+{
+	static CString name = FontInstalled(_T("Segoe UI Variable Display")) ? _T("Segoe UI Variable Display") : _T("Segoe UI");
+	return name;
+}
+
+CString ModernIconFontName()
+{
+	static CString name = FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets");
+	return name;
+}
+
 CRect MonitorRectFromRect(CRect rect)
 {
 	BOOL ret = FALSE;

@@ -32,7 +32,7 @@ namespace FluentInternal
 	{
 		COLORREF bg = CGetSetOptions::m_Theme.MainWindowBG();
 		Palette c;
-		c.dark = (GetRValue(bg) * 299 + GetGValue(bg) * 587 + GetBValue(bg) * 114) / 1000 < 128;
+		c.dark = Luma(bg) < 128;
 		c.ground = c.dark ? RGB(32, 32, 32) : RGB(243, 243, 243);
 		c.field = c.dark ? RGB(45, 45, 45) : RGB(255, 255, 255);
 		c.ink = c.dark ? RGB(255, 255, 255) : RGB(26, 26, 26);
@@ -99,10 +99,9 @@ namespace FluentInternal
 			return found->second;
 		}
 
-		static CString face = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
 		lf.lfWeight = key.second;
 		lf.lfQuality = CLEARTYPE_QUALITY;
-		lstrcpyn(lf.lfFaceName, face, LF_FACESIZE);
+		lstrcpyn(lf.lfFaceName, ModernUIFontName(), LF_FACESIZE);
 		HFONT font = CreateFontIndirect(&lf);
 		fonts[key] = font;
 		return font;
@@ -125,16 +124,9 @@ namespace FluentInternal
 		DeleteObject(pen);
 	}
 
-	COLORREF Mix(COLORREF a, COLORREF b, int percentOfB)
-	{
-		return RGB((GetRValue(a) * (100 - percentOfB) + GetRValue(b) * percentOfB) / 100,
-			(GetGValue(a) * (100 - percentOfB) + GetGValue(b) * percentOfB) / 100,
-			(GetBValue(a) * (100 - percentOfB) + GetBValue(b) * percentOfB) / 100);
-	}
-
 	bool IsLight(COLORREF color)
 	{
-		return (GetRValue(color) * 299 + GetGValue(color) * 587 + GetBValue(color) * 114) / 1000 >= 150;
+		return Luma(color) >= 150;
 	}
 
 	CString WindowText(HWND hwnd)
@@ -1036,7 +1028,7 @@ namespace FluentInternal
 			return found->second;
 		}
 		HFONT font = CreateFont(-size, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-			CLEARTYPE_QUALITY, DEFAULT_PITCH, FontInstalled(_T("Segoe Fluent Icons")) ? _T("Segoe Fluent Icons") : _T("Segoe MDL2 Assets"));
+			CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernIconFontName());
 		fonts[size] = font;
 		return font;
 	}
@@ -1856,6 +1848,18 @@ void FluentDialog::ThemeAllDialogs()
 bool FluentDialog::IsDark()
 {
 	return Colors().dark;
+}
+
+COLORREF FluentDialog::Mix(COLORREF a, COLORREF b, int percentOfB)
+{
+	return RGB((GetRValue(a) * (100 - percentOfB) + GetRValue(b) * percentOfB) / 100,
+		(GetGValue(a) * (100 - percentOfB) + GetGValue(b) * percentOfB) / 100,
+		(GetBValue(a) * (100 - percentOfB) + GetBValue(b) * percentOfB) / 100);
+}
+
+int FluentDialog::Luma(COLORREF color)
+{
+	return (GetRValue(color) * 299 + GetGValue(color) * 587 + GetBValue(color) * 114) / 1000;
 }
 
 FluentDialog::Palette FluentDialog::ColorsFor(HWND surface)

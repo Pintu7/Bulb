@@ -175,7 +175,7 @@ void CTabCtrlEx::SetTabHeight(int nTabHeight)
 	{
 		// Set the regular font
 		m_pFntText->CreateFont(-(m_nTabHeight*14/32), 0, 0, 0, FW_NORMAL, FALSE, FALSE, 0, DEFAULT_CHARSET,
-			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, _T("Segoe UI Variable Text"));
+			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 	}
 
 	// Delete the old font and create a new one
@@ -187,7 +187,7 @@ void CTabCtrlEx::SetTabHeight(int nTabHeight)
 	{
 		// Set the bold font
 		m_pFntBoldText->CreateFont(-(m_nTabHeight*14/32), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, 0, DEFAULT_CHARSET,
-			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, _T("Segoe UI Variable Text"));
+			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 	}
 }
 

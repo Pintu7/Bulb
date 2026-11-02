@@ -31,7 +31,7 @@ int CDittoPopupWindow::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CWndEx::SetCaptionOn(CAPTION_TOP, false, CGetSetOptions::m_Theme.GetCaptionSize(), CGetSetOptions::m_Theme.GetCaptionFontSize());
 		
-	m_font.CreateFont(-m_DittoWindow.m_dpi.Scale(14), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, CLEARTYPE_QUALITY, 34, _T("Segoe UI Variable Text"));
+	m_font.CreateFont(-m_DittoWindow.m_dpi.Scale(14), 0, 0, 0, 400, 0, 0, 0, DEFAULT_CHARSET, 3, 2, CLEARTYPE_QUALITY, 34, ModernUIFontName());
 	m_textLabel.Create(_T("test"), WS_CHILD | WS_VISIBLE, CRect(0, 0, 0, 0), this);
 	m_textLabel.SetFont(&m_font);
 	

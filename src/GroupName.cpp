@@ -132,10 +132,8 @@ void CGroupName::PlaceForScale()
 {
 	m_titleFont.DeleteObject();
 	m_bodyFont.DeleteObject();
-	static CString display = FontInstalled(_T("Segoe UI Variable Display")) ? _T("Segoe UI Variable Display") : _T("Segoe UI");
-	static CString text = FontInstalled(_T("Segoe UI Variable Text")) ? _T("Segoe UI Variable Text") : _T("Segoe UI");
-	m_titleFont.CreateFont(-Scale(20), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, display);
-	m_bodyFont.CreateFont(-Scale(14), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, text);
+	m_titleFont.CreateFont(-Scale(20), 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernDisplayFontName());
+	m_bodyFont.CreateFont(-Scale(14), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, ModernUIFontName());
 
 	int width = Scale(440);
 	int pad = Scale(24);

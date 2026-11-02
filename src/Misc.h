@@ -136,6 +136,10 @@ void ApplyMenuTheme(bool dark);
 bool FontInstalled(LPCTSTR faceName);
 // "Segoe UI Variable Text" where installed (Windows 11), else "Segoe UI"
 CString ModernUIFontName();
+// "Segoe UI Variable Display" for large titles, else "Segoe UI"
+CString ModernDisplayFontName();
+// "Segoe Fluent Icons" (Windows 11), else "Segoe MDL2 Assets" (Windows 10); the glyphs Bulb uses are in both
+CString ModernIconFontName();
 
 __int64 GetLastWriteTime(const CString &csFile);
 
