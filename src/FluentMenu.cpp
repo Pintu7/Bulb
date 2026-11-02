@@ -279,16 +279,8 @@ namespace
 		g.FillPath(&brush, &path);
 	}
 
-	bool Draw(DRAWITEMSTRUCT* d)
+	void Paint(HDC dc, RECT r, const Item* item, UINT itemState)
 	{
-		Item* item = d->CtlType == ODT_MENU ? Find(d->itemData) : nullptr;
-		if (item == nullptr)
-		{
-			return false;
-		}
-
-		HDC dc = d->hDC;
-		RECT r = d->rcItem;
 		SetBkColor(dc, Back());
 		ExtTextOut(dc, 0, 0, ETO_OPAQUE, &r, NULL, 0, NULL);
 
@@ -297,12 +289,12 @@ namespace
 			RECT line = { r.left, (r.top + r.bottom) / 2, r.right, (r.top + r.bottom) / 2 + 1 };
 			SetBkColor(dc, Line());
 			ExtTextOut(dc, 0, 0, ETO_OPAQUE, &line, NULL, 0, NULL);
-			return true;
+			return;
 		}
 
 		s_fonts.Ensure();
-		bool disabled = (d->itemState & (ODS_DISABLED | ODS_GRAYED)) != 0;
-		bool selected = (d->itemState & ODS_SELECTED) != 0;
+		bool disabled = (itemState & (ODS_DISABLED | ODS_GRAYED)) != 0;
+		bool selected = (itemState & ODS_SELECTED) != 0;
 
 		if (selected && disabled == false)
 		{
@@ -313,7 +305,7 @@ namespace
 		SetBkMode(dc, TRANSPARENT);
 		COLORREF ink = disabled ? Disabled() : Ink();
 
-		WCHAR glyph = (d->itemState & ODS_CHECKED) ? 0xE73E : (item->popup ? GlyphForPopup(item->text) : GlyphForId(item->id));
+		WCHAR glyph = (itemState & ODS_CHECKED) ? 0xE73E : (item->popup ? GlyphForPopup(item->text) : GlyphForId(item->id));
 		if (glyph != 0)
 		{
 			SelectObject(dc, s_fonts.icon);
@@ -325,7 +317,7 @@ namespace
 		SelectObject(dc, s_fonts.text);
 		SetTextColor(dc, ink);
 		RECT text = { r.left + S(40), r.top, r.right - S(28), r.bottom };
-		UINT prefix = (d->itemState & ODS_NOACCEL) ? DT_HIDEPREFIX : 0;
+		UINT prefix = (itemState & ODS_NOACCEL) ? DT_HIDEPREFIX : 0;
 		DrawText(dc, item->text, -1, &text, DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS | prefix);
 
 		if (item->accel.IsEmpty() == FALSE)
@@ -342,9 +334,37 @@ namespace
 			RECT arrow = { r.right - S(28), r.top, r.right - S(12), r.bottom };
 			DrawTextW(dc, &chevron, 1, &arrow, DT_RIGHT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
 		}
+	}
+
+	bool Draw(DRAWITEMSTRUCT* d)
+	{
+		Item* item = d->CtlType == ODT_MENU ? Find(d->itemData) : nullptr;
+		if (item == nullptr)
+		{
+			return false;
+		}
+
+		// painted off screen and copied in one go: painted on screen, the row showed blank between the hover and the text
+		RECT r = d->rcItem;
+		int width = r.right - r.left, height = r.bottom - r.top;
+		HDC buffer = CreateCompatibleDC(d->hDC);
+		HBITMAP bitmap = CreateCompatibleBitmap(d->hDC, width, height);
+		if (buffer != NULL && bitmap != NULL)
+		{
+			HGDIOBJ old = SelectObject(buffer, bitmap);
+			Paint(buffer, { 0, 0, width, height }, item, d->itemState);
+			BitBlt(d->hDC, r.left, r.top, width, height, buffer, 0, 0, SRCCOPY);
+			SelectObject(buffer, old);
+		}
+		else
+		{
+			Paint(d->hDC, r, item, d->itemState);
+		}
+		if (bitmap != NULL) DeleteObject(bitmap);
+		if (buffer != NULL) DeleteDC(buffer);
 
 		// stops the system from drawing its own submenu arrow on top
-		ExcludeClipRect(dc, r.left, r.top, r.right, r.bottom);
+		ExcludeClipRect(d->hDC, r.left, r.top, r.right, r.bottom);
 		return true;
 	}
 
