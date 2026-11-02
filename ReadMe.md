@@ -1,38 +1,42 @@
-# [Ditto - Clipboard Manager](https://github.com/sabrogden/Ditto/releases/download/3.25.113.0/DittoSetup_3_25_113_0.exe)
+# Bulb – a fork of Ditto
 
-![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/sabrogden/Ditto/latest/total) ![GitHub commits since latest release](https://img.shields.io/github/commits-since/sabrogden/Ditto/latest) ![GitHub contributors](https://img.shields.io/github/contributors/sabrogden/Ditto)
+**Bulb is a personal fork of [Ditto](https://github.com/sabrogden/Ditto), the clipboard manager for Windows by Scott Brogden and its contributors.** Everything that makes it work, from saving every clip to searching and pasting them, is Ditto's work. Bulb only adds and changes a few things on top. If you want the original, maintained program, use [Ditto](https://github.com/sabrogden/Ditto) and consider [supporting it](https://github.com/sabrogden/Ditto#readme).
 
+Bulb is not affiliated with or endorsed by the Ditto project.
 
+## Why this fork
 
-[Help/Wiki](https://github.com/sabrogden/Ditto/wiki)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Forums](https://github.com/sabrogden/Ditto/issues)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Donate](https://www.paypal.com/donate/?item_name=Donation+to+Ditto&cmd=_donations&business=sabrogden%40gmail.com&Z3JncnB0=)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Beta](https://ditto-cp.sourceforge.io/beta/)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[Source](https://github.com/sabrogden/Ditto)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;[History](https://github.com/sabrogden/Ditto/releases)
+I use Ditto every day and wanted a version that fits the way I work:
 
-Ditto is an extension to the standard windows clipboard. It saves each item placed on the clipboard allowing you access to any of those items at a later time. Ditto allows you to save any type of information that can be put on the clipboard, text, images, html, custom formats.
+- a clipboard manager that looks at home on Windows 11;
+- tags instead of groups, so a clip can belong to more than one place;
+- a way to type the clipboard into windows that refuse a paste, such as a remote session;
+- clips that are never deleted automatically because of what they contain.
 
+These changes are personal choices rather than fixes Ditto needs, so they live in a fork instead of pull requests.
 
-1. [Installer](https://github.com/sabrogden/Ditto/releases/download/3.25.113.0/DittoSetup_3_25_113_0.exe)
-2. [Portable](https://github.com/sabrogden/Ditto/releases/download/3.25.113.0/DittoPortable_3_25_113_0.zip)
-3. [Chocolatey](https://chocolatey.org/packages/ditto/3.23.124.0) choco install ditto
-4. [Chocolatey Portable](https://chocolatey.org/packages/ditto.portable/3.23.124.0) choco install ditto.portable
-5. [Winget](https://winget.run/pkg/Ditto/Ditto) winget install -e --id Ditto.Ditto
-6. [Windows Store App](https://www.microsoft.com/en-us/store/p/ditto-cp/9nblggh3zbjq)  
+## What is different from Ditto
 
+- **Windows 11 look**: rounded windows, Segoe UI Variable and Fluent icons, light and dark themes, and settings laid out like the Windows 11 Settings app.
+- **Tags**: tag clips with Ctrl+T, filter the list with the tag bar or `#tag` in the search, and convert existing groups to tags.
+- **Go to Entry shortcut**: Ctrl+Enter on a search result shows the clip in the full history, with what you copied before and after it.
+- **Type Clipboard**: Ctrl+Alt+V types the clipboard text as key presses, for TeamViewer or Remote Desktop sessions that block paste. It types at most 100 characters, 50 ms apart, and Esc stops it; the shortcut and both values can be changed in Options > Keyboard.
+- **Text from images**: copy the text of an image clip, recognised with Windows' built-in OCR.
+- **Paste queue**: paste several clips one after another.
+- **Safer defaults**: clips are never deleted because their content looks sensitive, and the network receive port never opens with the default password.
+- **Its own name and folder**: Bulb installs and stores its data apart from Ditto, so both can be installed side by side.
 
-## Basic Usage
+Like Ditto, Bulb is local first: no login, no cloud, no telemetry.
 
-1. Run Ditto
-2. Copy things to the clipboard, e.g. using Ctrl-C with text selected in a text editor.
-3. Open Ditto by clicking its icon in the system tray or by pressing its Hot Key which defaults to Ctrl + ` – i.e. hold down Ctrl and press the back-quote (tilde ~) key.
-4. Double click or press enter on the item to paste it to the previous window.
+## Building
 
-## Local First
-- No login
-- No cloud
-- No telemetry
+There are no releases yet: build it from source on Windows.
 
-## Windows Code-Signing Policy
-Free code signing on Windows binaries provided by SignPath.io, certificate by SignPath Foundation.
-<br>
-<br>
+1. Install Visual Studio 2026 (or its Build Tools) with the C++ desktop workload and MFC.
+2. Build: `MSBuild CP_Main_10.sln /p:Configuration=Release /p:Platform=x64`. The program is `Release64\Bulb.exe`.
+3. Installer (optional): compile `DittoSetup\BulbSetup.iss` with [Inno Setup 6](https://jrsoftware.org/isinfo.php).
+4. Tests: run `tests\run_tests.bat` from a Visual Studio developer prompt.
 
-<img src="ditto.gif">
+## License
 
+Bulb is distributed under the GNU General Public License v3, the same license as Ditto: see [LICENSE](LICENSE). The original copyright and credits stay with Ditto's authors.
