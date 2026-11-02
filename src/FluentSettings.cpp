@@ -116,6 +116,19 @@ namespace FluentInternal
 			{
 				SIZE designed = state->designed[item.id];
 				int w = item.width == FluentDialog::SettingsLayout::Keep ? designed.cx : (item.width > 0 ? Scale(page, item.width) : 0);
+				// a link or a push button is never narrower than its text: at some scales the font outgrows the set width
+				HWND control = GetDlgItem(page, item.id);
+				bool pushButton = control != NULL && IsClass(control, _T("Button")) && IsToggle(control) == false;
+				if (w > 0 && control != NULL && (IsClass(control, _T("Static")) || pushButton))
+				{
+					TCHAR text[256] = { 0 };
+					GetWindowText(control, text, 256);
+					HGDIOBJ controlFont = SelectObject(dc, (HFONT)SendMessage(control, WM_GETFONT, 0, 0));
+					SIZE extent = { 0, 0 };
+					GetTextExtentPoint32(dc, text, lstrlen(text), &extent);
+					SelectObject(dc, controlFont);
+					w = max(w, extent.cx + Scale(page, pushButton ? 24 : 4));
+				}
 				widths.push_back(w);
 				if (item.width == FluentDialog::SettingsLayout::Below)
 				{
