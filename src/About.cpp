@@ -41,7 +41,6 @@ void CAbout::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CAbout)
 	DDX_Control(pDX, IDC_STATIC_LINK, m_Link);
 	DDX_Control(pDX, IDC_HYPER_LINK, m_HyperLink);
-	DDX_Control(pDX, IDC_LIST, m_List);
 	//}}AFX_DATA_MAP
 }
 
@@ -58,81 +57,70 @@ BOOL CAbout::OnInitDialog()
 {
 	CPropertyPage::OnInitDialog();
 
-	m_List.AddString(_T("Bulb"));
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
 
-	auto runningVersion = GetRunningVersion();
-	CString cs = GetVersionString(runningVersion);
-
-	CString csText;
-	csText = "    Version " + cs;
+	CString version = _T("Version ") + GetVersionString(GetRunningVersion());
 #if _WIN64
-	csText += " 64bit";
+	version += _T(" (64-bit)");
 #else
-	csText += " 32bit";
+	version += _T(" (32-bit)");
 #endif
-	m_List.AddString(csText);
 
-	const char *SqliteVersion = sqlite3_libversion();
-	csText = "    Sqlite Version ";
-	csText += SqliteVersion;
-	m_List.AddString(csText);
-
-	cs = CGetSetOptions::GetExeFileName();;
-	csText = "    Exe Path " + cs;
-	m_List.AddString(csText);
-
-	cs = CGetSetOptions::GetDBPath();
-	csText = "    DB Path " + cs;
-	m_List.AddString(csText);
-
-	m_List.AddString(_T(""));
-
-	m_List.AddString(_T("Credits"));
-	
-	cs = "    Authors - Scott Brogden, sabrogden@users.sourceforge.net";
-	m_List.AddString(cs);
-	cs = "            - Kevin Edwards, ingenuus@users.sourceforge.net";
-	m_List.AddString(cs);
-
-	m_List.AddString(_T(""));
-
-	m_List.AddString(_T("Addins"));
-
-	//Show what addins are loaded
-	CStringArray arr;
-	theApp.m_Addins.AboutScreenText(arr);
-	INT_PTR count = arr.GetCount();
-	for(int i = 0; i < count; i++)
-	{
-		m_List.AddString(_T("    ") + arr[i]);
-	}
-
-	// the list fills the page; the two links sit in two rows under it, inside the page
-	UINT dpi = ::GetDpiForWindow(m_hWnd);
-	int row = MulDiv(22, dpi ? dpi : 96, 96);
-	CRect rect;
-	GetClientRect(rect);
-
-	rect.bottom -= row * 2 + row / 2;
-
-	m_List.MoveWindow(rect);
-
-	rect.top = rect.bottom + row / 2;
-	rect.bottom = rect.top + row;
-
-	m_HyperLink.MoveWindow(rect);
-
-	m_HyperLink.SetURL(_T("mailto:sabrogden@gmail.com"));
-
-	rect.top = rect.bottom;
-	rect.bottom = rect.top + row;
-	m_Link.MoveWindow(rect);
+	m_HyperLink.SetWindowText(Text(_T("AboutIssuesLink"), _T("Open GitHub issues")));
+	m_HyperLink.SetURL(_T("https://github.com/Pintu7/Bulb/issues"));
+	m_Link.SetWindowText(_T("github.com/sabrogden/Ditto"));
 	m_Link.SetURL(_T("https://github.com/sabrogden/Ditto")); // credit and source of the original program (GPL-3.0)
-
 	m_HyperLink.SetUnderline(FALSE);
 	m_Link.SetUnderline(FALSE);
 	FluentDialog::MarkLink(m_HyperLink);
 	FluentDialog::MarkLink(m_Link);
+
+	// Windows 11 Settings rows, in the same type as every other page
+	using L = FluentDialog::SettingsLayout;
+	const int link = 200;
+	L layout;
+	layout
+		.SectionText(_T("Bulb"))
+		.RowText(_T("Bulb"), {}, version + _T(" \x00B7 by Andrea Rinaldi"))
+		.RowText(Text(_T("AboutProgram"), _T("Program")), {}, CGetSetOptions::GetExeFileName())
+		.RowText(Text(_T("AboutDatabase"), _T("Database")), {}, CGetSetOptions::GetDBPath())
+		.RowText(_T("SQLite"), {}, CString(sqlite3_libversion()))
+		.SectionText(Text(_T("AboutCredits"), _T("Credits")))
+		.RowText(_T("Ditto"), { { IDC_STATIC_LINK, link } },
+			Text(_T("AboutDittoCredit"), _T("Bulb is a fork of Ditto, the clipboard manager by Scott Brogden and Kevin Edwards, and of the work of all its contributors. Both are free software under the GPL-3.0.")))
+		.SectionText(Text(_T("AboutFeedback"), _T("Feedback")))
+		.RowText(Text(_T("AboutIssues"), _T("Report a bug or request a feature")), { { IDC_HYPER_LINK, link } },
+			Text(_T("AboutIssuesDesc"), _T("On Bulb's page on GitHub")));
+
+	// add-ins: "Name Ver: 1, Ver2: 1", then "    Function (what it does)" for each of its functions
+	CStringArray lines;
+	theApp.m_Addins.AboutScreenText(lines);
+	if (lines.GetCount() > 0)
+	{
+		layout.SectionText(Text(_T("AboutAddins"), _T("Add-ins")));
+	}
+	for (INT_PTR i = 0; i < lines.GetCount(); i++)
+	{
+		CString line = lines[i];
+		bool function = line.Left(1) == _T(" ");
+		line.Trim();
+		if (line.IsEmpty())
+		{
+			continue;
+		}
+		int open = line.Find(_T(" ("));
+		if (function && open > 0 && line.Right(1) == _T(")"))
+		{
+			layout.RowText(line.Left(open), {}, line.Mid(open + 2, line.GetLength() - open - 3));
+		}
+		else
+		{
+			int ver = line.Find(_T(" Ver: "));
+			CString number = ver > 0 ? line.Mid(ver + 6).SpanExcluding(_T(",")) : CString();
+			layout.RowText(ver > 0 ? line.Left(ver) : line, {}, number.IsEmpty() ? CString() : _T("Version ") + number);
+		}
+	}
+	layout.AttachTo(m_hWnd);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

@@ -894,6 +894,7 @@
 #define ID_SPECIALPASTE_BASE64DECODE    33011
 #define ID_MENU_PASTEQUEUE              33012
 #define ID_MENU_COPYIMAGETEXT           33013
+#define ID_MENU_AUTOTYPE                33014
 #define IDC_OCR_IMAGES                  2183
 #define IDC_ENCRYPT_DB                  2184
 
@@ -909,7 +910,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
 #define _APS_NEXT_RESOURCE_VALUE        395
-#define _APS_NEXT_COMMAND_VALUE         33014
+#define _APS_NEXT_COMMAND_VALUE         33015
 #define _APS_NEXT_CONTROL_VALUE         2190
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

@@ -567,9 +567,13 @@ void CMainFrame::DoAutoType()
 		}
 		CloseClipboard();
 	}
+	AutoTypeText(clipboard);
+}
 
+void CMainFrame::AutoTypeText(const std::wstring& source)
+{
 	DWORD limit = CGetSetOptions::GetAutoTypeMaxChars();
-	AutoType::Prepared prepared = AutoType::Prepare(clipboard, limit);
+	AutoType::Prepared prepared = AutoType::Prepare(source, limit);
 	if (prepared.text.empty())
 	{
 		// no text (an image, or nothing): no window in the middle of a remote session, just the error sound

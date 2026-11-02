@@ -128,6 +128,7 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_COMMAND_RANGE(ID_PAUSE_RECORDING_5, ID_PAUSE_RECORDING_60, OnPauseRecording)
 	ON_COMMAND_RANGE(ID_SPECIALPASTE_FORMATJSON, ID_SPECIALPASTE_BASE64DECODE, OnSpecialPasteTransform)
 	ON_COMMAND(ID_MENU_PASTEQUEUE, OnMenuPasteQueue)
+	ON_COMMAND(ID_MENU_AUTOTYPE, OnMenuAutoType)
 	ON_COMMAND(ID_MENU_COPYIMAGETEXT, OnMenuCopyImageText)
 	ON_COMMAND_RANGE(TagMenuStartId, TagMenuStartId + MaxTagMenuItems - 1, OnTagMenuToggle)
 	ON_WM_SETFOCUS()
@@ -1082,6 +1083,28 @@ void CQPasteWnd::OnMenuPasteQueue()
 	HideQPasteWindow(true);
 	theApp.m_activeWnd.ActivateTarget();
 	theApp.m_pMainFrame->StartPasteQueue(ordered);
+}
+
+// types the selected clip's text into the window Bulb was opened from, as the Ctrl+Alt+V shortcut types the clipboard
+void CQPasteWnd::OnMenuAutoType()
+{
+	ARRAY IDs;
+	m_lstHeader.GetSelectionItemData(IDs);
+	if (IDs.GetSize() == 0)
+	{
+		return;
+	}
+
+	CClip clip;
+	std::wstring text;
+	if (clip.LoadFormats(IDs[0], true))
+	{
+		text = (LPCWSTR)clip.GetUnicodeTextFormat();
+	}
+
+	HideQPasteWindow(true);
+	theApp.m_activeWnd.ActivateTarget();
+	theApp.m_pMainFrame->AutoTypeText(text);
 }
 
 // reads the text in the selected image now (works for images copied before OCR was on too) and copies only that text

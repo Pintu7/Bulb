@@ -495,6 +495,7 @@ BEGIN
             MENUITEM "Paste as Image",              ID_SPECIALPASTE_PASTEASIMAGE
         END
         MENUITEM "Paste as Queue",              ID_MENU_PASTEQUEUE
+        MENUITEM "Type Clip",                   ID_MENU_AUTOTYPE
         MENUITEM SEPARATOR
         MENUITEM "Edit Tags",                   ID_MENU_EDITTAGS
         POPUP "Groups"
@@ -1064,7 +1065,6 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About Bulb"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    LISTBOX         IDC_LIST,7,16,323,132,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     LTEXT           "E-mail Scott Brogden",IDC_HYPER_LINK,7,153,67,8
     LTEXT           "Based on Ditto by Scott Brogden (GPL-3.0)",IDC_STATIC_LINK,7,171,250,8
 END
@@ -1384,7 +1384,8 @@ BEGIN
             VALUE "FileDescription", "Bulb"
             VALUE "FileVersion", "3.24.238.2"
             VALUE "InternalName", "CP_Main"
-            VALUE "LegalCopyright", "Copyright (C) 2003"
+            VALUE "CompanyName", "Andrea Rinaldi"
+            VALUE "LegalCopyright", "Bulb (C) 2026 Andrea Rinaldi. Based on Ditto (C) 2003 Scott Brogden and contributors. GPL-3.0"
             VALUE "OriginalFilename", "Bulb.exe"
             VALUE "ProductName", "Bulb"
             VALUE "ProductVersion", "3.24.238.2"

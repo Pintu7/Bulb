@@ -163,6 +163,7 @@ public:
 	afx_msg void OnPauseRecording(UINT id);
 	afx_msg void OnSpecialPasteTransform(UINT id);
 	afx_msg void OnMenuPasteQueue();
+	afx_msg void OnMenuAutoType();
 	afx_msg void OnMenuCopyImageText();
 	// "Tags" submenu of the clip right-click menu: one checkable item per tag
 	std::vector<CString> m_tagMenuNames;

@@ -96,6 +96,8 @@ public:
     bool CloseAllOpenDialogs();
 	void DoTextOnlyPaste();
 	void DoAutoType();
+	// the Digitazione automatica of any text into the active window: the error sound when there is nothing to type
+	void AutoTypeText(const std::wstring& text);
 	void RefreshShowInTaskBar();
 
     void ShowEditWnd(CClipIDs &Ids);

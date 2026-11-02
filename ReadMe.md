@@ -2,7 +2,7 @@
 
 **Bulb is a personal fork of [Ditto](https://github.com/sabrogden/Ditto), the clipboard manager for Windows by Scott Brogden and its contributors.** Everything that makes it work, from saving every clip to searching and pasting them, is Ditto's work. Bulb only adds and changes a few things on top. If you want the original, maintained program, use [Ditto](https://github.com/sabrogden/Ditto) and consider [supporting it](https://github.com/sabrogden/Ditto#readme).
 
-Bulb is not affiliated with or endorsed by the Ditto project.
+Bulb is made by Andrea Rinaldi ([Pintu7](https://github.com/Pintu7)) and is not affiliated with or endorsed by the Ditto project. Found a bug or want something? [Open an issue](https://github.com/Pintu7/Bulb/issues).
 
 ## Why this fork
 
@@ -20,7 +20,7 @@ These changes are personal choices rather than fixes Ditto needs, so they live i
 - **Windows 11 look**: rounded windows, Segoe UI Variable and Fluent icons, light and dark themes, and settings laid out like the Windows 11 Settings app.
 - **Tags**: tag clips with Ctrl+T, filter the list with the tag bar or `#tag` in the search, and convert existing groups to tags.
 - **Go to Entry shortcut**: Ctrl+Enter on a search result shows the clip in the full history, with what you copied before and after it.
-- **Type Clipboard**: Ctrl+Alt+V types the clipboard text as key presses, for TeamViewer or Remote Desktop sessions that block paste. It types at most 100 characters, 50 ms apart, and Esc stops it; the shortcut and both values can be changed in Options > Keyboard.
+- **Type Clipboard**: Ctrl+Alt+V types the clipboard text as key presses, for TeamViewer or Remote Desktop sessions that block paste. It types at most 100 characters, 50 ms apart, and Esc stops it; the shortcut and both values can be changed in Options > Keyboard. **Type Clip** in a clip's right-click menu types that clip the same way.
 - **Text from images**: copy the text of an image clip, recognised with Windows' built-in OCR.
 - **Paste queue**: paste several clips one after another.
 - **Safer defaults**: clips are never deleted because their content looks sensitive, and the network receive port never opens with the default password.
