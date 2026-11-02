@@ -175,6 +175,9 @@
     <ClCompile Include="src\AutoType.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\UpdateCheck.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\TagManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -731,6 +734,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\AutoType.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UpdateCheck.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\FluentDialogInternal.h">

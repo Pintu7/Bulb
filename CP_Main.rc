@@ -1067,6 +1067,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     LTEXT           "E-mail Scott Brogden",IDC_HYPER_LINK,7,153,67,8
     LTEXT           "Based on Ditto by Scott Brogden (GPL-3.0)",IDC_STATIC_LINK,7,171,250,8
+    PUSHBUTTON      "Check for updates",IDC_CHECK_UPDATES,7,186,90,14
 END
 
 IDD_TAG_MANAGER DIALOGEX 0, 0, 230, 200
@@ -1365,8 +1366,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,0,0
- PRODUCTVERSION 0,9,0,0
+ FILEVERSION 0,9,1,0
+ PRODUCTVERSION 0,9,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1382,13 +1383,13 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Bulb"
-            VALUE "FileVersion", "0.9.0"
+            VALUE "FileVersion", "0.9.1"
             VALUE "InternalName", "CP_Main"
             VALUE "CompanyName", "Andrea Rinaldi"
             VALUE "LegalCopyright", "Bulb (C) 2026 Andrea Rinaldi. Based on Ditto (C) 2003 Scott Brogden and contributors. GPL-3.0"
             VALUE "OriginalFilename", "Bulb.exe"
             VALUE "ProductName", "Bulb"
-            VALUE "ProductVersion", "0.9.0"
+            VALUE "ProductVersion", "0.9.1"
         END
     END
     BLOCK "VarFileInfo"

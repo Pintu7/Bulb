@@ -45,6 +45,8 @@ protected:
 	//{{AFX_MSG(CAbout)
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
+	afx_msg void OnCheckUpdates();
+	afx_msg LRESULT OnUpdateChecked(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 
 };

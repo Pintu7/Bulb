@@ -24,5 +24,8 @@ cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\SearchTagsTest.exe" /Fo"%OUT%\\
 cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\AutoTypeTest.exe" /Fo"%OUT%\\" "%~dp0AutoTypeTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
 "%OUT%\AutoTypeTest.exe" || set FAILED=1
 
+cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\UpdateCheckTest.exe" /Fo"%OUT%\\" "%~dp0UpdateCheckTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+"%OUT%\UpdateCheckTest.exe" || set FAILED=1
+
 exit /b %FAILED%
 

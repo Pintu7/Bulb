@@ -8,6 +8,10 @@
 #include "About.h"
 #include "misc.h"
 #include "FluentDialog.h"
+#include "UpdateCheck.h"
+#include <memory>
+
+static const UINT WM_UPDATE_CHECKED = WM_APP + 0x42;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -48,6 +52,8 @@ void CAbout::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAbout, CPropertyPage)
 	//{{AFX_MSG_MAP(CAbout)
 	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_CHECK_UPDATES, OnCheckUpdates)
+	ON_MESSAGE(WM_UPDATE_CHECKED, OnUpdateChecked)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -82,6 +88,8 @@ BOOL CAbout::OnInitDialog()
 	layout
 		.SectionText(_T("Bulb"))
 		.RowText(_T("Bulb"), {}, version + _T(" \x00B7 by Andrea Rinaldi"))
+		.RowText(Text(_T("AboutUpdates"), _T("Updates")), { { IDC_CHECK_UPDATES, 160 } },
+			Text(_T("AboutUpdatesDesc"), _T("Looks for a newer release on GitHub")))
 		.RowText(Text(_T("AboutProgram"), _T("Program")), {}, CGetSetOptions::GetExeFileName())
 		.RowText(Text(_T("AboutDatabase"), _T("Database")), {}, CGetSetOptions::GetDBPath())
 		.RowText(_T("SQLite"), {}, CString(sqlite3_libversion()))
@@ -124,4 +132,44 @@ BOOL CAbout::OnInitDialog()
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+void CAbout::OnCheckUpdates()
+{
+	GetDlgItem(IDC_CHECK_UPDATES)->EnableWindow(FALSE);
+	SetDlgItemText(IDC_CHECK_UPDATES, theApp.m_Language.GetString(_T("AboutUpdatesChecking"), _T("Checking...")));
+	UpdateCheck::Start(m_hWnd, WM_UPDATE_CHECKED);
+}
+
+LRESULT CAbout::OnUpdateChecked(WPARAM, LPARAM lParam)
+{
+	std::unique_ptr<std::string> tag((std::string*)lParam);
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+	SetDlgItemText(IDC_CHECK_UPDATES, Text(_T("AboutUpdatesButton"), _T("Check for updates")));
+	GetDlgItem(IDC_CHECK_UPDATES)->EnableWindow(TRUE);
+
+	VersionInfo running = GetRunningVersion();
+	CString current = GetVersionString(running);
+	CString message;
+	if (tag == nullptr)
+	{
+		MessageBox(Text(_T("AboutUpdatesFailed"), _T("Could not check for updates. Check the internet connection and try again.")), _T("Bulb"), MB_OK | MB_ICONWARNING);
+	}
+	else if (UpdateCheck::IsNewer(*tag, running.Major, running.Minor, running.Revision))
+	{
+		CString newest(tag->c_str());
+		newest.TrimLeft(_T("vV"));
+		message.Format(Text(_T("AboutUpdatesAvailable"), _T("Bulb %s is available. You have %s.\n\nOpen the download page?")), newest.GetString(), current.GetString());
+		if (MessageBox(message, _T("Bulb"), MB_YESNO | MB_ICONINFORMATION) == IDYES)
+		{
+			// the tag passed UpdateCheck::Parse, so it is only digits, dots and a leading v
+			CHyperLink::GotoURL(_T("https://github.com/Pintu7/Bulb/releases/tag/") + CString(tag->c_str()), SW_SHOW);
+		}
+	}
+	else
+	{
+		message.Format(Text(_T("AboutUpdatesLatest"), _T("You have the latest version of Bulb (%s).")), current.GetString());
+		MessageBox(message, _T("Bulb"), MB_OK | MB_ICONINFORMATION);
+	}
+	return 0;
 }

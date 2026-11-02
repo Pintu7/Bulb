@@ -25,12 +25,13 @@ These changes are personal choices rather than fixes Ditto needs, so they live i
 - **Paste queue**: paste several clips one after another.
 - **Safer defaults**: clips are never deleted because their content looks sensitive, and the network receive port never opens with the default password.
 - **Its own name and folder**: Bulb installs and stores its data apart from Ditto, so both can be installed side by side.
+- **Check for updates**: a button in Options > About asks GitHub for the newest release and opens its page. Bulb never checks by itself.
 
 Like Ditto, Bulb is local first: no login, no cloud, no telemetry.
 
 ## Building
 
-There are no releases yet: build it from source on Windows.
+To install Bulb, download the installer from [Releases](https://github.com/Pintu7/Bulb/releases). To build it from source on Windows:
 
 1. Install Visual Studio 2026 (or its Build Tools) with the C++ desktop workload and MFC.
 2. Build: `MSBuild CP_Main_10.sln /p:Configuration=Release /p:Platform=x64`. The program is `Release64\Bulb.exe`.
