@@ -501,22 +501,27 @@ void COptionsGeneral::OnBnClickedButtonAdvanced()
 	adv.DoModal();
 }
 
-// where Ditto keeps its history: the installed or portable Ditto in AppData, else the Microsoft Store one
+// where Ditto keeps its history: the installed or portable Ditto in AppData, else the Microsoft Store one.
+// The Store Ditto writes to %LOCALAPPDATA%\Ditto_WindowsApp, which Windows usually redirects into its package's LocalCache.
 static CString DittoDatabaseGuess()
 {
 	CString roaming = _tgetenv(_T("APPDATA")) ? _tgetenv(_T("APPDATA")) : _T("");
+	CString local = _tgetenv(_T("LOCALAPPDATA")) ? _tgetenv(_T("LOCALAPPDATA")) : _T("");
 	CString installed = roaming + _T("\\Ditto\\Ditto.db");
-	if (_taccess(installed, 0) == 0)
+	CString storeDirect = local + _T("\\Ditto_WindowsApp\\Ditto.db");
+	for (const CString& path : { installed, storeDirect })
 	{
-		return installed;
+		if (_taccess(path, 0) == 0)
+		{
+			return path;
+		}
 	}
 
-	CString packages = CString(_tgetenv(_T("LOCALAPPDATA")) ? _tgetenv(_T("LOCALAPPDATA")) : _T("")) + _T("\\Packages\\");
 	CFileFind find;
-	for (BOOL more = find.FindFile(packages + _T("*Ditto*")); more;)
+	for (BOOL more = find.FindFile(local + _T("\\Packages\\*Ditto*")); more;)
 	{
 		more = find.FindNextFile();
-		CString store = find.GetFilePath() + _T("\\LocalCache\\Roaming\\Ditto\\Ditto.db");
+		CString store = find.GetFilePath() + _T("\\LocalCache\\Local\\Ditto_WindowsApp\\Ditto.db");
 		if (find.IsDirectory() && _taccess(store, 0) == 0)
 		{
 			return store;
