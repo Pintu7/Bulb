@@ -1040,7 +1040,7 @@ bool CCP_MainApp::ImportClips(HWND hWnd)
 			CString cs;
 			
 			cs.Format(_T("%s %d "), theApp.m_Language.GetString("Import_Successfully", "Successfully imported"), clip.m_importCount);
-			if(clip.m_importCount = 1)
+			if(clip.m_importCount == 1)
 				cs += theApp.m_Language.GetString("Clip", "clip");
 			else
 				cs += theApp.m_Language.GetString("Clips", "clips");

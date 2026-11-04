@@ -26,6 +26,7 @@ These changes are personal choices rather than fixes Ditto needs, so they live i
 - **Safer defaults**: clips are never deleted because their content looks sensitive, and the network receive port never opens with the default password.
 - **Its own name and folder**: Bulb installs and stores its data apart from Ditto, so both can be installed side by side.
 - **Check for updates**: a button in Options > About asks GitHub for the newest release and opens its page. Bulb never checks by itself.
+- **Import from Ditto**: Options > General > Import from Ditto adds your Ditto history to Bulb, optionally turning Ditto's groups into tags. Ditto's own database is only read, and clips Bulb already has are skipped.
 
 Like Ditto, Bulb is local first: no login, no cloud, no telemetry.
 

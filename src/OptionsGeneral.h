@@ -86,6 +86,7 @@ protected:
 
 public:
 	afx_msg void OnBnClickedButtonAdvanced();
+	afx_msg void OnImportDitto();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnBnClickedButtonTheme();
 	afx_msg void OnBnClickedButtonPreviewTheme();

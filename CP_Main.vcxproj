@@ -592,6 +592,7 @@
     <ClCompile Include="src\TagBar.cpp" />
     <ClCompile Include="src\AutoType.cpp" />
     <ClCompile Include="src\UpdateCheck.cpp" />
+    <ClCompile Include="src\DittoImport.cpp" />
     <ClCompile Include="src\TagManager.cpp" />
     <ClCompile Include="src\TextTransforms.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -880,6 +881,7 @@
     <ClInclude Include="src\SearchTags.h" />
     <ClInclude Include="src\AutoType.h" />
     <ClInclude Include="src\UpdateCheck.h" />
+    <ClInclude Include="src\DittoImport.h" />
     <ClInclude Include="src\FluentDialog.h" />
     <ClInclude Include="src\FluentDialogInternal.h" />
     <ClInclude Include="src\FluentMenu.h" />

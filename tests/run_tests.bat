@@ -1,6 +1,8 @@
 @echo off
 rem Builds and runs Bulb's standalone checks with the Visual Studio compiler.
 setlocal
+rem a CL=/MP left from a parallel Bulb build would break the files that use stdafx.h's #import
+set CL=
 call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat" >nul 2>nul || exit /b 1
 set OUT=%~dp0bin
 if not exist "%OUT%" mkdir "%OUT%"
@@ -26,6 +28,11 @@ cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\AutoTypeTest.exe" /Fo"%OUT%\\" 
 
 cl /nologo /std:c++17 /EHsc /W3 /utf-8 /Fe"%OUT%\UpdateCheckTest.exe" /Fo"%OUT%\\" "%~dp0UpdateCheckTest.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
 "%OUT%\UpdateCheckTest.exe" || set FAILED=1
+
+rem SQLite is large and never changes here: compiled once and kept
+if not exist "%OUT%\sqlite3mc.obj" cl /nologo /c /O2 /w /Fo"%OUT%\sqlite3mc.obj" "%~dp0..\src\sqlite\sqlite3mc_amalgamation.c" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+cl /nologo /std:c++17 /EHsc /W3 /utf-8 /DUNICODE /D_UNICODE /I"%~dp0..\src" /Fe"%OUT%\DittoImportTest.exe" /Fo"%OUT%\\" "%~dp0DittoImportTest.cpp" "%~dp0..\src\DittoImport.cpp" "%~dp0..\src\sqlite\CppSQLite3.cpp" "%OUT%\sqlite3mc.obj" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+"%OUT%\DittoImportTest.exe" || set FAILED=1
 
 exit /b %FAILED%
 

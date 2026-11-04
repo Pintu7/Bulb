@@ -12,6 +12,7 @@
 #include "HyperLink.h"
 #include "FluentDialog.h"
 #include <shobjidl.h>
+#include "DittoImport.h"
 
 using namespace nsPath;
 
@@ -74,6 +75,7 @@ BEGIN_MESSAGE_MAP(COptionsGeneral, CPropertyPage)
 	ON_BN_CLICKED(IDC_BUTTON_ABOUT, OnButtonAbout)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_BUTTON_ADVANCED, &COptionsGeneral::OnBnClickedButtonAdvanced)
+	ON_BN_CLICKED(IDC_BUTTON_IMPORT_DITTO, &COptionsGeneral::OnImportDitto)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_BUTTON_THEME, &COptionsGeneral::OnBnClickedButtonTheme)
 	ON_BN_CLICKED(IDC_BUTTON_PREVIEW_THEME, &COptionsGeneral::OnBnClickedButtonPreviewTheme)
@@ -204,6 +206,8 @@ BOOL COptionsGeneral::OnInitDialog()
 		.Row(IDC_STATIC_DATABASE_PATH, { { IDC_PATH, L::Fill }, { IDC_GET_PATH, 40 } })
 		.RowText(Text(_T("PathVariables"), _T("Path variables")), { { IDC_MFCLINK_ENV_VAR, 160 } }, Text(_T("PathVariablesDesc"), _T("Use %APPDATA% and other variables in the database path")))
 		.Row(IDC_ENCRYPT_DB, { { IDC_ENCRYPT_DB, 48 } }).Describe(Text(_T("EncryptDbDesc"), _T("Only your Windows account can read it. Back up your key (search Windows for 'Manage file encryption certificates') or a Windows reinstall locks it. Applies when Bulb restarts.")))
+		.RowText(Text(_T("ImportDitto"), _T("Import from Ditto")), { { IDC_BUTTON_IMPORT_DITTO, 104 } },
+			Text(_T("ImportDittoDesc"), _T("Adds the clips in Ditto's history to Bulb. Clips Bulb already has are skipped, and Ditto is not changed.")))
 		.Section(IDC_STATIC_APP_SEP_DESC)
 		.Row(IDC_STATIC_INCLUDE_APPS, { { IDC_EDIT_APP_COPY_INCLUDE, L::Fill } })
 		.Row(IDC_STATIC_EXCLUDE_APPS, { { IDC_EDIT_APP_COPY_EXCLUDE, L::Fill } })
@@ -495,6 +499,112 @@ void COptionsGeneral::OnBnClickedButtonAdvanced()
 
 	CAdvGeneral adv(this);
 	adv.DoModal();
+}
+
+// where Ditto keeps its history: the installed or portable Ditto in AppData, else the Microsoft Store one
+static CString DittoDatabaseGuess()
+{
+	CString roaming = _tgetenv(_T("APPDATA")) ? _tgetenv(_T("APPDATA")) : _T("");
+	CString installed = roaming + _T("\\Ditto\\Ditto.db");
+	if (_taccess(installed, 0) == 0)
+	{
+		return installed;
+	}
+
+	CString packages = CString(_tgetenv(_T("LOCALAPPDATA")) ? _tgetenv(_T("LOCALAPPDATA")) : _T("")) + _T("\\Packages\\");
+	CFileFind find;
+	for (BOOL more = find.FindFile(packages + _T("*Ditto*")); more;)
+	{
+		more = find.FindNextFile();
+		CString store = find.GetFilePath() + _T("\\LocalCache\\Roaming\\Ditto\\Ditto.db");
+		if (find.IsDirectory() && _taccess(store, 0) == 0)
+		{
+			return store;
+		}
+	}
+	return installed;
+}
+
+void COptionsGeneral::OnImportDitto()
+{
+	auto Text = [](LPCTSTR key, LPCTSTR english) { return theApp.m_Language.GetString(key, english); };
+
+	CString guess = DittoDatabaseGuess();
+	CFileDialog dialog(TRUE, _T("db"), guess, OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR,
+		Text(_T("DittoDatabaseFilter"), _T("Ditto database (*.db)|*.db|All files (*.*)|*.*||")), this);
+	CString folder = guess.Left(guess.ReverseFind(_T('\\')));
+	dialog.m_ofn.lpstrInitialDir = folder;
+	dialog.m_ofn.lpstrTitle = Text(_T("ImportDittoTitle"), _T("Choose Ditto's database"));
+	if (dialog.DoModal() != IDOK)
+	{
+		return;
+	}
+
+	// Bulb reads a private copy, so Ditto's file is never written and Ditto can keep running
+	TCHAR temp[MAX_PATH] = { 0 };
+	GetTempPath(MAX_PATH, temp);
+	CString copy = CString(temp) + _T("Bulb-Ditto-import.db");
+	std::wstring error;
+	CString message;
+	if (DittoImport::Copy((LPCTSTR)dialog.GetPathName(), (LPCTSTR)copy, error) == false)
+	{
+		message.Format(Text(_T("ImportDittoCannotRead"), _T("Bulb could not read that file.\n\n%s")), error.c_str());
+		MessageBox(message, _T("Bulb"), MB_OK | MB_ICONWARNING);
+		DeleteFile(copy);
+		return;
+	}
+
+	try
+	{
+		int groups = DittoImport::CountGroups(theApp.m_db, (LPCTSTR)copy);
+		if (groups < 0)
+		{
+			MessageBox(Text(_T("ImportDittoNotDitto"), _T("That file is not a Ditto database.")), _T("Bulb"), MB_OK | MB_ICONWARNING);
+			DeleteFile(copy);
+			return;
+		}
+
+		bool toTags = false;
+		if (groups > 0)
+		{
+			message.Format(Text(_T("ImportDittoGroups"), _T("Ditto has %d groups. Convert them to tags while importing?\n\nEach clip gets a tag named after its group. The groups come along either way.")), groups);
+			int answer = MessageBox(message, _T("Bulb"), MB_YESNOCANCEL | MB_ICONQUESTION);
+			if (answer == IDCANCEL)
+			{
+				DeleteFile(copy);
+				return;
+			}
+			toTags = answer == IDYES;
+		}
+
+		DittoImport::Result result;
+		{
+			CWaitCursor wait;
+			result = DittoImport::Import(theApp.m_db, (LPCTSTR)copy, toTags);
+		}
+		theApp.RefreshView();
+
+		message.Format(Text(_T("ImportDittoDone"), _T("Imported %d clips from Ditto.")), result.clips);
+		if (result.duplicates > 0)
+		{
+			CString skipped;
+			skipped.Format(Text(_T("ImportDittoSkipped"), _T("%d clips were already in Bulb and were skipped.")), result.duplicates);
+			message += _T("\n\n") + skipped;
+		}
+		if (result.tagged > 0)
+		{
+			CString tagged;
+			tagged.Format(Text(_T("ImportDittoTagged"), _T("%d clips were tagged with their group's name.")), result.tagged);
+			message += _T("\n\n") + tagged;
+		}
+		MessageBox(message, _T("Bulb"), MB_OK | MB_ICONINFORMATION);
+	}
+	catch (CppSQLite3Exception& e)
+	{
+		message.Format(Text(_T("ImportDittoFailed"), _T("The import failed, and nothing was added to Bulb.\n\n%s")), e.errorMessage());
+		MessageBox(message, _T("Bulb"), MB_OK | MB_ICONWARNING);
+	}
+	DeleteFile(copy);
 }
 
 

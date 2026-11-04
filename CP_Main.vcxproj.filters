@@ -178,6 +178,9 @@
     <ClCompile Include="src\UpdateCheck.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\DittoImport.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\TagManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -737,6 +740,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\UpdateCheck.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DittoImport.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\FluentDialogInternal.h">

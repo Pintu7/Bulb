@@ -932,6 +932,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,207,8,160,10
     CONTROL         "Encrypt the database with Windows (EFS)",IDC_ENCRYPT_DB,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,207,24,160,10
+    PUSHBUTTON      "Import...",IDC_BUTTON_IMPORT_DITTO,207,40,60,14
     CONTROL         "Maximum Number of Saved Copies",IDC_MAXIMUM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,25,154,10
     EDITTEXT        IDC_MAX_SAVED_COPIES,164,25,27,12,ES_AUTOHSCROLL
     CONTROL         "Paste Entries Expire after",IDC_EXPIRE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,41,153,10
@@ -1366,8 +1367,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,9,3,0
- PRODUCTVERSION 0,9,3,0
+ FILEVERSION 0,9,4,0
+ PRODUCTVERSION 0,9,4,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1383,13 +1384,13 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Bulb"
-            VALUE "FileVersion", "0.9.3"
+            VALUE "FileVersion", "0.9.4"
             VALUE "InternalName", "CP_Main"
             VALUE "CompanyName", "Andrea Rinaldi"
             VALUE "LegalCopyright", "Bulb (C) 2026 Andrea Rinaldi. Based on Ditto (C) 2003 Scott Brogden and contributors. GPL-3.0"
             VALUE "OriginalFilename", "Bulb.exe"
             VALUE "ProductName", "Bulb"
-            VALUE "ProductVersion", "0.9.3"
+            VALUE "ProductVersion", "0.9.4"
         END
     END
     BLOCK "VarFileInfo"
