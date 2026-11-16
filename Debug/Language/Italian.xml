@@ -511,8 +511,39 @@
 		<Item English_Text = "Keystrokes per application" ID = "KeystrokesPerApp">Tasti per singolo programma</Item>
 		<Item English_Text = "Counting since" ID = "CountingSince">Conteggio dal</Item>
 		<Item English_Text = "Database" ID = "DatabaseSection">Database</Item>
-		<Item English_Text = "Computers" ID = "ComputersSection">Computer</Item>
-		<Item English_Text = "Send clips to" ID = "SendClipsTo">Invia le clip a</Item>
+		<Item English_Text = "Program" ID = "AboutProgram">Programma</Item>
+		<Item English_Text = "Database" ID = "AboutDatabase">Database</Item>
+		<Item English_Text = "Add-ins" ID = "AboutAddins">Componenti aggiuntivi</Item>
+		<Item English_Text = "Credits" ID = "AboutCredits">Riconoscimenti</Item>
+		<Item English_Text = "Bulb is a fork of Ditto" ID = "AboutDittoCredit">Bulb è un fork di Ditto, il gestore degli appunti di Scott Brogden e Kevin Edwards, e del lavoro di tutti i suoi collaboratori. Entrambi sono software libero con licenza GPL-3.0.</Item>
+		<Item English_Text = "Feedback" ID = "AboutFeedback">Segnalazioni</Item>
+		<Item English_Text = "Report a bug or request a feature" ID = "AboutIssues">Segnala un problema o chiedi una funzione</Item>
+		<Item English_Text = "On Bulb's page on GitHub" ID = "AboutIssuesDesc">Sulla pagina di Bulb su GitHub</Item>
+		<Item English_Text = "Open GitHub issues" ID = "AboutIssuesLink">Apri le segnalazioni su GitHub</Item>
+		<Item English_Text = "Updates" ID = "AboutUpdates">Aggiornamenti</Item>
+		<Item English_Text = "Looks for a newer release on GitHub" ID = "AboutUpdatesDesc">Cerca una versione più recente su GitHub</Item>
+		<Item English_Text = "Check for updates" ID = "AboutUpdatesButton">Controlla aggiornamenti</Item>
+		<Item English_Text = "Checking..." ID = "AboutUpdatesChecking">Controllo...</Item>
+		<Item English_Text = "Bulb %s is available. You have %s." ID = "AboutUpdatesAvailable">È disponibile Bulb %s. Hai la versione %s.\n\nAprire la pagina di download?</Item>
+		<Item English_Text = "You have the latest version of Bulb (%s)." ID = "AboutUpdatesLatest">Hai l'ultima versione di Bulb (%s).</Item>
+		<Item English_Text = "Could not check for updates." ID = "AboutUpdatesFailed">Impossibile controllare gli aggiornamenti. Verifica la connessione a internet e riprova.</Item>
+		<Item English_Text = "Types the clipboard text as key presses" ID = "AutoTypeDesc">Digita il testo degli appunti come pressioni di tasti, per le finestre che rifiutano l'incolla come TeamViewer o Desktop remoto. Il PC remoto deve usare lo stesso layout di tastiera. Esc la interrompe.</Item>
+		<Item English_Text = "Type at most" ID = "AutoTypeMax">Digita al massimo</Item>
+		<Item English_Text = "Characters; the rest of a longer text is not typed" ID = "AutoTypeMaxDesc">Caratteri; il resto di un testo più lungo non viene digitato</Item>
+		<Item English_Text = "Pause between characters" ID = "AutoTypeDelay">Pausa tra i caratteri</Item>
+		<Item English_Text = "Milliseconds; raise it if a remote session drops characters" ID = "AutoTypeDelayDesc">Millisecondi; aumentala se una sessione remota perde caratteri</Item>
+		<Item English_Text = "Typed %d of %d characters" ID = "AutoTypeLimited">Digitati %d caratteri su %d</Item>
+		<Item English_Text = "Import from Ditto" ID = "ImportDitto">Importa da Ditto</Item>
+		<Item English_Text = "Adds the clips in Ditto's history to Bulb." ID = "ImportDittoDesc">Aggiunge a Bulb le clip della cronologia di Ditto. Le clip che Bulb ha già vengono saltate, e Ditto non viene modificato.</Item>
+		<Item English_Text = "Choose Ditto's database" ID = "ImportDittoTitle">Scegli il database di Ditto</Item>
+		<Item English_Text = "Ditto database (*.db)|*.db|All files (*.*)|*.*||" ID = "DittoDatabaseFilter">Database di Ditto (*.db)|*.db|Tutti i file (*.*)|*.*||</Item>
+		<Item English_Text = "Bulb could not read that file." ID = "ImportDittoCannotRead">Bulb non è riuscito a leggere quel file.\n\n%s</Item>
+		<Item English_Text = "That file is not a Ditto database." ID = "ImportDittoNotDitto">Quel file non è un database di Ditto.</Item>
+		<Item English_Text = "Ditto has %d groups. Convert them to tags while importing?" ID = "ImportDittoGroups">Ditto ha %d gruppi. Convertirli in tag durante l'importazione?\n\nOgni clip riceve un tag con il nome del suo gruppo. I gruppi vengono importati in ogni caso.</Item>
+		<Item English_Text = "Imported %d clips from Ditto." ID = "ImportDittoDone">Importate %d clip da Ditto.</Item>
+		<Item English_Text = "%d clips were already in Bulb and were skipped." ID = "ImportDittoSkipped">%d clip erano già in Bulb e sono state saltate.</Item>
+		<Item English_Text = "%d clips were tagged with their group's name." ID = "ImportDittoTagged">%d clip hanno ricevuto un tag con il nome del loro gruppo.</Item>
+		<Item English_Text = "The import failed, and nothing was added to Bulb." ID = "ImportDittoFailed">L'importazione non è riuscita e a Bulb non è stato aggiunto nulla.\n\n%s</Item>
 	</Ditto_String_Table>
 	<Ditto_Options_Sheet>
 		<Item English_Text = "OK" ID = "1">OK</Item>
