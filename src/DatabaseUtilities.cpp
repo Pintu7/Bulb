@@ -8,7 +8,7 @@
 #include "ProcessPaste.h"
 #include <io.h>
 #include "Path.h"
-#include "zlib.h"
+#include "zlib/zlib.h"
 #include "..\Shared\TextConvert.h"
 #include "ClipTags.h"
 #include "BulbFolder.h"
@@ -254,6 +254,19 @@ CString CurrentDatabasePath()
 	return g_currentDatabasePath;
 }
 
+std::recursive_mutex& DatabaseWriteLock()
+{
+	static std::recursive_mutex lock;
+	return lock;
+}
+
+static CString g_importCopyPath;
+
+CString DittoImportCopyPath()
+{
+	return g_importCopyPath;
+}
+
 BOOL OpenDatabase(CString dbPath)
 {
 	try
@@ -279,6 +292,15 @@ BOOL OpenDatabase(CString dbPath)
 		}
 		theApp.m_db.open(dbPath);
 		g_currentDatabasePath = dbPath;
+
+		// A portable Bulb's database path is just a file name, so the folder is resolved once, now, while the current
+		// folder is the one the database was opened from (a file dialog can change it later).
+		TCHAR fullPath[MAX_PATH] = { 0 };
+		GetFullPathName(dbPath, MAX_PATH, fullPath, NULL);
+		g_importCopyPath = GetFilePath(fullPath) + _T("Ditto-import.tmp");
+
+		// an import that never finished (Bulb closed half way) leaves its copy of Ditto's history behind
+		DeleteFile(g_importCopyPath);
 
 		theApp.m_db.setBusyTimeout(CGetSetOptions::GetDbTimeout());
 		theApp.m_db.SetRegexCaseInsensitive(CGetSetOptions::GetRegexCaseInsensitive());

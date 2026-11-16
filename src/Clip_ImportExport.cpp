@@ -2,7 +2,8 @@
 #include "CP_Main.h"
 #include ".\clip_importexport.h"
 #include "sqlite/CppSQLite3.h"
-#include "zlib.h"
+#include "zlib/zlib.h"
+#include "ZipBounds.h"
 #include "Misc.h"
 #include <basetsd.h>
 #include <minwindef.h>
@@ -11,7 +12,7 @@
 #include <WinUser.h>
 #include <afx.h>
 #include <afxstr.h>
-#include <zconf.h>
+#include "zlib/zconf.h"
 #include "Clip.h"
 
 #define CURRENT_EXPORT_VERSION 1
@@ -245,6 +246,11 @@ bool CClip_ImportExport::ImportFromSqliteV1(CppSQLite3DB& db, CppSQLite3Query& q
 
 			int nDataLen = 0;
 			const unsigned char* cData = qData.getBlobField(_T("ooData"), nDataLen);
+			if (cData != NULL && ZipBounds::Plausible(lOriginalSize, nDataLen) == false)
+			{
+				Log(StrF(_T("Skipping a format that claims %d bytes from %d compressed bytes"), lOriginalSize, nDataLen));
+				cData = NULL;
+			}
 			if (cData != NULL)
 			{
 				Bytef* pUnZippedData = new Bytef[lOriginalSize];

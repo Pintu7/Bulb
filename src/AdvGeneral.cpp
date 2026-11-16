@@ -148,12 +148,10 @@ END_MESSAGE_MAP()
 #define SETTING_TEXT_EDITOR_PATH 98
 #define SETTING_RTF_EDITOR_PATH 99
 #define SETTING_UPDATE_DESC_ON_CLIP_EDIT 100
-#define SETTING_QR_CODE_URL 101
 #define SETTING_USE_UTF8_FOR_DIFF 103
 #define SETTING_IMAGE_EDITOR_PATH 104
 #define SETTING_CLIP_EDIT_SAVE_DELAY_AFTER_LOAD 105
 #define SETTING_ClIP_EDIT_SAVE_DELAY_AFTER_SAVE 106
-#define SETTING_WEB_SEARCH_URL 107
 #define SETTING_DO_NOT_HIDE_ON_DEACTIVATE 108
 #define SETTING_HIDE_TASKBAR_ICON_ON_CLOSE 109
 #define SETTING_USE_MODERN_SCROLLBAR 110
@@ -263,7 +261,6 @@ BOOL CAdvGeneral::OnInitDialog()
 
 	AddTrueFalse(pGroupTest, _T("Open to group same as active exe"), CGetSetOptions::GetOpenToGroupByActiveExe(), SETTING_OPEN_TO_GROUP_AS_ACTIVE_EXE);
 
-	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("QRCode Url"), CGetSetOptions::GetQRCodeUrl(), _T(""), SETTING_QR_CODE_URL));
 
 	static TCHAR BASED_CODE szFilter[] = _T("Sounds(*.wav)|*.wav||");
 	CMFCPropertyGridFileProperty* pFileProp = new CMFCPropertyGridFileProperty(_T("On copy play the sound"), TRUE, CGetSetOptions::GetPlaySoundOnCopy(), _T("wav"), 0, szFilter, (LPCTSTR)0, SETTING_COPY_PLAY_SOUND);
@@ -324,7 +321,6 @@ BOOL CAdvGeneral::OnInitDialog()
 	AddTrueFalse(pGroupTest, _T("Update clip order on paste"), CGetSetOptions::GetUpdateTimeOnPaste(), SETTING_UPDATE_ORDER_ON_PASTE);
 	AddTrueFalse(pGroupTest, _T("Update clip Order on ctrl-c"), CGetSetOptions::GetUpdateClipOrderOnCtrlC(), SETTING_UPDATE_ORDER_ON_CTRL_C);
 
-	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Web Search Url"), CGetSetOptions::GetWebSearchUrl(), _T(""), SETTING_WEB_SEARCH_URL));
 
 	AddTrueFalse(pGroupTest, _T("Write debug to file"), CGetSetOptions::GetEnableDebugLogging(), SETTING_DEBUG_TO_FILE);
 	AddTrueFalse(pGroupTest, _T("Write debug to OutputDebugString"), CGetSetOptions::GetEnableDebugLogging(), SETTING_DEBUG_TO_OUTPUT_STRING);
@@ -904,12 +900,6 @@ void CAdvGeneral::OnBnClickedOk()
 					CGetSetOptions::SetUpdateDescWhenSavingClip(val);
 				}
 				break;
-			case SETTING_QR_CODE_URL:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					CGetSetOptions::SetQRCodeUrl(pNewValue->bstrVal);
-				}
-				break;
 			case SETTING_USE_UTF8_FOR_DIFF:
 				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
 				{
@@ -927,12 +917,6 @@ void CAdvGeneral::OnBnClickedOk()
 				if (pNewValue->lVal != pOrigValue->lVal)
 				{
 					CGetSetOptions::SetClipEditSaveDelayAfterSaveSeconds(pNewValue->lVal);
-				}
-				break;
-			case SETTING_WEB_SEARCH_URL:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					CGetSetOptions::SetWebSearchUrl(pNewValue->bstrVal);
 				}
 				break;
 			case SETTING_DO_NOT_HIDE_ON_DEACTIVATE:

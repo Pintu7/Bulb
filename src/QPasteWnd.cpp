@@ -29,7 +29,6 @@
 #include "Path.h"
 #include "ProcessPaste.h"
 #include "QPasteWnd.h"
-#include "SendMail.h"
 #include <algorithm>
 #include <signal.h>
 #include "CreateQRCodeImage.h"
@@ -266,8 +265,6 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_MESSAGE(NM_DELETE_ID, OnDeleteId)
 	ON_COMMAND(ID_MENU_REGULAREXPRESSIONSEARCH, &CQPasteWnd::OnMenuRegularexpressionsearch)
 
-	ON_COMMAND(ID_IMPORT_EXPORTTOGOOGLETRANSLATE, &CQPasteWnd::OnImportExporttogoogletranslate)
-	ON_UPDATE_COMMAND_UI(ID_IMPORT_EXPORTTOGOOGLETRANSLATE, &CQPasteWnd::OnUpdateImportExporttogoogletranslate)
 	ON_COMMAND(ID_IMPORT_EXPORTCLIP_BITMAP, &CQPasteWnd::OnImportExportclipBitmap)
 	ON_UPDATE_COMMAND_UI(ID_IMPORT_EXPORTCLIP_BITMAP, &CQPasteWnd::OnUpdateImportExportclipBitmap)
 
@@ -361,16 +358,8 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 	ON_UPDATE_COMMAND_UI(ID_TRANSPARENCY_35, &CQPasteWnd::OnUpdateTransparency35)
 	ON_UPDATE_COMMAND_UI(ID_MENU_TRANSPARENCY_40, &CQPasteWnd::OnUpdateTransparency40)
 	ON_COMMAND(ID_TRANSPARENCY_35, &CQPasteWnd::OnTransparency35)
-	ON_COMMAND(ID_IMPORT_EMAILTO, &CQPasteWnd::OnImportEmailto)
-	ON_UPDATE_COMMAND_UI(ID_IMPORT_EMAILTO, &CQPasteWnd::OnUpdateImportEmailto)
-	ON_COMMAND(ID_IMPORT_GMAIL, &CQPasteWnd::OnImportGmail)
-	ON_UPDATE_COMMAND_UI(ID_IMPORT_GMAIL, &CQPasteWnd::OnUpdateImportGmail)
-	ON_COMMAND(ID_IMPORT_EMAILTOASATTACHMENT, &CQPasteWnd::OnImportEmailtoasattachment)
-	ON_UPDATE_COMMAND_UI(ID_IMPORT_EMAILTOASATTACHMENT, &CQPasteWnd::OnUpdateImportEmailtoasattachment)
 	ON_COMMAND(ID_SPECIALPASTE_SLUGIFY, &CQPasteWnd::OnSpecialpasteSlugify)
 	ON_UPDATE_COMMAND_UI(ID_SPECIALPASTE_SLUGIFY, &CQPasteWnd::OnUpdateSpecialpasteSlugify)
-	ON_COMMAND(ID_IMPORT_EMAIL_CONTENT_ATTACH, &CQPasteWnd::OnImportEmailContentAttach)
-	ON_UPDATE_COMMAND_UI(ID_IMPORT_EMAIL_CONTENT_ATTACH, &CQPasteWnd::OnUpdateImportEmailContentAttach)
 	ON_COMMAND(ID_SPECIALPASTE_TOGGLECASE, &CQPasteWnd::OnSpecialpasteTogglecase)
 	ON_UPDATE_COMMAND_UI(ID_SPECIALPASTE_TOGGLECASE, &CQPasteWnd::OnUpdateSpecialpasteTogglecase)
 	ON_COMMAND(ID_FIRST_SHOWSTARTUPMESSAGE, &CQPasteWnd::OnFirstShowstartupmessage)
@@ -392,8 +381,6 @@ BEGIN_MESSAGE_MAP(CQPasteWnd, CWndEx)
 
 	ON_COMMAND(ID_SPECIALPASTE_ASCIITEXTONLY, &CQPasteWnd::OnSpecialpasteAsciitextonly)
 	ON_UPDATE_COMMAND_UI(ID_SPECIALPASTE_ASCIITEXTONLY, &CQPasteWnd::OnUpdateSpecialpasteAsciitextonly)
-		ON_COMMAND(ID_IMPORT_EXPORTTOWEBSEARCH, &CQPasteWnd::OnImportExporttowebsearch)
-		ON_UPDATE_COMMAND_UI(ID_IMPORT_EXPORTTOWEBSEARCH, &CQPasteWnd::OnUpdateImportExporttowebsearch)
 		ON_COMMAND(ID_SPECIALPASTE_PASTENEWGUID, &CQPasteWnd::OnSpecialpastePastenewguid)
 		ON_UPDATE_COMMAND_UI(ID_SPECIALPASTE_PASTENEWGUID, &CQPasteWnd::OnUpdateSpecialpastePastenewguid)
 		ON_COMMAND(ID_SPECIALPASTE_PASTEASIMAGE, &CQPasteWnd::OnSpecialpastePasteAsImage)
@@ -3680,9 +3667,6 @@ bool CQPasteWnd::DoAction(CAccel a)
 	case ActionEnums::EXPORT_TO_QR_CODE:
 		ret = DoExportToQRCode();
 		break;
-	case ActionEnums::EXPORT_TO_GOOGLE_TRANSLATE:
-		ret = DoExportToGoogleTranslate();
-		break;
 	case ActionEnums::EXPORT_TO_BITMAP_FILE:
 		ret = DoExportToBitMapFile();
 		break;
@@ -3893,18 +3877,6 @@ bool CQPasteWnd::DoAction(CAccel a)
 	case ActionEnums::TRANSPARENCY_DECREASE:
 		DoActionDecreaseTransparency();
 		break;
-	case ActionEnums::EMAILTO_BODY:
-		DoActionEmailTo();
-		break;
-	case ActionEnums::GMAIL:
-		DoActionGmail();
-		break;
-	case ActionEnums::EMAILTO_ATTACH_EXPORT:
-		DoActionEmailToAttachExport();
-		break;
-	case ActionEnums::EMAILTO_ATTACH_CONTENT:
-		DoActionEmailToAttachContent();
-		break;
 	case ActionEnums::SLUGIFY:
 		DoActionSlugify();
 		break;
@@ -3932,9 +3904,6 @@ bool CQPasteWnd::DoAction(CAccel a)
 		break;
 	case ActionEnums::ASCII_TEXT_ONLY:
 		ret = DoPasteAsciiOnly();
-		break;
-	case ActionEnums::EXPORT_TO_WEB_SEARCH:
-		ret = DoExportToWebSearch();
 		break;
 	case ActionEnums::GENERATE_GUID:
 		ret = DoActionGenerateGuid();
@@ -4882,155 +4851,27 @@ bool CQPasteWnd::DoExportToQRCode()
 			{
 				CString clipText = clip.GetUnicodeTextFormat();
 
-				CString qrCodeUrl = CGetSetOptions::GetQRCodeUrl();
-				if (qrCodeUrl != "")
+				CCreateQRCodeImage p;
+				int imageSize = 0;
+				unsigned char* bitmapData = p.CreateImage(clipText, imageSize);
+
+				if (bitmapData != NULL)
 				{
-					CString clipTextUrlEncoded = InternetEncode(clipText);
+					QRCodeViewer* viewer = new QRCodeViewer();
 
-					CString url = StrF(_T("%s%s"), qrCodeUrl, clipTextUrlEncoded);
+					LOGFONT lf;
+					CGetSetOptions::GetFont(lf);
 
-					Log(StrF(_T("Opening qr code url: %s"), url));
+					viewer->CreateEx(this, bitmapData, imageSize, clip.Description(), m_lstHeader.GetRowHeight(), lf);
+					viewer->ShowWindow(SW_SHOW);
 
-					if (!CGetSetOptions::m_bShowPersistent)
-					{
-						HideQPasteWindow(false, false);
-					}
-					else if (CGetSetOptions::GetAutoHide())
-					{
-						MinMaxWindow(FORCE_MIN);
-					}
-
-					CHyperLink::GotoURL(url, SW_SHOW);
-				}
-				else
-				{
-					CCreateQRCodeImage p;
-					int imageSize = 0;
-					unsigned char* bitmapData = p.CreateImage(clipText, imageSize);
-
-					if (bitmapData != NULL)
-					{
-						QRCodeViewer* viewer = new QRCodeViewer();
-
-						LOGFONT lf;
-						CGetSetOptions::GetFont(lf);
-
-						viewer->CreateEx(this, bitmapData, imageSize, clip.Description(), m_lstHeader.GetRowHeight(), lf);
-						viewer->ShowWindow(SW_SHOW);
-
-						ret = true;
-					}
+					ret = true;
 				}
 			}
 		}
 	}
 
 	return ret;
-}
-
-bool CQPasteWnd::DoExportToGoogleTranslate()
-{
-	bool ret = false;
-
-	ARRAY IDs;
-	m_lstHeader.GetSelectionItemData(IDs);
-
-	if (IDs.GetCount() > 0)
-	{
-		int id = IDs[0];
-		CClip clip;
-		if (clip.LoadMainTable(id))
-		{
-			if (clip.LoadFormats(id, true))
-			{
-				CString clipText = clip.GetUnicodeTextFormat();
-				if (clipText == _T(""))
-				{
-					CStringA aText = clip.GetCFTextTextFormat();
-					if (aText != _T(""))
-					{
-						clipText = CTextConvert::AnsiToUnicode(aText);
-					}
-				}
-
-				if (clipText != _T(""))
-				{
-					CString clipTextUrlEncoded = InternetEncode(clipText);
-
-					CString url;
-					url.Format(CGetSetOptions::GetTranslateUrl(), clipTextUrlEncoded);
-
-					if (!CGetSetOptions::m_bShowPersistent)
-					{
-						HideQPasteWindow(false, false);
-					}
-					else if (CGetSetOptions::GetAutoHide())
-					{
-						MinMaxWindow(FORCE_MIN);
-					}
-
-					CHyperLink::GotoURL(url, SW_SHOW);
-
-					ret = true;
-				}
-			}
-		}
-	}
-
-	return true;
-}
-
-bool CQPasteWnd::DoExportToWebSearch()
-{
-	bool ret = false;
-
-	ARRAY IDs;
-	m_lstHeader.GetSelectionItemData(IDs);
-
-	if (IDs.GetCount() > 0)
-	{
-		int id = IDs[0];
-		CClip clip;
-		if (clip.LoadMainTable(id))
-		{
-			if (clip.LoadFormats(id, true))
-			{
-				CString clipText = clip.GetUnicodeTextFormat();
-				if (clipText == _T(""))
-				{
-					CStringA aText = clip.GetCFTextTextFormat();
-					if (aText != _T(""))
-					{
-						clipText = CTextConvert::AnsiToUnicode(aText);
-					}
-				}
-
-				if (clipText != _T(""))
-				{
-					CString clipTextUrlEncoded = InternetEncode(clipText);
-
-					CString url;
-
-					url.Format(CGetSetOptions::GetWebSearchUrl(), clipTextUrlEncoded);
-
-					if (!CGetSetOptions::m_bShowPersistent)
-					{
-						HideQPasteWindow(false, false);
-					}
-					else if (CGetSetOptions::GetAutoHide())
-					{
-						MinMaxWindow(FORCE_MIN);
-					}
-
-					CHyperLink::GotoURL(url, SW_SHOW);
-
-					ret = true;
-				}
-			}
-		}
-	}
-
-	return true;
 }
 
 bool CQPasteWnd::DoActionGenerateGuid()
@@ -7374,21 +7215,6 @@ void CQPasteWnd::OnMenuRegularexpressionsearch()
 }
 
 
-void CQPasteWnd::OnImportExporttogoogletranslate()
-{
-	DoAction(ActionEnums::EXPORT_TO_GOOGLE_TRANSLATE);
-}
-
-void CQPasteWnd::OnUpdateImportExporttogoogletranslate(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::EXPORT_TO_GOOGLE_TRANSLATE);
-}
-
 
 void CQPasteWnd::OnImportExportclipBitmap()
 {
@@ -8516,197 +8342,6 @@ bool CQPasteWnd::DoActionDecreaseTransparency()
 	return true;
 }
 
-bool CQPasteWnd::DoActionEmailTo()
-{
-	CWaitCursor wait;
-
-	CClipIDs IDs;
-	m_lstHeader.GetSelectionItemData(IDs);
-
-	CClip clip;
-
-	if (IDs.GetCount() > 1)
-	{
-		CStringA SepA = CTextConvert::UnicodeToAnsi(CGetSetOptions::GetMultiPasteSeparator());
-		CStringW SepW = CGetSetOptions::GetMultiPasteSeparator();
-
-		CHTMLFormatAggregator Html(SepA);
-		if (IDs.AggregateData(Html, theApp.m_HTML_Format, CGetSetOptions::m_bMultiPasteReverse, false))
-		{
-			CClipFormat cf(theApp.m_HTML_Format, Html.GetHGlobal());
-			clip.m_Formats.Add(cf);
-			//clip.m_Formats now owns the global data
-			cf.m_autoDeleteData = false;
-		}
-
-		CCF_UnicodeTextAggregator CFUnicodeText(SepW);
-		if (IDs.AggregateData(CFUnicodeText, CF_UNICODETEXT, CGetSetOptions::m_bMultiPasteReverse, false))
-		{
-			CClipFormat cf(CF_UNICODETEXT, CFUnicodeText.GetHGlobal());
-			clip.m_Formats.Add(cf);
-			//clip.m_Formats now owns the global data
-			cf.m_autoDeleteData = false;
-		}
-		else
-		{
-
-			CCF_TextAggregator CFText(SepA);
-			if (IDs.AggregateData(CFText, CF_TEXT, CGetSetOptions::m_bMultiPasteReverse, false))
-			{
-				CClipFormat cf(CF_TEXT, CFText.GetHGlobal());
-				clip.m_Formats.Add(cf);
-				//clip.m_Formats now owns the global data
-				cf.m_autoDeleteData = false;
-			}
-		}
-	}
-	else
-	{
-		clip.LoadFormats(IDs[0], false, false);
-	}
-
-	CString path = CGetSetOptions::GetPath(PATH_DRAG_FILES);
-	CreateDirectory(path, NULL);
-	int dragId = CGetSetOptions::GetDragId();
-	int origDragId = dragId;
-
-	CString subject;
-	CString body;
-	CString attachment;
-
-	CClipFormat* html = clip.m_Formats.FindFormat(theApp.m_HTML_Format);
-	if (html != NULL)
-	{
-		CString file;
-		file.Format(_T("%shtml_%d.html"), path, dragId++);
-
-		clip.WriteTextToHtmlFile(file);
-
-		attachment = file;
-	}
-	else
-	{
-		CString text = clip.GetUnicodeTextFormat();
-		if (text == _T(""))
-		{
-			text = clip.GetCFTextTextFormat();
-		}
-
-		if (text != _T(""))
-		{
-			body = text;
-			subject = text.Left(30);
-		}
-		else
-		{
-			CClipFormat* png = NULL;
-			CClipFormat* dib = clip.m_Formats.FindFormat(CF_DIB);
-			if (dib == NULL)
-			{
-				png = clip.m_Formats.FindFormat(theApp.m_PNG_Format);
-			}
-
-			if (png != NULL ||
-				dib != NULL)
-			{
-				CString file;
-				file.Format(_T("%simage_%d.png"), path, dragId++);
-
-				clip.WriteImageToFile(file);
-
-				CString fileWrapper;
-				fileWrapper.Format(_T("%shtml_%d.html"), path, dragId++);
-
-				CFile f;
-				if (f.Open(fileWrapper, CFile::modeWrite | CFile::modeCreate))
-				{
-					CString html;
-					html.Format(_T("<html><img src=\"%s\"></html>"), file);
-
-					CStringA convToUtf8 = CTextConvert::UnicodeToUTF8(html);
-					f.Write(convToUtf8.GetBuffer(), convToUtf8.GetLength());
-
-					f.Close();
-				}
-
-				attachment = fileWrapper;
-			}
-		}
-	}
-
-	if (subject != _T("") ||
-		body != _T("") ||
-		attachment != _T(""))
-	{
-		SendMail::Send(subject, body, attachment);
-	}
-
-	if (dragId != origDragId)
-	{
-		CGetSetOptions::SetDragId(dragId);
-	}
-
-	return true;
-}
-
-bool CQPasteWnd::DoActionGmail()
-{
-	CWaitCursor wait;
-
-	CClipIDs IDs;
-	m_lstHeader.GetSelectionItemData(IDs);
-
-	CClip clip;
-
-	if (IDs.GetCount() > 1)
-	{
-		CStringW SepW = CGetSetOptions::GetMultiPasteSeparator();
-		CCF_UnicodeTextAggregator CFUnicodeText(SepW);
-		if (IDs.AggregateData(CFUnicodeText, CF_UNICODETEXT, CGetSetOptions::m_bMultiPasteReverse, false))
-		{
-			CClipFormat cf(CF_UNICODETEXT, CFUnicodeText.GetHGlobal());
-			clip.m_Formats.Add(cf);
-			//clip.m_Formats now owns the global data
-			cf.m_autoDeleteData = false;
-		}
-		else
-		{
-			CStringA SepA = CTextConvert::UnicodeToAnsi(CGetSetOptions::GetMultiPasteSeparator());
-			CCF_TextAggregator CFText(SepA);
-			if (IDs.AggregateData(CFText, CF_TEXT, CGetSetOptions::m_bMultiPasteReverse, false))
-			{
-				CClipFormat cf(CF_TEXT, CFText.GetHGlobal());
-				clip.m_Formats.Add(cf);
-				//clip.m_Formats now owns the global data
-				cf.m_autoDeleteData = false;
-			}
-		}
-	}
-	else
-	{
-		clip.LoadFormats(IDs[0], true, false);
-	}
-
-	CString text = clip.GetUnicodeTextFormat();
-	if (text == _T(""))
-	{
-		text = clip.GetCFTextTextFormat();
-	}
-
-	if (text != _T(""))
-	{
-		CString link;
-		text.Replace(_T("\r\n"), _T("%0D%0A"));
-		CString en = InternetEncode(text);
-
-		link.Format(_T("https://mail.google.com/mail/u/0/?view=cm&body=%s"), en);
-
-		CHyperLink::GotoURL(link, SW_SHOW);
-	}
-
-	return true;
-}
-
 void CQPasteWnd::RefreshScrollBarColors()
 {
 	m_modernScrollBar.SetColors(
@@ -8733,106 +8368,6 @@ void CQPasteWnd::RefreshThemeColors()
 	// Force repaint of the entire window including non-client area
 	SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 	RedrawWindow(NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN | RDW_FRAME);
-}
-
-bool CQPasteWnd::DoActionEmailToAttachExport()
-{
-	CWaitCursor wait;
-
-	CClipIDs IDs;
-	m_lstHeader.GetSelectionItemData(IDs);
-
-	CString path = CGetSetOptions::GetPath(PATH_DRAG_FILES);
-	CreateDirectory(path, NULL);
-	int dragId = CGetSetOptions::GetDragId();
-	int origDragId = dragId;
-
-	CString file;
-	file.Format(_T("%sexport_%d.dto"), path, dragId++);
-
-	IDs.Export(file);
-
-	SendMail::Send(_T(""), _T(""), file);
-
-	return true;
-}
-
-bool CQPasteWnd::DoActionEmailToAttachContent()
-{
-	CString path = CGetSetOptions::GetPath(PATH_DRAG_FILES);
-	CreateDirectory(path, NULL);
-
-	CClipIDs clipIds;
-	m_lstHeader.GetSelectionItemData(clipIds);
-
-	int dragId = CGetSetOptions::GetDragId();
-	int origDragId = dragId;
-
-	CStringArray fileList;
-
-	for (int i = 0; i < clipIds.GetCount(); i++)
-	{
-		CClip fileClip;
-		fileClip.LoadFormats(clipIds[i]);
-
-		CClipFormat* unicodeText = fileClip.m_Formats.FindFormat(CF_UNICODETEXT);
-		if (unicodeText)
-		{
-			CString file;
-			file.Format(_T("%stext_%d.txt"), path, dragId++);
-
-			fileClip.WriteTextToFile(file, TRUE, FALSE, FALSE);
-			fileList.Add(file);
-		}
-		else
-		{
-			CClipFormat* asciiText = fileClip.m_Formats.FindFormat(CF_TEXT);
-			if (asciiText)
-			{
-				CString file;
-				file.Format(_T("%stext_%d.txt"), path, dragId++);
-
-				fileClip.WriteTextToFile(file, FALSE, TRUE, FALSE);
-				fileList.Add(file);
-			}
-			else
-			{
-				CClipFormat* png = NULL;
-				CClipFormat* bitmap = fileClip.m_Formats.FindFormat(CF_DIB);
-				if (bitmap == NULL)
-				{
-					png = fileClip.m_Formats.FindFormat(theApp.m_PNG_Format);
-				}
-
-				if (bitmap != NULL ||
-					png != NULL)
-				{
-					CString file;
-					file.Format(_T("%simage_%d.png"), path, dragId++);
-
-					if (fileClip.WriteImageToFile(file))
-					{
-						fileList.Add(file);
-					}
-				}
-			}
-		}
-
-		//couldn't get SendMail::Send to support multiple files
-		break;
-	}
-
-	if (fileList.GetCount() > 0)
-	{
-		SendMail::Send(_T(""), _T(""), fileList[0]);
-	}
-
-	if (dragId != origDragId)
-	{
-		CGetSetOptions::SetDragId(dragId);
-	}
-
-	return true;
 }
 
 bool CQPasteWnd::DoActionSlugify()
@@ -9006,54 +8541,9 @@ void CQPasteWnd::OnUpdateTransparencyToggle(CCmdUI* pCmdUI)
 	UpdateMenuShortCut(pCmdUI, ActionEnums::TRANSPARENCY_TOGGLE);
 }
 
-void CQPasteWnd::OnImportEmailto()
-{
-	DoAction(ActionEnums::EMAILTO_BODY);
-}
-
-void CQPasteWnd::OnUpdateImportEmailto(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::EMAILTO_BODY);
-}
 
 
-void CQPasteWnd::OnImportGmail()
-{
-	DoAction(ActionEnums::GMAIL);
-}
 
-
-void CQPasteWnd::OnUpdateImportGmail(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::GMAIL);
-}
-
-
-void CQPasteWnd::OnImportEmailtoasattachment()
-{
-	DoAction(ActionEnums::EMAILTO_ATTACH_EXPORT);
-}
-
-
-void CQPasteWnd::OnUpdateImportEmailtoasattachment(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::EMAILTO_ATTACH_EXPORT);
-}
 
 
 void CQPasteWnd::OnSpecialpasteSlugify()
@@ -9072,21 +8562,6 @@ void CQPasteWnd::OnUpdateSpecialpasteSlugify(CCmdUI* pCmdUI)
 }
 
 
-void CQPasteWnd::OnImportEmailContentAttach()
-{
-	DoAction(ActionEnums::EMAILTO_ATTACH_CONTENT);
-}
-
-
-void CQPasteWnd::OnUpdateImportEmailContentAttach(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::EMAILTO_ATTACH_CONTENT);
-}
 
 
 void CQPasteWnd::OnSpecialpasteTogglecase()
@@ -9212,21 +8687,6 @@ void CQPasteWnd::OnUpdateSpecialpasteAsciitextonly(CCmdUI* pCmdUI)
 	}
 
 	UpdateMenuShortCut(pCmdUI, ActionEnums::ASCII_TEXT_ONLY);
-}
-
-void CQPasteWnd::OnImportExporttowebsearch()
-{
-	DoAction(ActionEnums::EXPORT_TO_WEB_SEARCH);
-}
-
-void CQPasteWnd::OnUpdateImportExporttowebsearch(CCmdUI* pCmdUI)
-{
-	if (!pCmdUI->m_pMenu)
-	{
-		return;
-	}
-
-	UpdateMenuShortCut(pCmdUI, ActionEnums::EXPORT_TO_WEB_SEARCH);
 }
 
 void CQPasteWnd::OnSpecialpastePastenewguid()

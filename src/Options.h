@@ -472,10 +472,7 @@ public:
 	static BOOL GetRegExTextSearch();
 	static void SetRegExTextSearch(BOOL val);
 
-	static CString GetTranslateUrl();
 
-	static CString GetWebSearchUrl();
-	static void SetWebSearchUrl(CString val);
 
 
 
@@ -672,8 +669,6 @@ public:
 	static BOOL SetRTFEditorPath(CString path);
 	static CString GetRTFEditorPath();
 
-	static BOOL SetQRCodeUrl(CString path);
-	static CString GetQRCodeUrl();
 
 
 	static void SetPreferUtf8ForCompare(BOOL val);

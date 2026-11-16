@@ -9,7 +9,7 @@ Bulb is made by Andrea Rinaldi ([Pintu7](https://github.com/Pintu7)) and is not 
 I use Ditto every day and wanted a version that fits the way I work:
 
 - a clipboard manager that looks at home on Windows 11;
-- tags instead of groups, so a clip can belong to more than one place;
+- tags next to Ditto's groups, so a clip can belong to more than one place;
 - a way to type the clipboard into windows that refuse a paste, such as a remote session;
 - clips that are never deleted automatically because of what they contain.
 

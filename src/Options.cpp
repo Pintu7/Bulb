@@ -2255,29 +2255,6 @@ int CGetSetOptions::GetQRCodeBorderPixels()
 	return GetProfileLong(_T("QRCodeBorderPixels"), 30);
 }
 
-CString	CGetSetOptions::GetTranslateUrl()
-{
-	return GetProfileString(_T("TranslateUrl"), _T("https://translate.google.com/?text=%s"));
-}
-
-CString	CGetSetOptions::GetWebSearchUrl()
-{
-	CString default = _T("https://www.google.com/search?q=%s");
-	CString val = GetProfileString(_T("WebSearchUrl"), default);
-
-	if (val == _T(""))
-	{
-		val = default;
-	}
-
-	return val;
-}
-
-void CGetSetOptions::SetWebSearchUrl(CString val)
-{
-	SetProfileString(_T("WebSearchUrl"), val);
-}
-
 int CGetSetOptions::ReadRandomFileInterval()
 {
 	return GetProfileLong(_T("ReadRandomFileInterval"), 60);
@@ -2947,16 +2924,6 @@ BOOL CGetSetOptions::SetRTFEditorPath(CString path)
 CString CGetSetOptions::GetRTFEditorPath()
 {
 	return GetProfileString("RTFEditorPath", _T(""));
-}
-
-BOOL CGetSetOptions::SetQRCodeUrl(CString path)
-{
-	return SetProfileString("QRCodeUrl", path);
-}
-
-CString CGetSetOptions::GetQRCodeUrl()
-{
-	return GetProfileString("QRCodeUrl", _T(""));
 }
 
 void CGetSetOptions::SetPreferUtf8ForCompare(BOOL val)

@@ -148,7 +148,6 @@ __int64 GetLastWriteTime(const CString &csFile);
 #define WM_CLOSE_APP			WM_USER + 204
 #define WM_REFRESH_VIEW			WM_USER + 205
 #define WM_CLIPBOARD_COPIED		WM_USER + 206
-#define WM_SEND_RECIEVE_ERROR	WM_USER + 208
 #define WM_FOCUS_CHANGED		WM_USER + 209
 #define WM_CV_GETCONNECT		WM_USER + 211
 #define WM_EDIT_WND_CLOSING		WM_USER	+ 212
@@ -201,7 +200,6 @@ int FindNoCaseAndInsert(CString& mainStr, CString& findStr, CString preInsert, C
 
 void OnInitMenuPopupEx(CMenu *pPopupMenu, UINT nIndex, BOOL bSysMenu, CWnd *pWnd);
 
-CString InternetEncode(CString text);
 
 CString GetProcessName(HWND hWnd, DWORD processId = 0);
 

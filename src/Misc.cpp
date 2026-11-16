@@ -5,7 +5,6 @@
 #include "..\Shared\TextConvert.h"
 #include "AlphaBlend.h"
 #include "Tlhelp32.h"
-#include <Wininet.h> // only InternetCanonicalizeUrl, which encodes a string and sends nothing
 #include <sys/types.h>  
 #include <sys/stat.h> 
 #include "Path.h"
@@ -1420,41 +1419,6 @@ void OnInitMenuPopupEx(CMenu *pPopupMenu, UINT nIndex, BOOL bSysMenu, CWnd *pWnd
 		state.m_nIndexMax = nCount;
 	}
 } 
-
-CString InternetEncode(CString text)
-{
-	CString ret = _T("");
-	LPTSTR lpOutputBuffer = new TCHAR[1];
-	DWORD dwSize = 1;
-	BOOL fRes = ::InternetCanonicalizeUrl(text, lpOutputBuffer, &dwSize, ICU_BROWSER_MODE);
-	DWORD dwError = ::GetLastError();
-	if (!fRes && dwError == ERROR_INSUFFICIENT_BUFFER)
-	{
-		delete lpOutputBuffer;
-		lpOutputBuffer = new TCHAR[dwSize];
-		fRes = ::InternetCanonicalizeUrl(text, lpOutputBuffer, &dwSize, ICU_BROWSER_MODE);
-		if (fRes)
-		{
-			ret = lpOutputBuffer;
-			//lpOutputBuffer has decoded url
-		}
-		else
-		{
-			//failed to decode
-		}
-		if (lpOutputBuffer != NULL)
-		{
-			delete [] lpOutputBuffer;
-			lpOutputBuffer = NULL;
-		}
-	}
-	else
-	{
-		//some other error OR the input string url is just 1 char and was successfully decoded
-	}
-
-	return ret;
-}
 
 void DeleteParamFromRTF(CStringA &test, CStringA find, bool searchForTrailingDigits)
 {

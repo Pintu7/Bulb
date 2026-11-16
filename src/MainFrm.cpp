@@ -50,7 +50,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WM_SHOW_TRAY_ICON, OnShowTrayIcon)
 	ON_MESSAGE(WM_CLIPBOARD_COPIED, OnClipboardCopied)
 	ON_WM_CLOSE()
-	ON_MESSAGE(WM_SEND_RECIEVE_ERROR, OnErrorOnSendRecieve)
 	ON_MESSAGE(WM_SHOW_ERROR_MSG, OnErrorMsg)
 	ON_COMMAND(ID_FIRST_IMPORT, OnFirstImport)
 	ON_MESSAGE(WM_EDIT_WND_CLOSING, OnEditWndClose)
@@ -1276,15 +1275,6 @@ LRESULT CMainFrame::OnLoadClipOnClipboard(WPARAM wParam, LPARAM lParam)
 	delete pClip;
 
 	return TRUE;
-}
-
-LRESULT CMainFrame::OnErrorOnSendRecieve(WPARAM wParam, LPARAM lParam)
-{
-    CString csNewText = (TCHAR*)wParam;
-
-    ShowErrorMessage(_T("Bulb - Send/Receive Error"), csNewText);
-
-    return TRUE;
 }
 
 LRESULT CMainFrame::OnErrorMsg(WPARAM wParam, LPARAM lParam)

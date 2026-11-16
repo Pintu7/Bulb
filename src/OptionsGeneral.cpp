@@ -545,10 +545,9 @@ void COptionsGeneral::OnImportDitto()
 		return;
 	}
 
-	// Bulb reads a private copy, so Ditto's file is never written and Ditto can keep running
-	TCHAR temp[MAX_PATH] = { 0 };
-	GetTempPath(MAX_PATH, temp);
-	CString copy = CString(temp) + _T("Bulb-Ditto-import.db");
+	// Bulb reads a private copy, so Ditto's file is never written and Ditto can keep running.
+	// The copy sits beside Bulb's own database, so it is encrypted whenever that is.
+	CString copy = DittoImportCopyPath();
 	std::wstring error;
 	CString message;
 	if (DittoImport::Copy((LPCTSTR)dialog.GetPathName(), (LPCTSTR)copy, error) == false)
@@ -561,7 +560,12 @@ void COptionsGeneral::OnImportDitto()
 
 	try
 	{
-		int groups = DittoImport::CountGroups(theApp.m_db, (LPCTSTR)copy);
+		int groups = 0;
+		{
+			// attaching Ditto's copy must not land inside the saving of a clip copied right now
+			std::lock_guard<std::recursive_mutex> writing(DatabaseWriteLock());
+			groups = DittoImport::CountGroups(theApp.m_db, (LPCTSTR)copy);
+		}
 		if (groups < 0)
 		{
 			MessageBox(Text(_T("ImportDittoNotDitto"), _T("That file is not a Ditto database.")), _T("Bulb"), MB_OK | MB_ICONWARNING);
@@ -585,6 +589,7 @@ void COptionsGeneral::OnImportDitto()
 		DittoImport::Result result;
 		{
 			CWaitCursor wait;
+			std::lock_guard<std::recursive_mutex> writing(DatabaseWriteLock());
 			result = DittoImport::Import(theApp.m_db, (LPCTSTR)copy, toTags);
 		}
 		theApp.RefreshView();

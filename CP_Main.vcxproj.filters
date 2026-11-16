@@ -346,9 +346,6 @@
     <ClCompile Include="src\SendKeys.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SendMail.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ShowTaskBarIcon.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -411,6 +408,48 @@
     </ClCompile>
     <ClCompile Include="src\sqlite\CppSQLite3.cpp">
       <Filter>src\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\adler32.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\compress.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\crc32.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\deflate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\inffast.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\inflate.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\inftrees.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\trees.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\uncompr.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\zutil.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\gzclose.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\gzlib.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\gzread.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\zlib\gzwrite.c">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\sqlite\sqlite3mc_amalgamation.c">
       <Filter>src\sqlite</Filter>
@@ -869,9 +908,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\SendKeys.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SendMail.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ShowTaskBarIcon.h">
@@ -1484,7 +1520,6 @@
     <None Include="res\cursor_zoom_in.cur">
       <Filter>res</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="res">

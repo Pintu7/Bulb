@@ -11,6 +11,7 @@
 
 #include "DittoPopupWindow.h"
 #include "sqlite/CppSQLite3.h"
+#include <mutex>
 
 #define DEFAULT_DB_NAME "Bulb.db"
 #define ERROR_OPENING_DATABASE	2
@@ -34,6 +35,13 @@ BOOL CreateDB(CString csPath);
 BOOL CompactDatabase();
 BOOL RepairDatabase();
 BOOL RemoveOldEntries(bool checkIdleTime);
+
+// Held while several statements are written as one unit on the shared connection (an import, saving a copied clip,
+// the clean-up of old clips), so one unit never lands inside another's transaction.
+std::recursive_mutex& DatabaseWriteLock();
+
+// Where an import keeps its private copy of Ditto's database: beside Bulb's own, so it is protected the same way.
+CString DittoImportCopyPath();
 BOOL DeleteNonUsedClips(bool fromAppWindow);
 
 BOOL EnsureDirectory(CString csPath);

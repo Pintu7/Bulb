@@ -76,6 +76,7 @@ void CMainFrmThread::OnReadDbFile()
 
 void CMainFrmThread::OnDeleteEntries()
 {
+	std::lock_guard<std::recursive_mutex> writing(DatabaseWriteLock());
     RemoveOldEntries(true);
 }
 
@@ -111,7 +112,11 @@ void CMainFrmThread::OnSaveClips()
 
 	Log(_T("SaveCopyClips Before AddToDb")); 
 
-	int count = pLocalClips->AddToDB(true);
+	int count = 0;
+	{
+		std::lock_guard<std::recursive_mutex> writing(DatabaseWriteLock());
+		count = pLocalClips->AddToDB(true);
+	}
 
 	Log(StrF(_T("SaveCopyclips After AddToDb, Count: %d"), count));
 

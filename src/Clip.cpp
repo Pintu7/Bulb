@@ -9,7 +9,7 @@
 #include "Crc32Dynamic.h"
 #include "sqlite\CppSQLite3.h"
 #include "..\Shared\TextConvert.h"
-#include "zlib.h"
+#include "zlib/zlib.h"
 #include "Misc.h"
 #include "Md5.h"
 #include "ChaiScriptOnCopy.h"

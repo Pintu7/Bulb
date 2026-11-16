@@ -45,8 +45,6 @@ void CMultiLanguage::ClearArrays()
 	ClearArray(m_OptionsShortcuts);
 	ClearArray(m_OptionsQuickPaste);
 	ClearArray(m_OptionsQuickPasteKeyboard);
-	ClearArray(m_OptionsFriends);
-	ClearArray(m_OptionsFriendsDetail);
 	ClearArray(m_OptionsStats);
 	ClearArray(m_OptionsSupportedTypesAdd);
 	ClearArray(m_MoveToGroups);
@@ -211,16 +209,6 @@ bool CMultiLanguage::UpdateOptionQuickPaste(CWnd *pParent)
 bool CMultiLanguage::UpdateOptionQuickPasteKeyboard(CWnd *pParent)
 {
 	return UpdateWindowToLanguage(pParent, m_OptionsQuickPasteKeyboard);
-}
-
-bool CMultiLanguage::UpdateOptionFriends(CWnd *pParent)
-{
-	return UpdateWindowToLanguage(pParent, m_OptionsFriends);
-}
-
-bool CMultiLanguage::UpdateOptionFriendsDetail(CWnd *pParent)
-{
-	return UpdateWindowToLanguage(pParent, m_OptionsFriendsDetail);
 }
 
 bool CMultiLanguage::UpdateOptionStats(CWnd *pParent)
@@ -403,8 +391,6 @@ bool CMultiLanguage::LoadLanguageFile(CString csFile)
 	bRet = LoadSection(*ItemHeader, m_OptionsShortcuts, "Ditto_Options_Shortcuts");
 	bRet = LoadSection(*ItemHeader, m_OptionsQuickPaste, "Ditto_Options_Quick_Paste");
 	bRet = LoadSection(*ItemHeader, m_OptionsQuickPasteKeyboard, "Ditto_Options_Quick_Paste_Keyboard");
-	bRet = LoadSection(*ItemHeader, m_OptionsFriends, "Ditto_Options_Friends");
-	bRet = LoadSection(*ItemHeader, m_OptionsFriendsDetail, "Ditto_Options_Friends_Detail");
 	bRet = LoadSection(*ItemHeader, m_OptionsStats, "Ditto_Options_Stats");
 	bRet = LoadSection(*ItemHeader, m_OptionsSupportedTypesAdd, "Ditto_Options_Supported_Types_Add");
 	bRet = LoadSection(*ItemHeader, m_MoveToGroups, "Ditto_Move_To_Groups");

@@ -45,6 +45,12 @@ namespace ClipTags
 		ensureColumn(_T("sourceApp"));
 		// the words read in an image clip (OCR), for search only: the clip's own description is never replaced
 		ensureColumn(_T("ocrText"));
+
+		// the first numbered schema: a later change compares this number instead of probing for tables and columns
+		if (db.execScalar(_T("PRAGMA user_version")) == 0)
+		{
+			db.execDML(_T("PRAGMA user_version = 1"));
+		}
 	}
 
 	std::vector<CString> Parse(const CString& text)
