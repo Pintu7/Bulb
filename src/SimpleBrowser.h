@@ -205,6 +205,7 @@ public:
     //{{AFX_VIRTUAL(SimpleBrowser)
 	public:
 	virtual void PostNcDestroy();
+	virtual BOOL OnAmbientProperty(COleControlSite* pSite, DISPID dispid, VARIANT* pvar);
 	//}}AFX_VIRTUAL
 
 protected:

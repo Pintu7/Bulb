@@ -5,7 +5,7 @@
 #include "..\Shared\TextConvert.h"
 #include "AlphaBlend.h"
 #include "Tlhelp32.h"
-#include <Wininet.h>
+#include <Wininet.h> // only InternetCanonicalizeUrl, which encodes a string and sends nothing
 #include <sys/types.h>  
 #include <sys/stat.h> 
 #include "Path.h"
@@ -13,32 +13,6 @@
 #include <vector>
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
-
-CString GetIPAddress()
-{
-	WORD wVersionRequested;
-    WSADATA wsaData;
-    char name[255];
-    CString IP;
-	PHOSTENT hostinfo;
-	wVersionRequested = MAKEWORD(2,0);
-	
-	if (WSAStartup(wVersionRequested, &wsaData)==0)
-	{
-		if(gethostname(name, sizeof(name))==0)
-		{
-			if((hostinfo=gethostbyname(name)) != NULL)
-			{
-				IP = inet_ntoa(*(struct in_addr*)* hostinfo->h_addr_list);
-			}
-		}
-		
-		WSACleanup();
-	} 
-	IP.MakeUpper();
-
-	return IP;
-}
 
 CString GetComputerName()
 {

@@ -28,25 +28,6 @@ void CMainFrmThread::AddClipToSave(CClip *pClip)
 	FireEvent(SAVE_CLIPS);
 }
 
-void CMainFrmThread::AddRemoteClipToSave(CClipList *pClipList)
-{
-	ATL::CCritSecLock csLock(m_cs.m_sect);
-
-	Log(_T("Adding REMOTE clip to thread for save to db"));
-	
-	POSITION pos = pClipList->GetHeadPosition();
-	while(pos)
-	{
-		CClip *pClip = pClipList->GetNext(pos);
-		m_saveRemoteClips.AddTail(pClip);
-	}
-
-	//local cliplist now owns the clip memory
-	pClipList->RemoveAll();
-	
-	FireEvent(SAVE_REMOTE_CLIPS);
-}
-
 void CMainFrmThread::OnEvent(int eventId, void *param)
 {
     switch((eCMainFrmThreadEvents)eventId)
@@ -59,9 +40,6 @@ void CMainFrmThread::OnEvent(int eventId, void *param)
             break;
 		case SAVE_CLIPS:
 			OnSaveClips();
-			break;
-		case SAVE_REMOTE_CLIPS:
-			OnSaveRemoteClips();
 			break;
 		case READ_DB_FILE:
 			OnReadDbFile();
@@ -162,78 +140,8 @@ void CMainFrmThread::OnSaveClips()
 
 			theApp.m_pMainFrame->PostMessageW(WM_SHOW_MSG_WINDOW, (WPARAM) pMsg, pLocalClips->GetTail()->m_parentId);
 		}
-	
-		if(CGetSetOptions::m_lAutoSendClientCount > 0)
-		{
-			m_sendToClientThread.FireSendToClient(pLocalClips);
-		}		
 	}
 
 	delete pLocalClips;
 }
 
-void CMainFrmThread::OnSaveRemoteClips()
-{
-	LogSendRecieveInfo("---------Start of OnSaveRemoteClips");
-
-	CClipList *pLocalClips = new CClipList();
-
-	//Save the clips locally
-	{
-		ATL::CCritSecLock csLock(m_cs.m_sect);
-
-		POSITION pos;
-		CClip* pClip;
-
-		pos = m_saveRemoteClips.GetHeadPosition();
-		while(pos)
-		{
-			pClip = m_saveRemoteClips.GetNext(pos);
-			pLocalClips->AddTail(pClip);
-		}
-
-		//pLocalClips now own, the clips
-		m_saveRemoteClips.RemoveAll();
-	}
-
-	LogSendRecieveInfo("---------OnSaveRemoteClips - Before AddToDB");
-
-	int count = pLocalClips->AddToDB(true);
-
-	LogSendRecieveInfo("---------OnSaveRemoteClips - After AddToDB");
-
-	//are we supposed to add this clip to the clipboard
-	CClip *pLastClip = pLocalClips->GetTail();
-	if (CGetSetOptions::GetShowMsgWhenReceivingManualSentClip())
-	{
-		if (pLastClip && (pLastClip->m_param1 & REMOTE_CLIP_MANUAL_SEND))
-		{
-			CString *pMsg = new CString();
-
-			//baloon message can only show 254 characters
-			pMsg->Format(_T("Received remote clip\r\n\r\n%s"), pLastClip->m_Desc.Left(225));
-
-			theApp.m_pMainFrame->PostMessageW(WM_SHOW_MSG_WINDOW, (WPARAM)pMsg, pLocalClips->GetTail()->m_parentId);
-		}
-	}
-
-	if(pLastClip && (pLastClip->m_param1 & REMOTE_CLIP_ADD_TO_CLIPBOARD))
-	{
-		LogSendRecieveInfo("---------OnSaveRemoteClips - Before Posting msg to main thread to set clipboard");
-
-		//set the clipboard on the main thread, i was having a problem with setting the clipboard on a thread
-		//guess it needs to be set on the main thread
-		//main window will clear this memory
-		PostMessage(theApp.m_MainhWnd, WM_LOAD_ClIP_ON_CLIPBOARD, (LPARAM)pLastClip, 0);
-
-		LogSendRecieveInfo("---------OnSaveRemoteClips - After Posting msg to main thread to set clipboard");
-
-		pLocalClips->RemoveTail();
-	}	
-
-	theApp.RefreshView();
-
-	delete pLocalClips;
-
-	LogSendRecieveInfo("---------End of OnSaveRemoteClips");
-}

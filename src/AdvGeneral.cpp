@@ -109,7 +109,6 @@ END_MESSAGE_MAP()
 #define SETTING_TOOLTIP_TIMEOUT 59
 #define SETTING_SELECTED_INDEX 60
 #define SETTING_CLIPBOARD_SAVE_DELAY 61
-#define SETTING_SHOW_MSG_WHEN_RECEIVING_MANUAL_SENT_CLIP 62
 #define SETTING_MULTIPASTE_REVERSE_ORDER 63
 #define SETTING_DEFAULT_PASTE_STRING 64
 #define SETTING_DEFAULT_COPY_STRING 65
@@ -134,11 +133,8 @@ END_MESSAGE_MAP()
 #define SETTING_MOVE_SELECTION_ON_OPEN_HOTKEY 80
 #define SETTING_ALOW_BACK_TO_BACK_DUPLICATES 81
 #define SETTING_MAINTAIN_SEARCH_VIEW 82
-#define SETTING_SEND_RECV_PORT 83
 #define SETTING_DEBUG_TO_FILE 84
 #define SETTING_DEBUG_TO_OUTPUT_STRING 85
-#define SETTING_NETWORK_BIND_IP_ADDRESS 86
-#define SETTING_DISABLE_FRIENDS 87
 #define SETTING_IGNORE_FALSE_COPIES_DELAY 88
 #define SETTING_REFRESH_VIEW_AFTER_PASTE 89
 #define SETTING_SLUGIFY_SEPARATOR 90
@@ -153,7 +149,6 @@ END_MESSAGE_MAP()
 #define SETTING_RTF_EDITOR_PATH 99
 #define SETTING_UPDATE_DESC_ON_CLIP_EDIT 100
 #define SETTING_QR_CODE_URL 101
-#define SETTING_APPEND_NAME_IP 102
 #define SETTING_USE_UTF8_FOR_DIFF 103
 #define SETTING_IMAGE_EDITOR_PATH 104
 #define SETTING_CLIP_EDIT_SAVE_DELAY_AFTER_LOAD 105
@@ -203,7 +198,6 @@ BOOL CAdvGeneral::OnInitDialog()
 
 	AddTrueFalse(pGroupTest, _T("Always show scroll bar"), CGetSetOptions::GetShowScrollBar(), SETTING_ALWAYS_SHOW_SCROLL_BAR);
 	AddTrueFalse(pGroupTest, _T("Use modern scroll bar"), CGetSetOptions::GetUseModernScrollBar(), SETTING_USE_MODERN_SCROLLBAR);
-	AddTrueFalse(pGroupTest, _T("Append Computer Name and IP when receiving clips"), CGetSetOptions::GetAppendRemoveComputerNameAndIPToDescription(), SETTING_APPEND_NAME_IP);
 
 	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Amount of text to save for description"), CGetSetOptions::m_bDescTextSize, _T(""), SETTING_DESC_SIZE));
 	AddTrueFalse(pGroupTest, _T("Center window below cursor or caret"), CGetSetOptions::GetCenterWindowBelowCursorOrCaret(), SETTING_CENTER_WINDOW_BELOW_CURSOR_CARET);
@@ -224,7 +218,6 @@ BOOL CAdvGeneral::OnInitDialog()
 
 	AddTrueFalse(pGroupTest, _T("Diff save compare files as utf8"), CGetSetOptions::GetPreferUtf8ForCompare(), SETTING_USE_UTF8_FOR_DIFF);
 
-	AddTrueFalse(pGroupTest, _T("Disable friends"), !CGetSetOptions::GetAllowFriends(), SETTING_DISABLE_FRIENDS);
 
 	AddTrueFalse(pGroupTest, _T("Display icon in system tray"), CGetSetOptions::GetShowIconInSysTray(), SETTING_SHOW_TASKBAR_ICON);
 
@@ -267,8 +260,6 @@ BOOL CAdvGeneral::OnInitDialog()
 
 	AddTrueFalse(pGroupTest, _T("Multi-paste in reverse order"), CGetSetOptions::m_bMultiPasteReverse, SETTING_MULTIPASTE_REVERSE_ORDER);
 
-	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Network send receive port (default: 23443)"), (long)CGetSetOptions::GetPort(), _T(""), SETTING_SEND_RECV_PORT));
-	pGroupTest->AddSubItem(new CMFCPropertyGridProperty(_T("Network server bind IP (default: *)"), CGetSetOptions::GetNetworkBindIPAddress(), _T(""), SETTING_NETWORK_BIND_IP_ADDRESS));
 
 	AddTrueFalse(pGroupTest, _T("Open to group same as active exe"), CGetSetOptions::GetOpenToGroupByActiveExe(), SETTING_OPEN_TO_GROUP_AS_ACTIVE_EXE);
 
@@ -311,7 +302,6 @@ BOOL CAdvGeneral::OnInitDialog()
 	AddTrueFalse(pGroupTest, _T("Hide taskbar icon when Bulb window closes"), CGetSetOptions::GetHideTaskbarIconOnClose(), SETTING_HIDE_TASKBAR_ICON_ON_CLOSE);
 	AddTrueFalse(pGroupTest, _T("Show indicator a clip has been pasted"), CGetSetOptions::GetShowIfClipWasPasted(), SETTING_SHOW_CLIP_PASTED);
 
-	AddTrueFalse(pGroupTest, _T("Show message that we received a manual sent clip"), CGetSetOptions::GetShowMsgWhenReceivingManualSentClip(), SETTING_SHOW_MSG_WHEN_RECEIVING_MANUAL_SENT_CLIP);	
 
 	AddTrueFalse(pGroupTest, _T("Show startup tooltip message"), CGetSetOptions::GetShowStartupMessage(), SETTING_SHOW_STARTUP_MESSAGE);
 
@@ -609,13 +599,6 @@ void CAdvGeneral::OnBnClickedOk()
 					CGetSetOptions::SetShowIfClipWasPasted(val);
 				}
 				break;
-			case SETTING_SHOW_MSG_WHEN_RECEIVING_MANUAL_SENT_CLIP:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					BOOL val = wcscmp(pNewValue->bstrVal, L"True") == 0;
-					CGetSetOptions::SetShowMsgWhenReceivingManualSentClip(val);
-				}
-				break;
 			case SETTING_DIFF_APP:
 				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
 				{
@@ -835,12 +818,6 @@ void CAdvGeneral::OnBnClickedOk()
 					CGetSetOptions::SetMaintainSearchView(val);
 				}
 				break;
-			case SETTING_SEND_RECV_PORT:
-				if (pNewValue->lVal != pOrigValue->lVal)
-				{
-					CGetSetOptions::SetPort(pNewValue->lVal);
-				}
-				break;
 			case SETTING_DEBUG_TO_FILE:
 				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
 				{
@@ -853,19 +830,6 @@ void CAdvGeneral::OnBnClickedOk()
 				{
 					BOOL val = wcscmp(pNewValue->bstrVal, L"True") == 0;
 					CGetSetOptions::SetEnableOutputDebugStringLogging(val);
-				}
-				break;
-			case SETTING_NETWORK_BIND_IP_ADDRESS:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					CGetSetOptions::SetNetworkBindIPAddress(pNewValue->bstrVal);
-				}
-				break;
-			case SETTING_DISABLE_FRIENDS:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					BOOL val = wcscmp(pNewValue->bstrVal, L"True") == 0;
-					CGetSetOptions::SetAllowFriends(!val);
 				}
 				break;
 			case SETTING_IGNORE_FALSE_COPIES_DELAY:
@@ -944,13 +908,6 @@ void CAdvGeneral::OnBnClickedOk()
 				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
 				{
 					CGetSetOptions::SetQRCodeUrl(pNewValue->bstrVal);
-				}
-				break;
-			case SETTING_APPEND_NAME_IP:
-				if (wcscmp(pNewValue->bstrVal, pOrigValue->bstrVal) != 0)
-				{
-					BOOL val = wcscmp(pNewValue->bstrVal, L"True") == 0;
-					CGetSetOptions::SetAppendRemoveComputerNameAndIPToDescription(val);
 				}
 				break;
 			case SETTING_USE_UTF8_FOR_DIFF:

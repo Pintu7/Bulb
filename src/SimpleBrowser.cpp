@@ -8,6 +8,7 @@
 #include "mshtmcid.h"
 #include "mshtmhst.h"
 #include "exdispid.h"
+#include "mshtmdid.h"
 
 #include "SimpleBrowser.h"
 
@@ -47,9 +48,25 @@ SimpleBrowser::~SimpleBrowser()
 	}
 }
 
+// The HTML engine asks its host what it may download and run. A clip's HTML comes from anywhere, so the answer
+// is nothing: no scripts, no ActiveX, no frames, and offline only. Leaving out DLCTL_DLIMAGES also stops images,
+// so showing a clip can never contact a web site.
+BOOL SimpleBrowser::OnAmbientProperty(COleControlSite* pSite, DISPID dispid, VARIANT* pvar)
+{
+	if (dispid == DISPID_AMBIENT_DLCONTROL)
+	{
+		V_VT(pvar) = VT_I4;
+		V_I4(pvar) = DLCTL_NO_SCRIPTS | DLCTL_NO_JAVA | DLCTL_NO_RUNACTIVEXCTLS | DLCTL_NO_DLACTIVEXCTLS
+			| DLCTL_NO_FRAMEDOWNLOAD | DLCTL_NO_CLIENTPULL | DLCTL_NO_BEHAVIORS | DLCTL_SILENT | DLCTL_FORCEOFFLINE;
+		return TRUE;
+	}
+
+	return CWnd::OnAmbientProperty(pSite, dispid, pvar);
+}
+
 // Standard create
 
-BOOL SimpleBrowser::Create(DWORD dwStyle, 
+BOOL SimpleBrowser::Create(DWORD dwStyle,
                            const RECT& rect, 
                            CWnd* pParentWnd, 
 						   UINT nID)

@@ -170,51 +170,6 @@ CString ActionEnums::EnumDescription(ActionEnumValues value)
 	case PASTE_TYPOGLYCEMIA:
 		val = "Paste Typoglycemia";
 		break;
-	case SEND_TO_FRIEND_1:
-		val = "Send to friend 1";
-		break;
-	case SEND_TO_FRIEND_2:
-		val = "Send to friend 2";
-		break;
-	case SEND_TO_FRIEND_3:
-		val = "Send to friend 3";
-		break;
-	case SEND_TO_FRIEND_4:
-		val = "Send to friend 4";
-		break;
-	case SEND_TO_FRIEND_5:
-		val = "Send to friend 5";
-		break;
-	case SEND_TO_FRIEND_6:
-		val = "Send to friend 6";
-		break;
-	case SEND_TO_FRIEND_7:
-		val = "Send to friend 7";
-		break;
-	case SEND_TO_FRIEND_8:
-		val = "Send to friend 8";
-		break;
-	case SEND_TO_FRIEND_9:
-		val = "Send to friend 9";
-		break;
-	case SEND_TO_FRIEND_10:
-		val = "Send to friend 10";
-		break;
-	case SEND_TO_FRIEND_11:
-		val = "Send to friend 11";
-		break;
-	case SEND_TO_FRIEND_12:
-		val = "Send to friend 12";
-		break;
-	case SEND_TO_FRIEND_13:
-		val = "Send to friend 13";
-		break;
-	case SEND_TO_FRIEND_14:
-		val = "Send to friend 14";
-		break;
-	case SEND_TO_FRIEND_15:
-		val = "Send to friend 15";
-		break;
 	case PASTE_POSITION_1:
 		val = "Paste Position 1";
 		break;
@@ -277,9 +232,6 @@ CString ActionEnums::EnumDescription(ActionEnumValues value)
 		break;
 	case REPLACE_TOP_STICKY_CLIP:
 		val = "Replace Top Sticky Clip";
-		break;
-	case PROMPT_SEND_TO_FRIEND:
-		val = "Prompt send to friend";
 		break;
 	case SAVE_CF_HDROP_FIlE_DATA:
 		val = "Save copied file (cf_hdrop) contents into Bulb";
@@ -597,6 +549,12 @@ bool ActionEnums::UserConfigurable(ActionEnumValues value)
 	case ActionEnums::TOGGLEOUTPUTDEBUGSTRING:
 	case ActionEnums::HOMELIST:
 	case ActionEnums::PASTE_SCRIPT:
+		return false;
+	}
+
+	// Bulb has no network: the old send-to-friend actions keep their numbers but can no longer be bound
+	if ((value >= ActionEnums::SEND_TO_FRIEND_1 && value <= ActionEnums::SEND_TO_FRIEND_15) || value == ActionEnums::PROMPT_SEND_TO_FRIEND)
+	{
 		return false;
 	}
 

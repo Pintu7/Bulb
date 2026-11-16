@@ -30,8 +30,6 @@ public:
 	CString	m_eSavedCopies;
 	CString	m_eSavedCopyData;
 	CString	m_eDatabaseSize;
-	CString	m_eClipsSent;
-	CString	m_eClipsRecieved;
 	CString	m_eLastStarted;
 	//}}AFX_DATA
 

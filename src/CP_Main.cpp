@@ -3,8 +3,6 @@
 #include "MainFrm.h"
 #include "Misc.h"
 #include ".\cp_main.h"
-#include "server.h"
-#include "Client.h"
 #include <io.h>
 #include "Path.h"
 #include "Clip_ImportExport.h"
@@ -158,20 +156,14 @@ CCP_MainApp::CCP_MainApp()
 	ClearOldGroupState();
 
 	m_bAsynchronousRefreshView = true;
-	m_lClipsSent = 0;
-	m_lClipsRecieved = 0;
 	m_oldtStartUp = COleDateTime::GetCurrentTime();
 
-	m_bExitServerThread = false;
-
-	m_lLastGoodIndexForNextworkPassword = -2;
 
 	m_RTFFormat = ::RegisterClipboardFormat(_T("Rich Text Format"));
 	m_HTML_Format = ::RegisterClipboardFormat(_T("HTML Format"));
 	m_PingFormat = ::RegisterClipboardFormat(_T("Bulb Ping Format"));
 	m_cfIgnoreClipboard = ::RegisterClipboardFormat(_T("Clipboard Viewer Ignore"));
 	m_cfDelaySavingData = ::RegisterClipboardFormat(_T("Bulb Delay Saving Data"));
-	m_RemoteCF_HDROP = ::RegisterClipboardFormat(_T("Bulb Remote CF_HDROP"));
 	m_DittoFileData = ::RegisterClipboardFormat(_T("Bulb File Data"));
 	m_PNG_Format = GetFormatID(_T("PNG"));
 
@@ -511,7 +503,6 @@ void CCP_MainApp::AfterMainCreate()
 
 	g_HotKeys.RegisterAll();
 	StartCopyThread();
-	StartStopServerThread();
 
 #ifdef UNICODE
 	m_Addins.LoadAll();
@@ -567,33 +558,12 @@ void CCP_MainApp::LoadGlobalClips()
 	CATCH_SQLITE_EXCEPTION
 }
 
-void CCP_MainApp::StartStopServerThread()
-{
-	// Bulb never opens its port with the default password: anyone on the network could send clips with it
-	if(CGetSetOptions::GetDisableRecieve() == FALSE && CGetSetOptions::GetAllowFriends() && CGetSetOptions::IsWeakNetworkPassword() == false)
-	{
-		AfxBeginThread(MTServerThread, m_MainhWnd);
-	}
-	else
-	{
-		m_bExitServerThread = true;
-		closesocket(theApp.m_sSocket);
-	}
-}
-
-void CCP_MainApp::StopServerThread()
-{
-	m_bExitServerThread = true;
-	closesocket(theApp.m_sSocket);
-}
-
 void CCP_MainApp::BeforeMainClose()
 {
 	ASSERT( m_bAppRunning && !m_bAppExiting );
 	m_bAppRunning = false;
 	m_bAppExiting = true;
 	g_HotKeys.UnregisterAll();
-	StopServerThread();
 	StopCopyThread();
 }
 

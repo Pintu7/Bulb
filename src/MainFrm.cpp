@@ -50,7 +50,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_MESSAGE(WM_SHOW_TRAY_ICON, OnShowTrayIcon)
 	ON_MESSAGE(WM_CLIPBOARD_COPIED, OnClipboardCopied)
 	ON_WM_CLOSE()
-	ON_MESSAGE(WM_ADD_TO_DATABASE_FROM_SOCKET, OnAddToDatabaseFromSocket)
 	ON_MESSAGE(WM_SEND_RECIEVE_ERROR, OnErrorOnSendRecieve)
 	ON_MESSAGE(WM_SHOW_ERROR_MSG, OnErrorMsg)
 	ON_COMMAND(ID_FIRST_IMPORT, OnFirstImport)
@@ -1277,43 +1276,6 @@ LRESULT CMainFrame::OnLoadClipOnClipboard(WPARAM wParam, LPARAM lParam)
 	delete pClip;
 
 	return TRUE;
-}
-
-LRESULT CMainFrame::OnAddToDatabaseFromSocket(WPARAM wParam, LPARAM lParam)
-{
-    CClipList *pClipList = (CClipList*)wParam;
-    if(pClipList == NULL)
-    {
-        LogSendRecieveInfo("---------OnAddToDatabaseFromSocket - ERROR pClipList == NULL");
-        return FALSE;
-    }
-
-    DWORD flags = (DWORD)lParam;
-    if(flags & REMOTE_CLIP_ADD_TO_CLIPBOARD)
-    {
-        CClip *pClip = pClipList->GetTail();
-        if(pClip)
-        {
-			LogSendRecieveInfo("OnAddToDatabaseFromSocket - Adding clip from socket setting clip to be put on clipboard");
-			pClip->m_param1 |= REMOTE_CLIP_ADD_TO_CLIPBOARD;
-		}
-    }
-
-	if (flags & REMOTE_CLIP_MANUAL_SEND)
-	{
-		CClip *pClip = pClipList->GetTail();
-		if (pClip)
-		{
-			LogSendRecieveInfo("OnAddToDatabaseFromSocket - Adding clip from socket setting clip was a manual send from other side");
-			pClip->m_param1 |= REMOTE_CLIP_MANUAL_SEND;
-		}
-	}
-
-	m_thread.AddRemoteClipToSave(pClipList);
-
-	delete pClipList;
-
-    return TRUE;
 }
 
 LRESULT CMainFrame::OnErrorOnSendRecieve(WPARAM wParam, LPARAM lParam)

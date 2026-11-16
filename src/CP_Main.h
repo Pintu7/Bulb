@@ -43,7 +43,6 @@ public:
 	bool	m_bAppExiting;
 	int 	m_connectOnStartup;
 
-	bool	m_bExitServerThread;
 
 	// MainFrame
 	HWND m_MainhWnd;
@@ -156,15 +155,8 @@ public:
 	void ShowPersistent(bool bVal);
 	bool	m_bAsynchronousRefreshView;
 
-	//Socket Info
-	SOCKET	m_sSocket;
-	void	StartStopServerThread();
-	void	StopServerThread();
 
-	long	m_lClipsSent;
-	long	m_lClipsRecieved;
 
-	long	m_lLastGoodIndexForNextworkPassword;
 
 	CLIPFORMAT m_cfIgnoreClipboard; // used by CClip::LoadFromClipboard
 	CLIPFORMAT m_excludeClipboardContentFromMonitorProcessing;
@@ -172,7 +164,6 @@ public:
 	CLIPFORMAT m_cfDelaySavingData;
 	CLIPFORMAT m_PingFormat;
 	CLIPFORMAT m_HTML_Format;
-	CLIPFORMAT m_RemoteCF_HDROP;
 	CLIPFORMAT m_RTFFormat;
 	CLIPFORMAT m_DittoFileData;
 	CLIPFORMAT m_PNG_Format;

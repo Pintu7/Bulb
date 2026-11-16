@@ -38,21 +38,15 @@ BOOL CGetSetOptions::m_bAllwaysShowDescription;
 long CGetSetOptions::m_bDoubleClickingOnCaptionDoes;
 BOOL CGetSetOptions::m_bPrompForNewGroupName;
 BOOL CGetSetOptions::m_bSendPasteOnFirstTenHotKeys;
-CSendClients CGetSetOptions::m_SendClients[MAX_SEND_CLIENTS];
-long CGetSetOptions::m_lAutoSendClientCount;
-CString CGetSetOptions::m_csIPListToPutOnClipboard;
 BOOL CGetSetOptions::m_bLogSendReceiveErrors;
 BOOL CGetSetOptions::m_HideDittoOnHotKeyIfAlreadyShown;
-long CGetSetOptions::m_lPort;
 BOOL CGetSetOptions::m_bDrawThumbnail;
 BOOL CGetSetOptions::m_bDrawCopiedColorCode;
 BOOL CGetSetOptions::m_centerWindowBelowCursorOrCaret;
 BOOL CGetSetOptions::m_bFastThumbnailMode;
-CStringA CGetSetOptions::m_csPassword;
 BOOL CGetSetOptions::m_bDrawRTF;
 BOOL CGetSetOptions::m_bMultiPasteReverse;
 CString CGetSetOptions::m_csPlaySoundOnCopy;
-CStringArray CGetSetOptions::m_csNetworkPasswordArray;
 BOOL CGetSetOptions::m_bSendPasteMessageAfterSelection;
 BOOL CGetSetOptions::m_bFindAsYouType;
 BOOL CGetSetOptions::m_bEnsureEntireWindowCanBeSeen;
@@ -266,15 +260,12 @@ void CGetSetOptions::LoadSettings()
 	m_bDoubleClickingOnCaptionDoes = GetDoubleClickingOnCaptionDoes();
 	m_bPrompForNewGroupName = GetPrompForNewGroupName();
 	m_bSendPasteOnFirstTenHotKeys = GetSendPasteOnFirstTenHotKeys();
-	m_csIPListToPutOnClipboard = GetListToPutOnClipboard();
 	m_bLogSendReceiveErrors = GetLogSendReceiveErrors();
 	m_HideDittoOnHotKeyIfAlreadyShown = GetHideDittoOnHotKeyIfAlreadyShown();
-	m_lPort = GetPort();
 	m_bDrawThumbnail = GetDrawThumbnail();
 	m_bDrawCopiedColorCode = GetDrawCopiedColorCode();
 	m_centerWindowBelowCursorOrCaret = GetCenterWindowBelowCursorOrCaret();
 	m_bFastThumbnailMode = GetFastThumbnailMode();
-	m_csPassword = GetNetworkPassword();
 	m_bDrawRTF = GetDrawRTF();
 	m_bMultiPasteReverse = GetMultiPasteReverse();
 	m_csPlaySoundOnCopy = GetPlaySoundOnCopy();
@@ -303,13 +294,6 @@ void CGetSetOptions::LoadSettings()
 	m_bDoNotHideOnDeactivate = GetDoNotHideOnDeactivate();
 	m_enforceClipboardIgnoreFormats = GetEnforceClipboardIgnoreFormats();
 
-	GetExtraNetworkPassword(true);
-
-	for(int i = 0; i < MAX_SEND_CLIENTS; i++)
-	{
-		GetSendClients(i);
-	}
-
 	for (int i = 0; i < MAX_REGEX_FILTERS; i++)
 	{
 		CRegExFilterData data;
@@ -318,7 +302,6 @@ void CGetSetOptions::LoadSettings()
 		m_regexHelper.Add(i, data);
 	}
 
-	GetClientSendCount();
 
 	m_Theme.Load(GetTheme());
 
@@ -405,27 +388,14 @@ void CGetSetOptions::ConverSettingsToIni()
 	SetPrompForNewGroupName(GetPrompForNewGroupName());
 	SetSendPasteOnFirstTenHotKeys(GetSendPasteOnFirstTenHotKeys());
 
-	for(int i = 0; i < MAX_SEND_CLIENTS; i++)
-	{
-		GetSendClients(i);
-		SetSendClients(m_SendClients[i], i);
-	}
-
-	SetListToPutOnClipboard(GetListToPutOnClipboard());
 	SetLogSendReceiveErrors(GetLogSendReceiveErrors());
 	SetHideDittoOnHotKeyIfAlreadyShown(GetHideDittoOnHotKeyIfAlreadyShown());
-	SetPort(GetPort());
-	SetDisableRecieve(GetDisableRecieve());
 
 	LOGFONT font;
 	GetFont(font);
 	SetFont(font);
 
 	SetDrawThumbnail(GetDrawThumbnail());	
-
-	CStringA PassA = GetNetworkPassword();
-	CString PassW = PassA;
-	SetNetworkPassword(PassW);
 
 	SetDrawRTF(GetDrawRTF());
 	SetMultiPasteReverse(GetMultiPasteReverse());
@@ -434,7 +404,6 @@ void CGetSetOptions::ConverSettingsToIni()
 	SetFindAsYouType(GetFindAsYouType());
 	SetEnsureEntireWindowCanBeSeen(GetEnsureEntireWindowCanBeSeen());
 	SetShowAllClipsInMainList(GetShowAllClipsInMainList());
-	SetExtraNetworkPassword(GetExtraNetworkPassword(false));
 	SetMaxClipSizeInBytes(GetMaxClipSizeInBytes());
 	SetLanguageFile(GetLanguageFile());
 	SetSaveClipDelay(GetSaveClipDelay());
@@ -1375,71 +1344,6 @@ BOOL CGetSetOptions::GetSendPasteOnFirstTenHotKeys()
 	return GetProfileLong("SendPasteOnFirstTenHotKeys", TRUE); 
 }
 
-void CGetSetOptions::SetSendClients(CSendClients Client, int nPos)
-{
-	CString cs;
-
-	cs.Format(_T("sendclient_ip_%d"), nPos);
-	SetProfileString(cs, Client.csIP);
-
-	cs.Format(_T("sendclient_autosend_%d"), nPos);
-	SetProfileLong(cs, Client.bSendAll);
-
-	cs.Format(_T("sendclient_description_%d"), nPos);
-	SetProfileString(cs, Client.csDescription);
-
-	Client.bShownFirstError = m_SendClients[nPos].bShownFirstError;
-
-	m_SendClients[nPos] = Client;
-}
-
-CSendClients CGetSetOptions::GetSendClients(int nPos)
-{
-	CSendClients Client;
-
-	CString cs;
-
-	cs.Format(_T("sendclient_ip_%d"), nPos);
-	Client.csIP = GetProfileString(cs, "");
-
-	cs.Format(_T("sendclient_autosend_%d"), nPos);
-	Client.bSendAll = GetProfileLong(cs, FALSE);
-
-	cs.Format(_T("sendclient_description_%d"), nPos);
-	Client.csDescription = GetProfileString(cs, "");
-
-	m_SendClients[nPos] = Client;
-
-	return Client;
-}
-
-void CGetSetOptions::GetClientSendCount()
-{
-	m_lAutoSendClientCount = 0;
-	for(int i = 0; i < MAX_SEND_CLIENTS; i++)
-	{
-		if(m_SendClients[i].csIP.GetLength() > 0)
-		{
-			if(m_SendClients[i].bSendAll)
-				m_lAutoSendClientCount++;
-		}
-	}
-}
-
-CString	CGetSetOptions::GetListToPutOnClipboard()			
-{ 
-	CString cs = GetProfileString("ListToPutOnClipboard", "");
-	cs.MakeUpper();
-	return cs;
-}
-BOOL CGetSetOptions::SetListToPutOnClipboard(CString cs)	
-{ 
-	cs.MakeUpper();
-	m_csIPListToPutOnClipboard = cs;
-	return SetProfileString("ListToPutOnClipboard", cs); 
-
-}
-
 void CGetSetOptions::SetLogSendReceiveErrors(BOOL bOption)
 {
 	m_bLogSendReceiveErrors = bOption;
@@ -1462,34 +1366,6 @@ void CGetSetOptions::SetHideDittoOnHotKeyIfAlreadyShown(BOOL bVal)
 	m_HideDittoOnHotKeyIfAlreadyShown = bVal;
 
 	SetProfileLong("HideDittoOnHotKeyIfAlreadyShown", bVal);
-}
-
-void CGetSetOptions::SetPort(long lPort)
-{
-	m_lPort = lPort;
-	SetProfileLong("SendRecvPort", lPort);
-}
-
-long CGetSetOptions::GetPort()
-{
-	return GetProfileLong("SendRecvPort", 23443);
-}
-
-BOOL CGetSetOptions::GetDisableRecieve()
-{
-	BOOL bDefault = TRUE; // Bulb: no listening port unless turned on
-	if(GetIsPortableDitto())
-		bDefault = TRUE;
-
-	if(GetIsWindowsApp())
-		bDefault = TRUE;
-
-	return GetProfileLong("DisableRecieve", bDefault);
-}
-
-void CGetSetOptions::SetDisableRecieve(BOOL bVal)
-{
-	SetProfileLong("DisableRecieve", bVal);
 }
 
 BOOL CGetSetOptions::GetFont(LOGFONT &font)
@@ -1570,63 +1446,6 @@ void CGetSetOptions::SetFastThumbnailMode(BOOL thumbnailDrawMode)
 BOOL CGetSetOptions::GetFastThumbnailMode()
 {
 	return GetProfileLong("FastThumbnailMode", TRUE);
-}
-
-void CGetSetOptions::SetExtraNetworkPassword(CString csPassword)
-{
-	SetProfileString("NetworkExtraPassword", csPassword);
-}
-
-CString CGetSetOptions::GetExtraNetworkPassword(bool bFillArray)
-{
-	CString cs = GetProfileString("NetworkExtraPassword", "");
-
-	if(bFillArray)
-	{
-		m_csNetworkPasswordArray.RemoveAll();
-
-		TCHAR seps[]   = _T(",");
-		TCHAR *token;
-
-		TCHAR *pString = cs.GetBuffer(cs.GetLength());
-
-		/* Establish string and get the first token: */
-		token = STRTOK(pString, seps);
-		while(token != NULL)
-		{
-			CString cs(token);
-			cs.TrimLeft();
-			cs.TrimRight();
-
-			m_csNetworkPasswordArray.Add(cs);
-
-			// Get next token
-			token = STRTOK(NULL, seps);
-		}
-
-		cs.ReleaseBuffer();
-	}
-
-	return cs;
-}
-
-void CGetSetOptions::SetNetworkPassword(CString csPassword)
-{
-	m_csPassword = CTextConvert::UnicodeToUTF8(csPassword);
-	SetProfileString("NetworkStringPassword", csPassword);
-}
-
-CStringA CGetSetOptions::GetNetworkPassword()
-{
-	CString cs = GetProfileString("NetworkStringPassword", "LetMeIn");
-	CStringA csReturn = CTextConvert::UnicodeToUTF8(cs);
-	return csReturn;
-}
-
-bool CGetSetOptions::IsWeakNetworkPassword()
-{
-	CStringA password = GetNetworkPassword();
-	return password.IsEmpty() || password == "LetMeIn";
 }
 
 void CGetSetOptions::SetDrawRTF(long bDraw)
@@ -2050,16 +1869,6 @@ void CGetSetOptions::SetEditWordWrap(BOOL bSet)
 	SetProfileLong(_T("EditWordWrap"), bSet);
 }
 
-void CGetSetOptions::SetAllowFriends(BOOL val)
-{
-	SetProfileLong("AllowFriends", val);
-}
-
-bool CGetSetOptions::GetAllowFriends()
-{
-	return (GetProfileLong("AllowFriends", TRUE) == TRUE);
-}
-
 long CGetSetOptions::GetAutoMaxDelay()
 {
 	return GetProfileLong(_T("AutoMaxDelaySeconds"), 2);
@@ -2469,26 +2278,6 @@ void CGetSetOptions::SetWebSearchUrl(CString val)
 	SetProfileString(_T("WebSearchUrl"), val);
 }
 
-void CGetSetOptions::SetNetworkReadTimeoutMS(int val)
-{
-	SetProfileLong(_T("NetworkReadTimeoutMS"), val);
-}
-
-int CGetSetOptions::GetNetworkReadTimeoutMS()
-{
-	return GetProfileLong(_T("NetworkReadTimeoutMS"), 30000);
-}
-
-void CGetSetOptions::SetRequestFilesUsingIP(int val)
-{
-	SetProfileLong(_T("RequestFilesUsingIP"), val);
-}
-
-int CGetSetOptions::GetRequestFilesUsingIP()
-{
-	return GetProfileLong(_T("RequestFilesUsingIP"), 0);
-}
-
 int CGetSetOptions::ReadRandomFileInterval()
 {
 	return GetProfileLong(_T("ReadRandomFileInterval"), 60);
@@ -2638,16 +2427,6 @@ void CGetSetOptions::SetShowAlwaysOnTopWarning(BOOL show)
 	SetProfileLong(_T("ShowAlwaysOnTopWarning"), show);
 }
 
-BOOL CGetSetOptions::GetUseIPFromAccept()
-{
-	return GetProfileLong(_T("UseIPFromAccept"), TRUE);
-}
-
-void CGetSetOptions::SetUseIPFromAccept(BOOL useAccept)
-{
-	SetProfileLong(_T("UseIPFromAccept"), useAccept);
-}
-
 int CGetSetOptions::GetDragId()
 {
 	return GetProfileLong(_T("DragId"), 1);
@@ -2727,16 +2506,6 @@ BOOL CGetSetOptions::GetAdjustClipsForCRC()
 void CGetSetOptions::SetAdjustClipsForCRC(int val)
 {
 	SetProfileLong(_T("AdjustClipsForCRC"), val);
-}
-
-BOOL CGetSetOptions::GetCheckMd5OnFileTransfers()
-{
-	return GetProfileLong(_T("CheckMd5OnFileTransfers"), TRUE);
-}
-
-void CGetSetOptions::SetCheckMd5OnFileTransfers(int val)
-{
-	SetProfileLong(_T("CheckMd5OnFileTransfers"), val);
 }
 
 int CGetSetOptions::GetBalloonTimeout()
@@ -2876,16 +2645,6 @@ CString CGetSetOptions::GetPastSearchXml()
 void CGetSetOptions::SetPastSearchXml(CString val)
 {
 	SetProfileString(_T("PastSearchXml"), val);
-}
-
-BOOL CGetSetOptions::GetShowMsgWhenReceivingManualSentClip()
-{
-	return GetProfileLong("ShowMsgWhenReceivingManualSentClip", TRUE);
-}
-
-void CGetSetOptions::SetShowMsgWhenReceivingManualSentClip(BOOL val)
-{
-	SetProfileLong("ShowMsgWhenReceivingManualSentClip", val);
 }
 
 
@@ -3046,16 +2805,6 @@ void CGetSetOptions::SetMaintainSearchView(BOOL val)
 	SetProfileLong("MaintainSearchView", val);
 }
 
-CString CGetSetOptions::GetNetworkBindIPAddress()
-{
-	return GetProfileString("NetworkBindIPAddress", "*");
-}
-
-void CGetSetOptions::SetNetworkBindIPAddress(CString val)
-{
-	SetProfileString("NetworkBindIPAddress", val);
-}
-
 CString CGetSetOptions::GetTempDragFileName()
 {
 	auto diff = CTime::GetCurrentTime() - m_tempDragFileNameSetTime;
@@ -3208,16 +2957,6 @@ BOOL CGetSetOptions::SetQRCodeUrl(CString path)
 CString CGetSetOptions::GetQRCodeUrl()
 {
 	return GetProfileString("QRCodeUrl", _T(""));
-}
-
-void CGetSetOptions::SetAppendRemoveComputerNameAndIPToDescription(BOOL val)
-{
-	SetProfileLong("AppendRemoveComputerNameAndIPToDescription", val);	
-}
-
-BOOL CGetSetOptions::GetAppendRemoveComputerNameAndIPToDescription()
-{
-	return GetProfileLong("AppendRemoveComputerNameAndIPToDescription", TRUE);
 }
 
 void CGetSetOptions::SetPreferUtf8ForCompare(BOOL val)

@@ -197,7 +197,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;Shlwapi.lib;$(Configuration)\EncryptDecrypt.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;Shlwapi.lib;$(Configuration)\EncryptDecrypt.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>release\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -256,7 +256,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Configuration)64\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Configuration)64\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>release64\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -313,7 +313,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(Platform)\$(Configuration)\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -369,7 +369,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>debug\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -428,7 +428,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)64\\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Configuration)64\\EncryptDecrypt.lib;Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>debug64\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -486,7 +486,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;Winmm.lib;Pdh.lib;Version.lib;$(Platform)\$(Configuration)\EncryptDecrypt.lib;Shlwapi.lib;zlib\zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(Platform)\$(Configuration)\Bulb.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -529,14 +529,12 @@
     <ClCompile Include="src\AddType.cpp" />
     <ClCompile Include="src\AdvGeneral.cpp" />
     <ClCompile Include="src\AlphaBlend.cpp" />
-    <ClCompile Include="src\AutoSendToClientThread.cpp" />
     <ClCompile Include="src\BitmapHelper.cpp" />
     <ClCompile Include="src\CF_HDropAggregator.cpp" />
     <ClCompile Include="src\CF_TextAggregator.cpp" />
     <ClCompile Include="src\CF_UnicodeTextAggregator.cpp" />
     <ClCompile Include="src\ChaiScriptOnCopy.cpp" />
     <ClCompile Include="src\ChaiScriptXml.cpp" />
-    <ClCompile Include="src\Client.cpp" />
     <ClCompile Include="src\Clip.cpp" />
     <ClCompile Include="src\ClipboardSaveRestore.cpp" />
     <ClCompile Include="src\ClipboardViewer.cpp" />
@@ -551,7 +549,6 @@
     <ClCompile Include="src\CP_Main.cpp" />
     <ClCompile Include="src\Crc32Dynamic.cpp" />
     <ClCompile Include="src\CreateQRCodeImage.cpp" />
-    <ClCompile Include="src\CustomFriendsHelper.cpp" />
     <ClCompile Include="src\DatabaseUtilities.cpp" />
     <ClCompile Include="src\DeleteClipData.cpp" />
     <ClCompile Include="src\DialogResizer.cpp" />
@@ -577,12 +574,8 @@
     <ClCompile Include="src\EventThread.cpp" />
     <ClCompile Include="src\ExternalWindowTracker.cpp" />
     <ClCompile Include="src\FileRecieve.cpp" />
-    <ClCompile Include="src\FileSend.cpp" />
-    <ClCompile Include="src\FileTransferProgressDlg.cpp" />
     <ClCompile Include="src\FormatSQL.cpp" />
     <ClCompile Include="src\FormattedTextDraw.cpp" />
-    <ClCompile Include="src\FriendDetails.cpp" />
-    <ClCompile Include="src\FriendPromptDlg.cpp" />
     <ClCompile Include="src\GdiImageDrawer.cpp" />
     <ClCompile Include="src\GdipButton.cpp" />
     <ClCompile Include="src\GlobalClips.cpp" />
@@ -631,7 +624,6 @@
     <ClCompile Include="src\NTray.cpp" />
     <ClCompile Include="src\NumberEdit.cpp" />
     <ClCompile Include="src\OleClipSource.cpp" />
-    <ClCompile Include="src\OptionFriends.cpp" />
     <ClCompile Include="src\Options.cpp" />
     <ClCompile Include="src\OptionsCopyBuffers.cpp" />
     <ClCompile Include="src\OptionsGeneral.cpp" />
@@ -720,8 +712,6 @@
     </ClCompile>
     <ClCompile Include="src\QuickPaste.cpp" />
     <ClCompile Include="src\QuickPasteKeyboard.cpp" />
-    <ClCompile Include="src\RecieveFile.cpp" />
-    <ClCompile Include="src\RecieveSocket.cpp" />
     <ClCompile Include="src\RegExFilterHelper.cpp" />
     <ClCompile Include="src\RichEditCtrlEx.cpp" />
     <ClCompile Include="src\RichTextAggregator.cpp" />
@@ -742,8 +732,6 @@
     <ClCompile Include="src\SelectDB.cpp" />
     <ClCompile Include="src\SendKeys.cpp" />
     <ClCompile Include="src\SendMail.cpp" />
-    <ClCompile Include="src\SendSocket.cpp" />
-    <ClCompile Include="src\Server.cpp" />
     <ClCompile Include="src\ShowTaskBarIcon.cpp" />
     <ClCompile Include="src\SimpleBrowser.cpp" />
     <ClCompile Include="src\SnapWindow.cpp" />
@@ -814,7 +802,6 @@
     <ClInclude Include="src\AddType.h" />
     <ClInclude Include="src\AdvGeneral.h" />
     <ClInclude Include="src\AlphaBlend.h" />
-    <ClInclude Include="src\AutoSendToClientThread.h" />
     <ClInclude Include="src\BitmapHelper.h" />
     <ClInclude Include="src\CF_HDropAggregator.h" />
     <ClInclude Include="src\CF_TextAggregator.h" />
@@ -822,7 +809,6 @@
     <ClInclude Include="src\CGdiPlusBitmap.h" />
     <ClInclude Include="src\ChaiScriptOnCopy.h" />
     <ClInclude Include="src\ChaiScriptXml.h" />
-    <ClInclude Include="src\Client.h" />
     <ClInclude Include="src\Clip.h" />
     <ClInclude Include="src\ClipboardSaveRestore.h" />
     <ClInclude Include="src\ClipboardViewer.h" />
@@ -838,7 +824,6 @@
     <ClInclude Include="src\CP_Main_i.h" />
     <ClInclude Include="src\Crc32Dynamic.h" />
     <ClInclude Include="src\CreateQRCodeImage.h" />
-    <ClInclude Include="src\CustomFriendsHelper.h" />
     <ClInclude Include="src\DatabaseUtilities.h" />
     <ClInclude Include="src\DeleteClipData.h" />
     <ClInclude Include="src\DialogResizer.h" />
@@ -860,12 +845,8 @@
     <ClInclude Include="src\EventThread.h" />
     <ClInclude Include="src\ExternalWindowTracker.h" />
     <ClInclude Include="src\FileRecieve.h" />
-    <ClInclude Include="src\FileSend.h" />
-    <ClInclude Include="src\FileTransferProgressDlg.h" />
     <ClInclude Include="src\FormatSQL.h" />
     <ClInclude Include="src\FormattedTextDraw.h" />
-    <ClInclude Include="src\FriendDetails.h" />
-    <ClInclude Include="src\FriendPromptDlg.h" />
     <ClInclude Include="src\GdiImageDrawer.h" />
     <ClInclude Include="src\GdipButton.h" />
     <ClInclude Include="src\GlobalClips.h" />
@@ -892,7 +873,6 @@
     <ClInclude Include="src\HListBox.h" />
     <ClInclude Include="src\HotKeys.h" />
     <ClInclude Include="src\HTMLFormatAggregator.h" />
-    <ClInclude Include="src\httplib.h" />
     <ClInclude Include="src\HyperLink.h" />
     <ClInclude Include="src\IClipAggregator.h" />
     <ClInclude Include="src\ICU_String.h" />
@@ -915,7 +895,6 @@
     <ClInclude Include="src\NTray.h" />
     <ClInclude Include="src\NumberEdit.h" />
     <ClInclude Include="src\OleClipSource.h" />
-    <ClInclude Include="src\OptionFriends.h" />
     <ClInclude Include="src\Options.h" />
     <ClInclude Include="src\OptionsCopyBuffers.h" />
     <ClInclude Include="src\OptionsGeneral.h" />
@@ -949,8 +928,6 @@
     <ClInclude Include="src\QRCode\split.h" />
     <ClInclude Include="src\QuickPaste.h" />
     <ClInclude Include="src\QuickPasteKeyboard.h" />
-    <ClInclude Include="src\RecieveFile.h" />
-    <ClInclude Include="src\RecieveSocket.h" />
     <ClInclude Include="src\RegExFilterHelper.h" />
     <ClInclude Include="src\RichEditCtrlEx.h" />
     <ClInclude Include="src\RichTextAggregator.h" />
@@ -972,9 +949,6 @@
     <ClInclude Include="src\SelectDB.h" />
     <ClInclude Include="src\SendKeys.h" />
     <ClInclude Include="src\SendMail.h" />
-    <ClInclude Include="src\SendSocket.h" />
-    <ClInclude Include="src\Server.h" />
-    <ClInclude Include="src\ServerDefines.h" />
     <ClInclude Include="src\ShowTaskBarIcon.h" />
     <ClInclude Include="src\SimpleBrowser.h" />
     <ClInclude Include="src\Slugify.h" />

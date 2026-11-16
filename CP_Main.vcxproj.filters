@@ -19,9 +19,6 @@
     <ClCompile Include="src\AlphaBlend.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\AutoSendToClientThread.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\BitmapHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -38,9 +35,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ChaiScriptXml.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Client.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Clip.cpp">
@@ -80,9 +74,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Crc32Dynamic.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CustomFriendsHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\DatabaseUtilities.cpp">
@@ -133,22 +124,10 @@
     <ClCompile Include="src\FileRecieve.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileSend.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FileTransferProgressDlg.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\FormatSQL.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\FormattedTextDraw.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FriendDetails.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\FriendPromptDlg.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\GdiImageDrawer.cpp">
@@ -277,9 +256,6 @@
     <ClCompile Include="src\OleClipSource.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OptionFriends.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\Options.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -343,12 +319,6 @@
     <ClCompile Include="src\QuickPasteKeyboard.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\RecieveFile.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RecieveSocket.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\RegExFilterHelper.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -377,12 +347,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\SendMail.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SendSocket.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Server.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\ShowTaskBarIcon.cpp">
@@ -550,9 +514,6 @@
     <ClInclude Include="src\AlphaBlend.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\AutoSendToClientThread.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\BitmapHelper.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -572,9 +533,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ChaiScriptXml.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Client.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Clip.h">
@@ -617,9 +575,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Crc32Dynamic.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CustomFriendsHelper.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\DatabaseUtilities.h">
@@ -679,22 +634,10 @@
     <ClInclude Include="src\FileRecieve.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\FileSend.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FileTransferProgressDlg.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\FormatSQL.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\FormattedTextDraw.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FriendDetails.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\FriendPromptDlg.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\GdiImageDrawer.h">
@@ -775,9 +718,6 @@
     <ClInclude Include="src\HTMLFormatAggregator.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\httplib.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\HyperLink.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -839,9 +779,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\OleClipSource.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OptionFriends.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Options.h">
@@ -907,12 +844,6 @@
     <ClInclude Include="src\QuickPasteKeyboard.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\RecieveFile.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RecieveSocket.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\RegExFilterHelper.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -941,15 +872,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\SendMail.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\SendSocket.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Server.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ServerDefines.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ShowTaskBarIcon.h">

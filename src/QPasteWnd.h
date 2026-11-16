@@ -19,7 +19,6 @@
 #include "ClipIds.h"
 #include "SymbolEdit.h"
 #include "Popup.h"
-#include "CustomFriendsHelper.h"
 #include "ModernScrollBar.h"
 #include "TagBar.h"
 #include "GlyphButton.h"
@@ -204,7 +203,6 @@ public:
 	int m_leftSelectedCompareId;
 	INT64 m_extraDataCounter;
 	CPopup m_popupMsg;
-	CCustomFriendsHelper m_customFriendsHelper;
 	bool m_noSearchResults;
 	bool m_bShowStarredClips;
 	CAccel m_timerAction;
@@ -236,10 +234,7 @@ public:
     void OnUpdateTransparency(CCmdUI *pCmdUI, int nValue);
 	void AddShowStarredClipsMenuItem(CMenu *pMenu);
     void SetMenuChecks(CMenu *pMenu);
-    void SetSendToMenu(CMenu *pMenu, int nMenuID, int nArrayPos);
-	void SetFriendChecks(CMenu *pMenu);
 
-    BOOL SendToFriendbyPos(int nPos, CString override_IP_Host);
 
     bool InsertNextNRecords(int nEnd);
 
@@ -341,7 +336,6 @@ public:
 	bool OnMakeLastSticky();
 	bool OnRemoveStickySetting();	
 	bool DoActionReplaceTopStickyClip();
-	bool DoActionPromptSendToFriend();
 	bool DoActionSaveCF_HDROP_FileData();
 	bool DoActionToggleClipboardConnection();
 	bool DoActionPasteDontMoveClip();
@@ -436,22 +430,6 @@ protected:
     afx_msg void OnMenuQuickpropertiesSettoneverautodelete();
     afx_msg void OnMenuQuickpropertiesAutodelete();
     afx_msg void OnMenuQuickpropertiesRemovehotkey();
-    afx_msg void OnMenuSenttoFriendEight();
-    afx_msg void OnMenuSenttoFriendEleven();
-    afx_msg void OnMenuSenttoFriendFifteen();
-    afx_msg void OnMenuSenttoFriendFive();
-    afx_msg void OnMenuSenttoFriendFore();
-    afx_msg void OnMenuSenttoFriendForeteen();
-    afx_msg void OnMenuSenttoFriendNine();
-    afx_msg void OnMenuSenttoFriendSeven();
-    afx_msg void OnMenuSenttoFriendSix();
-    afx_msg void OnMenuSenttoFriendTen();
-    afx_msg void OnMenuSenttoFriendThirteen();
-    afx_msg void OnMenuSenttoFriendThree();
-    afx_msg void OnMenuSenttoFriendTwelve();
-    afx_msg void OnMenuSenttoFriendTwo();
-    afx_msg void OnMenuSenttoFriendone();
-    afx_msg void OnMenuSenttoPromptforip();
     afx_msg void OnMenuGroupsMovetogroup();
     afx_msg void OnMenuPasteplaintextonly();
     afx_msg void OnMenuHelp();
@@ -516,7 +494,6 @@ protected:
     afx_msg void OnUpdateMenuEdititem(CCmdUI *pCmdUI);
     afx_msg void OnUpdateMenuNewclip(CCmdUI *pCmdUI);
     afx_msg void OnAddinSelect(UINT id);
-	afx_msg void OnCustomSendToFriend(UINT idIn);
 	afx_msg void OnChaiScriptPaste(UINT idIn);
     afx_msg LRESULT OnSelectAll(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnShowHideScrollBar(WPARAM wParam, LPARAM lParam);
@@ -609,8 +586,6 @@ public:
 	afx_msg LRESULT OnSearchFocused(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnCliporderReplacetopstickyclip();
 	afx_msg void OnUpdateCliporderReplacetopstickyclip(CCmdUI *pCmdUI);
-	afx_msg void OnSendtoPromptforname();
-	afx_msg void OnUpdateSendtoPromptforname(CCmdUI *pCmdUI);
 	afx_msg void OnImportImportcopiedfile();
 	afx_msg void OnUpdateImportImportcopiedfile(CCmdUI *pCmdUI);
 	afx_msg void OnUpdate32775(CCmdUI *pCmdUI);

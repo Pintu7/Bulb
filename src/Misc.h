@@ -17,8 +17,6 @@
 #define UPDATE_AFTER_PASTE_SELECT_CLIP 0x1
 #define UPDATE_CLIP_DESCRIPTION 0x2
 
-#define REMOTE_CLIP_ADD_TO_CLIPBOARD 0x1
-#define REMOTE_CLIP_MANUAL_SEND 0x2
 
 
 //Handle foreign keyboards pressing ALT_GR (right alt), this simulates a control press
@@ -72,7 +70,6 @@ public:
 
 #include "DatabaseUtilities.h"
 
-CString GetIPAddress();
 CString GetComputerName();
 
 #define FUNC		__FUNCTION__
@@ -151,7 +148,6 @@ __int64 GetLastWriteTime(const CString &csFile);
 #define WM_CLOSE_APP			WM_USER + 204
 #define WM_REFRESH_VIEW			WM_USER + 205
 #define WM_CLIPBOARD_COPIED		WM_USER + 206
-#define WM_ADD_TO_DATABASE_FROM_SOCKET		WM_USER + 207
 #define WM_SEND_RECIEVE_ERROR	WM_USER + 208
 #define WM_FOCUS_CHANGED		WM_USER + 209
 #define WM_CV_GETCONNECT		WM_USER + 211

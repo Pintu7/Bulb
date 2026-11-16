@@ -37,8 +37,6 @@ COptionsStats::COptionsStats()
 	m_eSavedCopies = _T("");
 	m_eSavedCopyData = _T("");
 	m_eDatabaseSize = _T("");
-	m_eClipsSent = _T("");
-	m_eClipsRecieved = _T("");
 	m_eLastStarted = _T("");
 	//}}AFX_DATA_INIT
 }
@@ -57,8 +55,6 @@ void COptionsStats::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SAVED_COPIES, m_eSavedCopies);
 	DDX_Text(pDX, IDC_SAVED_COPY_DATA, m_eSavedCopyData);
 	DDX_Text(pDX, IDC_DATABASE_SIZE, m_eDatabaseSize);
-	DDX_Text(pDX, IDC_CLIPS_SENT, m_eClipsSent);
-	DDX_Text(pDX, IDC_CLIPS_RECIVED, m_eClipsRecieved);
 	DDX_Text(pDX, IDC_LAST_STARTED, m_eLastStarted);
 	//}}AFX_DATA_MAP
 }
@@ -90,8 +86,6 @@ BOOL COptionsStats::OnInitDialog()
 	m_eTripCopies.Format(_T("%d"), CGetSetOptions::GetTripCopyCount());
 	m_eTripPastes.Format(_T("%d"), CGetSetOptions::GetTripPasteCount());
 
-	m_eClipsSent.Format(_T("%d"), theApp.m_lClipsSent);
-	m_eClipsRecieved.Format(_T("%d"), theApp.m_lClipsRecieved);
 	m_eLastStarted = theApp.m_oldtStartUp.Format();	
 
 	COleDateTimeSpan span = COleDateTime::GetCurrentTime() - theApp.m_oldtStartUp;
@@ -136,9 +130,6 @@ BOOL COptionsStats::OnInitDialog()
 		.Row(IDC_STATIC_8, { { IDC_SAVED_COPY_DATA, value } })
 		.Row(IDC_STATIC_10, { { IDC_DATABASE_SIZE, value } })
 		.Row(IDC_STATIC_9, { { IDC_LAST_STARTED, 240 } })
-		.Section(IDC_STATIC_13)
-		.Row(IDC_STATIC_11, { { IDC_CLIPS_SENT, value } })
-		.Row(IDC_STATIC_12, { { IDC_CLIPS_RECIVED, value } })
 		.AttachTo(m_hWnd);
 
 	return TRUE;

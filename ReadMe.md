@@ -23,9 +23,10 @@ These changes are personal choices rather than fixes Ditto needs, so they live i
 - **Type Clipboard**: Ctrl+Alt+V types the clipboard text as key presses, for TeamViewer or Remote Desktop sessions that block paste. It types at most 100 characters, 50 ms apart, and Esc stops it; the shortcut and both values can be changed in Options > Keyboard. **Type Clip** in a clip's right-click menu types that clip the same way.
 - **Text from images**: copy the text of an image clip, recognised with Windows' built-in OCR.
 - **Paste queue**: paste several clips one after another.
-- **Safer defaults**: clips are never deleted because their content looks sensitive, and the network receive port never opens with the default password.
+- **No network**: Ditto's Friends feature (sending clips and files between PCs) is removed, so Bulb opens no port and sends no clip anywhere. Previewing an HTML clip cannot run scripts or load anything from the web.
+- **Safer defaults**: clips are never deleted because their content looks sensitive.
 - **Its own name and folder**: Bulb installs and stores its data apart from Ditto, so both can be installed side by side.
-- **Check for updates**: a button in Options > About asks GitHub for the newest release and opens its page. Bulb never checks by itself.
+- **Check for updates**: a button in Options > About asks GitHub for the newest release and opens its page. Bulb never checks by itself, and this is the only time it contacts the network.
 - **Import from Ditto**: Options > General > Import from Ditto adds your Ditto history to Bulb, optionally turning Ditto's groups into tags. Ditto's own database is only read, and clips Bulb already has are skipped.
 
 Like Ditto, Bulb is local first: no login, no cloud, no telemetry.

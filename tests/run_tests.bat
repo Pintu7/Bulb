@@ -34,5 +34,13 @@ if not exist "%OUT%\sqlite3mc.obj" cl /nologo /c /O2 /w /Fo"%OUT%\sqlite3mc.obj"
 cl /nologo /std:c++17 /EHsc /W3 /utf-8 /DUNICODE /D_UNICODE /I"%~dp0..\src" /Fe"%OUT%\DittoImportTest.exe" /Fo"%OUT%\\" "%~dp0DittoImportTest.cpp" "%~dp0..\src\DittoImport.cpp" "%~dp0..\src\sqlite\CppSQLite3.cpp" "%OUT%\sqlite3mc.obj" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
 "%OUT%\DittoImportTest.exe" || set FAILED=1
 
+cl /nologo /std:c++17 /EHsc /W3 /utf-8 /DUNICODE /D_UNICODE /I"%~dp0..\src" /Fe"%OUT%\HtmlPreviewOfflineTest.exe" /Fo"%OUT%\\" "%~dp0HtmlPreviewOfflineTest.cpp" "%~dp0..\src\SimpleBrowser.cpp" >"%OUT%\build.log" || (type "%OUT%\build.log" & exit /b 1)
+"%OUT%\HtmlPreviewOfflineTest.exe" || set FAILED=1
+
+rem Bulb has no network code of its own: the built program may use WinHTTP for Check for updates and nothing else
+if exist "%~dp0..\Release64\Bulb.exe" (
+	dumpbin /nologo /imports "%~dp0..\Release64\Bulb.exe" | findstr /i /r "ws2_32\.dll wsock32\.dll mswsock\.dll urlmon\.dll InternetOpen InternetConnect InternetReadFile URLDownloadTo" >nul && (echo FAIL: Bulb.exe imports a network library & set FAILED=1) || echo NoNetworkImports: 1 check passed
+)
+
 exit /b %FAILED%
 
